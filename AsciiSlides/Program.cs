@@ -1,6 +1,12 @@
 ﻿using Eto.Forms;
 using Eto.Drawing;
+using Form = Eto.Forms.Form;
 using MonoMac.AppKit;
+using Application = Eto.Forms.Application;
+using Button = Eto.Forms.Button;
+using Keys = Eto.Forms.Keys;
+using Label = Eto.Forms.Label;
+using Size = Eto.Drawing.Size;
 
 namespace AsciiSlides;
 public class SlidesManager : Form
