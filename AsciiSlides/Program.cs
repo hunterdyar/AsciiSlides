@@ -4,14 +4,18 @@ using Form = Eto.Forms.Form;
 using MonoMac.AppKit;
 using Application = Eto.Forms.Application;
 using Button = Eto.Forms.Button;
+using CheckBox = Eto.Forms.CheckBox;
 using Keys = Eto.Forms.Keys;
 using Label = Eto.Forms.Label;
+using Orientation = Eto.Forms.Orientation;
 using Size = Eto.Drawing.Size;
 
 namespace AsciiSlides;
 public class SlidesManager : Form
 {
     private Display? _display = null;
+    public static Presentation Presentation = new Presentation();
+    public static PresentationState PresentationState = new PresentationState();
     public SlidesManager()
     {
         Title = "ASCIISlides Manager";
@@ -19,6 +23,11 @@ public class SlidesManager : Form
         
         var presentButton = new Button { Text = "Present" };
         var presentCommand = new Command() { MenuText = "Present" };
+        var inFullscreen = new CheckBox()
+        {
+            Text = "Fullscreen",
+            Checked = true,
+        };
         presentCommand.Executed += (sender, args) =>
         {
             Console.WriteLine("Present");
@@ -27,7 +36,7 @@ public class SlidesManager : Form
                 _display.Close();
                 _display.Dispose();
             } 
-            _display = new Display();
+            _display = new Display(inFullscreen.Checked.Value);
             
         };
         presentButton.Command = presentCommand;
@@ -40,34 +49,17 @@ public class SlidesManager : Form
                 {
                     Text = "Open File",
                 },
-                presentButton,
-                new Label()
-                {
-                    Width = 200,
-                    Height = 600,
-                    Text = "This is text \n newline \n test"
-                },
+                new StackLayout(){
+                    Orientation = Orientation.Horizontal,
+                    VerticalContentAlignment = VerticalAlignment.Center,
+                    Spacing = 5,
+                    Items = {presentButton,
+                    inFullscreen,
+                    }
+                }
+
                 
             }
-        };
-        
-        var quitCommand = new Command { MenuText = "Quitsy", Shortcut = Application.Instance.CommonModifier | Keys.Q };
-        quitCommand.Executed += (sender, e) => Application.Instance.Quit();
-        Menu = new MenuBar
-        {
-            Items =
-            {
-                // File submenu
-                new SubMenuItem { Text = "&Present", Items = { presentCommand } },
-                // new SubMenuItem { Text = "&Edit", Items = { /* commands/items */ } },
-                // new SubMenuItem { Text = "&View", Items = { /* commands/items */ } },
-            },
-            ApplicationItems =
-            {
-                // application (OS X) or file menu (others)
-                new ButtonMenuItem { Text = "&Preferences..." },
-            },
-            QuitItem = quitCommand,
         };
     }
 	
