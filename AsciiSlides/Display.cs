@@ -21,7 +21,7 @@ public class Display : Form
     public bool IsFullscreen => _isFullscreen;
     private bool _isFullscreen;
 
-    private Panel _panel;
+    private WebView _webPanel;
     private Label _slideText = new Label()
     {
         Wrap = WrapMode.None,
@@ -36,8 +36,10 @@ public class Display : Form
     {
         // WindowState = WindowState.Normal;
         // Bounds = Screen.PrimaryScreen.Bounds;
-        Topmost = true;
-        //Bounds = new Rectangle(Screen.Bounds);
+        // Topmost = true;
+        Topmost = inFullscreen;
+        //todo: get the aspect ratio of the presentation, use a centered rectangle that large
+        Bounds = new Rectangle(Screen.Bounds*0.8f);
         Maximizable = true;
         Show();
         Focus();
@@ -45,14 +47,20 @@ public class Display : Form
 
         RegisterShortcuts();
 
-        _panel = new Eto.Forms.Panel()
+        _webPanel = new Eto.Forms.WebView()
         {
             BackgroundColor = Colors.LightYellow,
-            Content = _slideText,
+            Width = 40,
+            Height = 20,
+            BrowserContextMenuEnabled = false,
         };
-        Content = _panel;
+        _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds));
+        Console.WriteLine("Loaded. Reloading anyway.");
+        _webPanel.Reload();
+        this.Content = _webPanel;
         ResizePanel();
-        _slideText.Text = "Presentation Not Loaded";
+        
+        
         Console.WriteLine("Created Display. Now go fullscreen");
         //fullscreen
         SetFullscreen(inFullscreen);
@@ -64,10 +72,7 @@ public class Display : Form
         this.KeyUp += OnKeyUp;
     }
 
-    private void OnKeyUp(object? sender, KeyEventArgs e)
-    {
-       
-    }
+
 
     private void ResizePanel()
     {
@@ -91,8 +96,8 @@ public class Display : Form
         {
             //we are narrow, screen is wide. will letterbox sides.
             //set the height to full bounds height, adjust the width by aspet.
-            _panel.Width = (int)(b.Height * aspect);
-            _panel.Height = b.Height;
+            //_panel.Width = (int)(b.Height * aspect);
+         //   _panel.Height = b.Height;
             
             _slideText.Width = (int)(b.Height * aspect);
             _slideText.Height = (int)(b.Height);
@@ -108,6 +113,7 @@ public class Display : Form
     {
         if (e.Key == Configuration.Configuration.ExitKey)
         {
+            Console.WriteLine("Exiting...");
             Close();
         }else if (e.Key == Configuration.Configuration.ToggleFullscreen)
         {
@@ -139,6 +145,11 @@ public class Display : Form
         }
     }
 
+    private void OnKeyUp(object? sender, KeyEventArgs e)
+    {
+
+    }
+    
     private void MoveScreens(int delta)
     {
         //untested, I only have 1 screen right now.
