@@ -9,8 +9,8 @@ public class PresentationState
 	
 	public int CurrentSlide;
 	private int _currentSlide => CurrentSlide;
-	public int RowCount = 60;
-	public int ColumnCount = 80;
+	public int RowCount = 30;
+	public int ColumnCount = 40;
 	public static Action OnCurrentSlideChanged;
 	private StringBuilder _builder = new StringBuilder();
 	
@@ -29,13 +29,19 @@ public class PresentationState
 		_builder.AppendLine("<head>");
 		AppendStyle(bounds);
 		_builder.AppendLine("</head>");
-		_builder.AppendLine("<body style=\"background-color:#F0F; font-family:Consolas;\">");
+		_builder.AppendLine("<body>");
 		_builder.AppendLine("<div class=\"container\">");
-		_builder.AppendLine("<div class=\"slide\">");
+		_builder.AppendLine("<pre class=\"slide\">");
 
-		_builder.AppendLine("<h1>Presentation State</h1>");
-		_builder.AppendLine("<p>Presentation State</p>");
-		_builder.AppendLine("</div>");
+		_builder.AppendLine("""
+		                    ###### #    #   ##   #    # #####  #      ######
+		                    #       #  #   #  #  ##  ## #    # #      #      
+		                    #####    ##   #    # # ## # #    # #      ##### 
+		                    #        ##   ###### #    # #####  #      #      
+		                    #       #  #  #    # #    # #      #      #      
+		                    ###### #    # #    # #    # #      ###### ######
+		                    """);
+		_builder.AppendLine("</pre>");
 		_builder.AppendLine("</div>");
 
 		_builder.AppendLine("</body>");
@@ -47,33 +53,59 @@ public class PresentationState
 	private void AppendStyle(Rectangle bounds)
 	{
 		_builder.AppendLine("<style>");
+
+		//these are clearly bad defaults... 
+		int h = 0;
+		int w = 0;
 		
+		var aspect = ColumnCount / (float)RowCount;
+		var screenAspect = bounds.Width / (float)bounds.Height;
 		
-		
+		if (aspect >= screenAspect)
+		{
+			//if aspect is equal, we can do either branch and it doesn't matter.
+
+			//we are wider, and will letterbox top and bottom.
+			//Set the width to full bounds width, adjust height by aspect.
+			w = (int)(bounds.Width);
+			h = (int)(bounds.Width / aspect);
+		}
+		else if (aspect < screenAspect)
+		{
+			//we are narrow, screen is wide. will letterbox sides.
+			//set the height to full bounds height, adjust the width by aspet.
+			w = (int)(bounds.Height * aspect);
+			h = (int)(bounds.Height);
+		}
+		int marginLeft = (bounds.Width - w) / 2;
+		int marginTop = (bounds.Height - h) / 2;
+		int fontHeight = (int)Math.Floor(h / (float)RowCount);
 		_builder.Append($$$"""
 		                body{
-		                background: white;
-		                           padding: 0;
-		                           margin: 0;
-		                       }
-		                       .container {
-		                           display: flex;
-		                           align-items: center;
-		                           padding: 0;
-		                           justify-content: center;
-		                       }
-		                       .slide{
-		                           background: tomato;
-		                           flex-basis: auto;
-		                           align-self: center;
-		                           margin: auto;
-		                           padding: 0;
-		                           width: 500px;
-		                           max-width: 1000px;
-		                       }
+		                   background-color: color: #{{{Configuration.Configuration.BGColor.ToHex()}}};
+		                   padding: 0;
+		                   margin: 0;
+		                   font-family: Consolas, monospace, ui-monospace;
+		                   font-size: {{{fontHeight}}}px;
+		                   color: #{{{Configuration.Configuration.FontColor.ToHex()}}};
+		                   overflow: hidden;
+		                   scrollbar-width: none;
+		                }
+		                .container {
+		                 padding: 0;
+		                 display: block;
+		                 width: {{{w}}}px;
+		                 height: {{{h}}}px;
+		                 margin-left: {{{marginLeft}}};
+		                  margin-right: {{{marginLeft}}};
+		                  marigin-bottom: {{{marginTop}}};
+		                  margin-top: {{{marginTop}}};
+		                  background-color: color: #{{{Configuration.Configuration.ASCIIAreaBGColor.ToHex()}}};
+		                   }
+		                    .slide{
+		                    }
 		                """);
-		
+		Console.WriteLine($"Setting width height to: {w}x{h}, margins left/top: {marginLeft}/{marginTop}");
 		_builder.AppendLine("</style>");
-		Console.Write(_builder.ToString());
 	}
 }

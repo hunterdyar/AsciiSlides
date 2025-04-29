@@ -22,14 +22,7 @@ public class Display : Form
     private bool _isFullscreen;
 
     private WebView _webPanel;
-    private Label _slideText = new Label()
-    {
-        Wrap = WrapMode.None,
-        Font = Configuration.Configuration.Font,
-        TextAlignment = TextAlignment.Center,
-        AllowDrop = false,
-        BackgroundColor = Colors.Aquamarine,
-    };
+
     //ascii character row/column counts set by the presentation, with per-slide overrides.
     
     public Display(bool inFullscreen)
@@ -44,9 +37,7 @@ public class Display : Form
         Show();
         Focus();
         //Maximize();
-
-        RegisterShortcuts();
-
+        
         _webPanel = new Eto.Forms.WebView()
         {
             BackgroundColor = Colors.LightYellow,
@@ -54,20 +45,23 @@ public class Display : Form
             Height = 20,
             BrowserContextMenuEnabled = false,
         };
-        _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds));
-        Console.WriteLine("Loaded. Reloading anyway.");
-        _webPanel.Reload();
         this.Content = _webPanel;
-        ResizePanel();
         
-        
-        Console.WriteLine("Created Display. Now go fullscreen");
+        Console.WriteLine("Created Display.");
         //fullscreen
         SetFullscreen(inFullscreen);
+        _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds));
+        RegisterShortcuts();
+        //on resizing.... registering last to prevent multiple 
+        this.LogicalPixelSizeChanged += (sender, args) =>
+        {
+            ResizePanel();
+        };
     }
 
     private void RegisterShortcuts()
     {
+        Console.WriteLine("Registering Shortcuts.");
         this.KeyDown += OnKeyDown;
         this.KeyUp += OnKeyUp;
     }
@@ -76,42 +70,15 @@ public class Display : Form
 
     private void ResizePanel()
     {
-        var b = Bounds;
-        int h = SlidesManager.PresentationState.RowCount;
-        int w = SlidesManager.PresentationState.ColumnCount;
-        var aspect = w / (float)h;
-        var screenAspect = b.Width / (float)b.Height;
-
-        Console.WriteLine($"Resizing Panel. content: {w}x{h} = {aspect}, screen: {b.Width}x{b.Height} = {screenAspect}");
-
-        if (aspect >= screenAspect)
-        {
-            //if aspect is equal, we can do either branch and it doesn't matter.
-            
-            //we are wider, and will letterbox top and bottom.
-            //Set the width to full bounds width, adjust height by aspect.
-            _slideText.Width = (int)(b.Width);
-            _slideText.Height = (int)(b.Width / aspect);
-        }else if (aspect < screenAspect)
-        {
-            //we are narrow, screen is wide. will letterbox sides.
-            //set the height to full bounds height, adjust the width by aspet.
-            //_panel.Width = (int)(b.Height * aspect);
-         //   _panel.Height = b.Height;
-            
-            _slideText.Width = (int)(b.Height * aspect);
-            _slideText.Height = (int)(b.Height);
-           
-            Console.WriteLine(
-                $"Set Panel. content: {_slideText.Width}x{_slideText.Height}|{b.Height} ({_slideText.Width/(float)_slideText.Height})");
-
-        }
-        // _slideText.Font.LineHeight
+        Console.WriteLine("Resizing Panel.");
+        //todo: right now we just reload everything, but once we support video embeddes, will have to do this by running some JS or such to dynamically change the style properties and not do a reload.
+        _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds));
     }
 
     private void OnKeyDown(object? sender, KeyEventArgs e)
     {
-        if (e.Key == Configuration.Configuration.ExitKey)
+        Console.WriteLine("Display Hook OnKeyDown: "+e.Key.ToString());
+        if (Configuration.Configuration.ExitKey.Contains(e.Key))
         {
             Console.WriteLine("Exiting...");
             Close();

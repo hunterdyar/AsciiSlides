@@ -66,6 +66,9 @@ public class SlidesManager : Form
     [STAThread]
     static void Main()
     {
+        //Load settings from disc, etc.
+        Configuration.Configuration.LoadDefaultStyle();
+        //run window.
         new Application().Run(new SlidesManager());
     }
 }
