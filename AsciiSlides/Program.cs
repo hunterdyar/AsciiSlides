@@ -67,7 +67,7 @@ public class SlidesManager : Form
     static void Main()
     {
         //Load settings from disc, etc.
-        Configuration.Configuration.LoadDefaultStyle();
+        Configuration.Configuration.InitializeOnLaunch();
         //run window.
         new Application().Run(new SlidesManager());
     }

@@ -1,7 +1,5 @@
 ﻿using Eto.Drawing;
 using Color = Eto.Drawing.Color;
-using Font = Eto.Drawing.Font;
-using FontStyle = Eto.Drawing.FontStyle;
 
 namespace AsciiSlides.Configuration;
 using Keys = Eto.Forms.Keys;
@@ -22,5 +20,11 @@ public static class Configuration
 	{
 		BGColor = new Color(0.97f, 0.97f, 0.97f);
 		FontColor = Colors.Black;
+	}
+
+	public static void InitializeOnLaunch()
+	{
+		//load settings from file or create settings file.
+		LoadDefaultStyle();
 	}
 }
