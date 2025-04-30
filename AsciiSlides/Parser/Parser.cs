@@ -17,18 +17,34 @@ public static class PresentationParser
 		from s in ((Character.LetterOrDigit.Or(Character.In('@','#','.','_','-','+','!','\'','\"'))).AtLeastOnce())
 		select new string(s);
 
+	public static TextParser<Unit> WhitespaceNoBreak =>
+		from w in Character.In(' ', '\t', '\n', '\r').Many()
+		select new Unit();
+
+	public static TextParser<Unit> Linebreak =>
+		from w in Character.EqualTo('\r').Optional()
+		from x in Character.EqualTo('\n')
+		select new Unit();
+	
 	public static TextParser<(string, string)> FrontmatterItem =>
-		from f in Superpower.Parse.Sequence(Ident, Ident)
-		from w in Character.WhiteSpace.Many()
-		select f;
+		from w in WhitespaceNoBreak.Many()
+		from i1 in Ident
+		from w2 in WhitespaceNoBreak.Many()
+		from i2 in Ident
+		from w3 in WhitespaceNoBreak.Many()
+		from w4 in Linebreak
+		select (i1,i2);
 
 	public static TextParser<Frontmatter> PresFrontmatter =>
+		from w1 in Character.WhiteSpace.Many()
 		from x in FrontmatterItem.Many().OptionalOrDefault()
-		from w in Character.WhiteSpace.Many()
+		from w2 in Character.WhiteSpace.Many()
 		select new Frontmatter(x);
 
 	public static TextParser<string> SlideStart =>
-		from brea in Character.EqualTo('\n')
+		from w in WhitespaceNoBreak.Try()
+		from b in Linebreak.Optional()
+		from w2 in WhitespaceNoBreak.Many()
 		from x in Character.EqualTo('#').Repeat(3)
 		select x.ToString();
 
