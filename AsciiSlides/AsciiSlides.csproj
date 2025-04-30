@@ -45,14 +45,4 @@
     <ItemGroup>
       <None Remove="Test\testPresentation.txt" />
     </ItemGroup>
-    
-    <ItemGroup>
-      <Folder Include="Test\" />
-    </ItemGroup>
-    
-    <ItemGroup>
-      <Resource Include="testPresentation.txt">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Resource>
-    </ItemGroup>
 </Project>

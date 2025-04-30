@@ -12,33 +12,36 @@ public static class PresentationParser
 {
 	private static Presentation Instance;
 
-	private static TextParser<string> Ident =
+	public static TextParser<string> Ident =
 		from w in Character.WhiteSpace.IgnoreMany()
-		from s in (Character.LetterOrDigit.Or(Character.In(['#','@','&','_','-','^','+','~']))).Many()
-		select s.ToString();
+		from s in ((Character.LetterOrDigit.Or(Character.In('@','#','.','_','-','+','!','\'','\"'))).AtLeastOnce())
+		select new string(s);
 
-	private static TextParser<(string, string)> frontmatterItem =>
+	public static TextParser<(string, string)> FrontmatterItem =>
 		from f in Superpower.Parse.Sequence(Ident, Ident)
 		from w in Character.WhiteSpace.Many()
 		select f;
 
-	private static TextParser<Frontmatter> PresFrontmatter =>
-		from x in frontmatterItem.Many().OptionalOrDefault()
+	public static TextParser<Frontmatter> PresFrontmatter =>
+		from x in FrontmatterItem.Many().OptionalOrDefault()
 		from w in Character.WhiteSpace.Many()
 		select new Frontmatter(x);
 
-	private static TextParser<string> SlideStart =>
+	public static TextParser<string> SlideStart =>
+		from brea in Character.EqualTo('\n')
 		from x in Character.EqualTo('#').Repeat(3)
 		select x.ToString();
 
-	private static TextParser<string> FrontEnd =>
+	public static TextParser<string> FrontEnd =>
 		from x in Character.EqualTo('-').Repeat(3)
 		select x.ToString();
-	private static TextParser<string> PresContent =>
+	public static TextParser<string> PresContent =>
+		//todo: exclude ###
 		from x in Character.AnyChar.Many()
+		// from y in SlideStart.don
 		select x.ToString();
 
-	private static TextParser<Slide> Slide =>
+	public static TextParser<Slide> Slide =>
 		from start in SlideStart
 		from f in PresFrontmatter.OptionalOrDefault()
 		from fe in FrontEnd
