@@ -5,7 +5,7 @@ namespace AsciiSlides;
 
 public class PresentationState
 {
-	private Presentation _presentation = new Presentation();
+	private Presentation _presentation = new Presentation(new Frontmatter(),[]);
 	
 	public int CurrentSlide;
 	private int _currentSlide => CurrentSlide;

@@ -1,4 +1,6 @@
-﻿using Eto.Forms;
+﻿using System.Text;
+using Eto;
+using Eto.Forms;
 using Eto.Drawing;
 using Form = Eto.Forms.Form;
 using MonoMac.AppKit;
@@ -41,14 +43,21 @@ public class SlidesManager : Form
         };
         presentButton.Command = presentCommand;
         
+        var loadFilePicker = new FilePicker();
+        loadFilePicker.Filters.Add(new FileFilter("Text Documents",".txt",".text",",md"));
+        loadFilePicker.FileAction = FileAction.OpenFile;
+        loadFilePicker.Title = "Open Presentation";
+        loadFilePicker.FilePathChanged += (sender, args) =>
+        {
+            using var fileStream = new StreamReader(loadFilePicker.FilePath);
+            Presentation = Parser.PresentationParser.Parse(fileStream.ReadToEnd());
+            Console.WriteLine("Loaded "+loadFilePicker.FilePath);
+        };
         Content = new StackLayout()
         {
             Items =
             {
-                new Button()
-                {
-                    Text = "Open File",
-                },
+                loadFilePicker,
                 new StackLayout(){
                     Orientation = Orientation.Horizontal,
                     VerticalContentAlignment = VerticalAlignment.Center,

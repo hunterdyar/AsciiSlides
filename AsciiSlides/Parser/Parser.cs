@@ -1,94 +1,64 @@
 ﻿using System.Text;
+using Superpower;
+using Superpower.Display;
+using Superpower.Model;
+using Superpower.Parsers;
+using Superpower.Tokenizers;
 
 namespace AsciiSlides.Parser;
 
 
-public class Parser
+public static class PresentationParser
 {
-	public enum ParserState
+	private static Presentation Instance;
+
+	private static TextParser<string> Ident =
+		from w in Character.WhiteSpace.IgnoreMany()
+		from s in (Character.LetterOrDigit.Or(Character.In(['#','@','&','_','-','^','+','~']))).Many()
+		select s.ToString();
+
+	private static TextParser<(string, string)> frontmatterItem =>
+		from f in Superpower.Parse.Sequence(Ident, Ident)
+		from w in Character.WhiteSpace.Many()
+		select f;
+
+	private static TextParser<Frontmatter> PresFrontmatter =>
+		from x in frontmatterItem.Many().OptionalOrDefault()
+		from w in Character.WhiteSpace.Many()
+		select new Frontmatter(x);
+
+	private static TextParser<string> SlideStart =>
+		from x in Character.EqualTo('#').Repeat(3)
+		select x.ToString();
+
+	private static TextParser<string> FrontEnd =>
+		from x in Character.EqualTo('-').Repeat(3)
+		select x.ToString();
+	private static TextParser<string> PresContent =>
+		from x in Character.AnyChar.Many()
+		select x.ToString();
+
+	private static TextParser<Slide> Slide =>
+		from start in SlideStart
+		from f in PresFrontmatter.OptionalOrDefault()
+		from fe in FrontEnd
+		from c in PresContent
+		select new Slide(f, c);
+
+	private static TextParser<Slide[]> Slides =>
+		from s in Slide.Many()
+		select s;
+
+	private static TextParser<Presentation> Presentation =
+		from f in PresFrontmatter
+		from s in Slides
+		select new Presentation(f, s);
+
+	private static TextParser<Presentation> PresentationOnly => Presentation.AtEnd();
+
+	public static Presentation Parse(string input)
 	{
-		Initial,//any state
-		ASCIICustomDelim,
-		ASCII,
-		Frontmatter,
+		return PresentationOnly.Parse(input);
 	}
 	
-	private ParserState _state = ParserState.Initial;
-	private string _current = "";
-	private IEnumerator<char> source;
-	private int _column;
-	private int _line;
-	private List<Token> _tokens = new List<Token>();
-	public void Parse(string filename)
-	{
-		source = GetFileChars(filename);
-		while (source.MoveNext())
-		{
-			char peek = source.Current;
-			switch (_state)
-			{
-				case ParserState.Initial:
-					if (_current == "###")
-					{
-						Emit(TokenType.StartSlide, _current);
-						_current = "";//consume
-						_state = ParserState.Frontmatter;
-						break;
-					}
-					else
-					{
-					//	string token = ConsumeUntilWhitespace();
-					//	Emit();
-					}
-					break;
-				//if this is a control character, switch to some state depending on the character, etc.
-				case ParserState.Frontmatter:
-					if (_current == "---")
-					{
-						Emit(TokenType.EndFrontmatter, _current);
-						_current = "";
-					}
-					break;
-				case ParserState.ASCII:
-					//if this is not another character, break out.
-					if (peek == '\n')
-					{
-						
-					}
-					break;
-				default:
-					break;
-			}
-
-			_current += peek;
-		}
-	}
-
-	private void Emit(TokenType tokenType, string value)
-	{
-		_tokens.Add(new Token(tokenType,value, _line, _column));
-	}
-	public IEnumerator<char> GetFileChars(string filePath)
-	{
-		_line = 0;
-		_column = 0;
-		if (!File.Exists(filePath))
-			throw new FileNotFoundException("The specified file was not found.", filePath);
-
-		using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-		using (var reader = new StreamReader(fileStream, Encoding.UTF8))
-		{
-			string line;
-			_column = 0;
-			while ((line = reader.ReadLine() ?? string.Empty) != string.Empty)
-			{
-				foreach (var c in line)
-				{
-					yield return c;
-					_column++;
-				}
-				_line++;
-			}
-		}
-	}
 }

@@ -25,6 +25,7 @@
       <PackageReference Include="Eto.Forms" Version="2.9.0" />
       <PackageReference Include="Eto.Platform.Mac64" Version="2.9.0" />
       <PackageReference Include="Eto.Platform.Windows" Version="2.9.0" />
+      <PackageReference Include="Superpower" Version="3.0.0" />
     </ItemGroup>
     
     <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
@@ -39,5 +40,19 @@
         <Reference Include="System.Data"/>
         <Reference Include="System.Xml"/>
         <Reference Include="WindowsBase"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <None Remove="Test\testPresentation.txt" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Test\" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Resource Include="testPresentation.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
     </ItemGroup>
 </Project>
