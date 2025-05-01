@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsciiSlides", "AsciiSlides\AsciiSlides.csproj", "{CE5C0B0D-43C2-4EEA-8F81-A9E8A32D1ABF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "TestProject1\TestProject1.csproj", "{800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASTests", "ASTests\ASTests.csproj", "{800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

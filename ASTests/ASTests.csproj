@@ -4,6 +4,8 @@
         <TargetFramework>net9.0-windows</TargetFramework>
 
         <IsPackable>false</IsPackable>
+
+        <RootNamespace>TestProject1</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

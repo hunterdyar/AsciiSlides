@@ -10,5 +10,6 @@
     &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.Tests.BadIdentifier&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.Tests.FindResourcefile_Test&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.TokenizerTest.TokenizeSimple&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.Tests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
