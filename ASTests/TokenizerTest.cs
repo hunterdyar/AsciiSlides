@@ -72,10 +72,8 @@ public class TokenizerTest
 		Assert.IsTrue(t.Matches(
 			TokenType.Ident,
 			TokenType.Ident,
-			TokenType.Linebreak,
 			TokenType.Ident,
-			TokenType.Ident,
-			TokenType.Linebreak
+			TokenType.Ident
 		));
 	}
 
@@ -94,14 +92,69 @@ public class TokenizerTest
 		Assert.IsTrue(t.Matches(
 			TokenType.Ident,
 			TokenType.Ident,
-			TokenType.Linebreak,
 			TokenType.Ident,
 			TokenType.Ident,
-			TokenType.Linebreak,
 			TokenType.StartSlide,
 			TokenType.Ident,
 			TokenType.Ident,
-			TokenType.Linebreak,
+			TokenType.EndFrontmatter,
+			TokenType.SlideBody
+		));
+	}
+
+	[Test]
+	public void FrontmatterStrings()
+	{
+		var s = """
+		        key: "this is a string with an \" escape"
+		        another_key: "this is a string"
+		        ###
+		        key: "this string
+		        is on multiple
+		        lines"
+		        ---
+		        body
+		        """;
+		var t = new Tokenizer(s);
+		Assert.IsTrue(t.Matches(
+			TokenType.Ident,
+			TokenType.Ident,
+			TokenType.Ident,
+			TokenType.Ident,
+			TokenType.StartSlide,
+			TokenType.Ident,
+			TokenType.Ident,
+			TokenType.EndFrontmatter,
+			TokenType.SlideBody
+		));
+	}
+
+	[Test]
+	public void CustomDelimsInFrontmatter()
+	{
+		var s = """
+		        key: { some value goes here! }
+		        another_key: [ we dodge ''s and "'s ]
+		        ###
+		        key: {banana[ this string
+		        is on multiple
+		        lines
+		        }banana]
+		        woo: {{< yes }}>
+		        ---
+		        body
+		        """;
+		var t = new Tokenizer(s);
+		Assert.IsTrue(t.Matches(
+			TokenType.Ident,
+			TokenType.Ident,
+			TokenType.Ident,
+			TokenType.Ident,
+			TokenType.StartSlide,
+			TokenType.Ident,
+			TokenType.Ident,
+			TokenType.Ident,
+			TokenType.Ident,
 			TokenType.EndFrontmatter,
 			TokenType.SlideBody
 		));

@@ -112,8 +112,8 @@ public class Tokenizer
 			ConsumeWhitespace(false);
 			Consume(':');
 			ConsumeWhitespace(false);
-			TokenizeIdentifier();
-			TokenizeLinebreak();
+			TokenizeIdentifierValueDelimited();
+			ConsumeWhitespace(true);
 		}
 		ConsumeWhitespace(true);
 	}
@@ -153,6 +153,10 @@ public class Tokenizer
 
 	private void ConsumeWhitespace(bool consumeLineBreaks = false)
 	{
+		if (_position >= _source.Length)
+		{
+			return;
+		}
 		if (consumeLineBreaks)
 		{
 			while (char.IsWhiteSpace(_source, _position))
@@ -169,19 +173,31 @@ public class Tokenizer
 		}
 	}
 
-	public void string ConsumeTokenWithOptionalCustomDelimiter()
+	public void TokenizeIdentifierValueDelimited()
 	{
 		if (current == '"')
 		{
-			//consume normal string.... emit that.
-		}
+			string s = "";
+			Next();
+			bool escaping = false;
+			while (current != '"' || escaping)
+			{
+				escaping = current == '\\';
+				s+= current;
+				Next();
+			}
+			Next();//eat the closing "
+			_tokens.Add(new Token(TokenType.Ident, s));
+			return;
+		}//else
+		
 		//how to decide what the custom delim is? Non-letterNumber is first guess.
 		//we would tokenize the delim!
 		string delimiter = "\n";
 		//consume up to closing delimiter.
 		if (IsOpeningSymbol(current))
 		{
-			//instead of going up to the newline, we will go to the delim.
+			//instead of going up to the newline we will go to the delim.
 			delimiter = current.ToString();
 			Next();
 			while (!char.IsWhiteSpace(current))
@@ -189,17 +205,33 @@ public class Tokenizer
 				delimiter += current;
 				Next();
 			}
-			_tokens.Add(new Token(TokenType.Delimiter, delimiter));
+		}
+		else
+		{
+			TokenizeIdentifier();
+			return;
 		}
 
-		
-		int closeDelimiter = _source.Substring(_position).IndexOf(delimiterStarter, StringComparison.Ordinal);
-		if (closeDelimiter < 0)
+		delimiter = ReverseOpeningSymbols(delimiter);
+		int closePos = _source.Substring(_position).IndexOf(delimiter, StringComparison.Ordinal);
+		if (closePos >= 0)
 		{
-			//"asdf" will fail, " adf" will succeed.
+			_tokens.Add(new Token(TokenType.Ident,_source.Substring(_position, closePos)));
+			_position += closePos+delimiter.Length;
+			current = _source[_position];//can't do Next()
+			
+		}
+		else
+		{
+			//"asdf" will fail, "asdf" will succeed.
 			throw new Exception("Unable to find close for opening delimiter: " + delimiter);
 		}
 		
+	}
+
+	private string ReverseOpeningSymbols(string delimiter)
+	{
+		return delimiter.Replace('[',']').Replace('{','}').Replace('(',')').Replace('<','>');
 	}
 
 	private bool IsOpeningSymbol(char c)
