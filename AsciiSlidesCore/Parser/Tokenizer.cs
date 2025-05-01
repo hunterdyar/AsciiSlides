@@ -162,6 +162,10 @@ public class Tokenizer
 			while (char.IsWhiteSpace(_source, _position))
 			{
 				Next();
+				if (_position >= _source.Length)
+				{
+					break;
+				}
 			}
 		}
 		else
@@ -219,7 +223,6 @@ public class Tokenizer
 			_tokens.Add(new Token(TokenType.Ident,_source.Substring(_position, closePos)));
 			_position += closePos+delimiter.Length;
 			current = _source[_position];//can't do Next()
-			
 		}
 		else
 		{

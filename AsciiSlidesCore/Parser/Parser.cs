@@ -58,7 +58,6 @@ public static class PresentationParser
 			{
 				throw new Exception("Expected ident in frontmatter.");
 			}
-			var linebreak = tokens.Dequeue();
 			frontmatter.AddKeyValuePair(key.Source,value.Source);
 		}
 		return frontmatter;

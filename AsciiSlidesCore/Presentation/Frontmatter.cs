@@ -20,4 +20,9 @@ public class Frontmatter
 	{
 		_frontmatter.Add(key.ToLower(), value);
 	}
+	
+	public bool TryGetKey(string key, out string? value)
+	{
+		return _frontmatter.TryGetValue(key, out value);
+	}
 }

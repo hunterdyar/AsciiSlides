@@ -159,6 +159,29 @@ public class TokenizerTest
 			TokenType.SlideBody
 		));
 	}
+
+	[Test]
+	public void SpeakerNotesTest()
+	{
+		var s = """
+		        ###
+		        notes "hello"
+		        ---
+		        body
+		        ###
+		        notes {{ now
+		        i am speaking
+		        }}
+		        ---
+		        body
+		        """;
+		var p = PresentationParser.Parse(s);
+		Assert.IsTrue(p.SlideCount == 2);
+		Assert.IsTrue(p.Slides[0].HasSpeakerNotes);
+		Assert.IsTrue(p.Slides[0].SpeakerNotes == "hello");
+		Assert.IsTrue(p.Slides[1].HasSpeakerNotes);
+		Assert.IsTrue(p.Slides[1].SpeakerNotes == " now\r\ni am speaking\r\n");
+	}
 }
 
 public static class TokenizerTestExtensions
