@@ -7,7 +7,7 @@ public enum TokenType
 	ASCII,
 	StartSlide,
 	EndFrontmatter,
-	CustomDelim,
+	Delimiter,
 	Ident,
 	Linebreak,
 	SlideBody
@@ -110,6 +110,8 @@ public class Tokenizer
 			}
 			TokenizeIdentifier();
 			ConsumeWhitespace(false);
+			Consume(':');
+			ConsumeWhitespace(false);
 			TokenizeIdentifier();
 			TokenizeLinebreak();
 		}
@@ -167,6 +169,45 @@ public class Tokenizer
 		}
 	}
 
+	public void string ConsumeTokenWithOptionalCustomDelimiter()
+	{
+		if (current == '"')
+		{
+			//consume normal string.... emit that.
+		}
+		//how to decide what the custom delim is? Non-letterNumber is first guess.
+		//we would tokenize the delim!
+		string delimiter = "\n";
+		//consume up to closing delimiter.
+		if (IsOpeningSymbol(current))
+		{
+			//instead of going up to the newline, we will go to the delim.
+			delimiter = current.ToString();
+			Next();
+			while (!char.IsWhiteSpace(current))
+			{
+				delimiter += current;
+				Next();
+			}
+			_tokens.Add(new Token(TokenType.Delimiter, delimiter));
+		}
+
+		
+		int closeDelimiter = _source.Substring(_position).IndexOf(delimiterStarter, StringComparison.Ordinal);
+		if (closeDelimiter < 0)
+		{
+			//"asdf" will fail, " adf" will succeed.
+			throw new Exception("Unable to find close for opening delimiter: " + delimiter);
+		}
+		
+	}
+
+	private bool IsOpeningSymbol(char c)
+	{
+		var openings = new char[]{'[', '{', '(', '<'};
+		return openings.Contains(c);
+	}
+
 	private void TokenizeStartSlide()
 	{
 		ConsumeWhitespace();
@@ -217,7 +258,7 @@ public class Tokenizer
 			TokenizeIdentifier();
 			if (_tokens[^1].Type == TokenType.Ident)
 			{
-				_tokens[^1].Type = TokenType.CustomDelim;
+				_tokens[^1].Type = TokenType.Delimiter;
 			}
 			else
 			{

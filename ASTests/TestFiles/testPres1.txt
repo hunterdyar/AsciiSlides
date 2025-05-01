@@ -1,5 +1,5 @@
-﻿background #000
-foreground #FFF
+﻿background: #000
+foreground: #FFF
 
 ###
 ---
@@ -20,7 +20,7 @@ _____________   ____   ______ ____   _____/  |______ _/  |_|__| ____   ____
 this is a slide
 
 ###
-type youtube
-backgrond tomato
+type: youtube
+background: tomato
 ---
 this concludes my TED talk.
