@@ -1,18 +1,12 @@
-﻿front matter
-background #000
+﻿background #000
 foreground #FFF
 
 ###
 ---
 
-this is a slide!
+Talking bout my preeesentation
 
 ###
----
-this is a slide
-###
-type youtube
-backgrond tomato
 ---
                                            __          __  .__               
 _____________   ____   ______ ____   _____/  |______ _/  |_|__| ____   ____  
@@ -21,3 +15,12 @@ _____________   ____   ______ ____   _____/  |______ _/  |_|__| ____   ____
 |   __/|__|    \___  >____  >\___  >___|  /__| (____  /__| |__|\____/|___|  /
 |__|               \/     \/     \/     \/          \/                    \/ 
 
+###
+---
+this is a slide
+
+###
+type youtube
+backgrond tomato
+---
+this concludes my TED talk.

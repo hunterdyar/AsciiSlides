@@ -15,4 +15,9 @@ public class Frontmatter
 			_frontmatter.Add(valueTuple.Item1.ToLower(), valueTuple.Item2);
 		}
 	}
+
+	public void AddKeyValuePair(string key, string value)
+	{
+		_frontmatter.Add(key.ToLower(), value);
+	}
 }

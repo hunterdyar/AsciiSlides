@@ -13,7 +13,7 @@ public class TokenizerTest
 	}
 
 	[Test]
-	public void TokenizeSimple()
+	public void TokenizeNoCloser()
 	{
 		var s = """
 		        ###
@@ -25,6 +25,86 @@ public class TokenizerTest
 			TokenType.EndFrontmatter, 
 			TokenType.SlideBody
 			));
+	}
+
+	[Test]
+	public void TokenizeNoBreak()
+	{
+		var s = """
+		        ###---
+		        hello
+		        ###---
+		        """;
+		var t = new Tokenizer(s);
+		Assert.IsTrue(t.Matches(TokenType.StartSlide,
+			TokenType.EndFrontmatter,
+			TokenType.SlideBody,
+			TokenType.StartSlide,
+			TokenType.EndFrontmatter
+		));
+	}
+	[Test]
+	public void TokenizeSimple()
+	{
+		var s = """
+		        ###---
+		        hello
+		        ###---
+		        """;
+		var t = new Tokenizer(s);
+		Assert.IsTrue(t.Matches(
+			TokenType.StartSlide,
+			TokenType.EndFrontmatter,
+			TokenType.SlideBody,
+			TokenType.StartSlide,
+			TokenType.EndFrontmatter
+		));
+	}
+
+	[Test]
+	public void PresentationFrontmatter()
+	{
+		var s = """
+		        key value
+		        another_key #000
+		        """;
+		var t = new Tokenizer(s);
+		Assert.IsTrue(t.Matches(
+			TokenType.Ident,
+			TokenType.Ident,
+			TokenType.Linebreak,
+			TokenType.Ident,
+			TokenType.Ident,
+			TokenType.Linebreak
+		));
+	}
+
+	[Test]
+	public void PresentationFrontmatterAndSlideFrontmatter()
+	{
+		var s = """
+		        key value
+		        another_key #000
+		        ###
+		        key value
+		        ---
+		        body
+		        """;
+		var t = new Tokenizer(s);
+		Assert.IsTrue(t.Matches(
+			TokenType.Ident,
+			TokenType.Ident,
+			TokenType.Linebreak,
+			TokenType.Ident,
+			TokenType.Ident,
+			TokenType.Linebreak,
+			TokenType.StartSlide,
+			TokenType.Ident,
+			TokenType.Ident,
+			TokenType.Linebreak,
+			TokenType.EndFrontmatter,
+			TokenType.SlideBody
+		));
 	}
 }
 

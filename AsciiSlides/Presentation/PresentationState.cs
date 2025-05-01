@@ -13,7 +13,12 @@ public class PresentationState
 	public int ColumnCount = 40;
 	public static Action OnCurrentSlideChanged;
 	private StringBuilder _builder = new StringBuilder();
-	
+
+	public PresentationState(Presentation presentation)
+	{
+		_presentation = presentation;
+		CurrentSlide = 0;
+	}
 	public void NavigateRelative(int delta)
 	{
 		if (delta == 0)
@@ -32,18 +37,9 @@ public class PresentationState
 		_builder.AppendLine("<body>");
 		_builder.AppendLine("<div class=\"container\">");
 		_builder.AppendLine("<pre class=\"slide\">");
-
-		_builder.AppendLine("""
-		                    ###### #    #   ##   #    # #####  #      ######
-		                    #       #  #   #  #  ##  ## #    # #      #      
-		                    #####    ##   #    # # ## # #    # #      ##### 
-		                    #        ##   ###### #    # #####  #      #      
-		                    #       #  #  #    # #    # #      #      #      
-		                    ###### #    # #    # #    # #      ###### ######
-		                    """);
+		_builder.AppendLine(_presentation.Slides[CurrentSlide].rawContent);
 		_builder.AppendLine("</pre>");
 		_builder.AppendLine("</div>");
-
 		_builder.AppendLine("</body>");
 		_builder.AppendLine("</html>");
 		

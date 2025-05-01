@@ -17,7 +17,7 @@ public class SlidesManager : Form
 {
     private Display? _display = null;
     public static Presentation Presentation = new Presentation();
-    public static PresentationState PresentationState = new PresentationState();
+    public static PresentationState PresentationState = new PresentationState(Presentation);
     public SlidesManager()
     {
         Title = "ASCIISlides Manager";
@@ -51,6 +51,7 @@ public class SlidesManager : Form
         {
             using var fileStream = new StreamReader(loadFilePicker.FilePath);
             Presentation = Parser.PresentationParser.Parse(fileStream.ReadToEnd());
+            PresentationState = new PresentationState(Presentation);
             Console.WriteLine("Loaded "+loadFilePicker.FilePath);
         };
         Content = new StackLayout()

@@ -1,5 +1,6 @@
-﻿using Eto.Mac.Forms.Cells;
-using Superpower.Parsers;
+﻿using System.Text.RegularExpressions;
+using Superpower;
+using Superpower.Model;
 
 namespace AsciiSlides.Parser;
 
@@ -10,9 +11,10 @@ public enum TokenType
 	EndFrontmatter,
 	CustomDelim,
 	Ident,
+	Linebreak,
 	SlideBody
 }
-public class Token
+public class Token 
 {
 	public TokenType Type { get; set; }
 	public string Source { get; set; }
@@ -24,7 +26,8 @@ public class Token
 
 	public override string ToString()
 	{
-		return Type.ToString();
+		var s = Regex.Escape(Source);
+		return Type.ToString() + "("+s+")";
 	}
 }
 public class Tokenizer
@@ -37,6 +40,8 @@ public class Tokenizer
 	private List<Token> _tokens = new List<Token>();
 	private int _position = 0;
 	private char current = '\0';
+	private char PosCurrent => _source[_position];
+	
 	private string _source;
 	private TState _state = TState.Initial;
 	public Tokenizer(string source)
@@ -58,6 +63,8 @@ public class Tokenizer
 			return;
 		}
 	}
+
+
 
 	private void TokenizeSlide()
 	{
@@ -82,12 +89,14 @@ public class Tokenizer
 			//the slide is from here to the end of the file.
 			_tokens.Add(new Token(TokenType.SlideBody, _source.Substring(_position)));
 			_position = _source.Length;
+			current = '\0';
 		}
 		else
 		{
 			//the body is from here to the index, then we sometimes consume the delim? if it's custom?
-			_tokens.Add(new Token(TokenType.SlideBody, _source.Substring(_position, l - end)));
+			_tokens.Add(new Token(TokenType.SlideBody, _source.Substring(_position, end)));
 			_position += end;
+			current = _source[_position];
 		}
 	}
 
@@ -95,7 +104,7 @@ public class Tokenizer
 	{
 		while (_position < _source.Length)
 		{
-			ConsumeWhitespace(true);
+			ConsumeWhitespace(false);
 			var next = _source[_position];
 			if (!char.IsLetter(next))
 			{
@@ -104,14 +113,17 @@ public class Tokenizer
 			TokenizeIdentifier();
 			ConsumeWhitespace(false);
 			TokenizeIdentifier();
+			TokenizeLinebreak();
 		}
 		ConsumeWhitespace(true);
 	}
 
+	private static readonly char[] IdentifierPermitted = ['_', '#', '@', '$', '%', '&', '+','%','.','^','(',')','{','}','[',']'];
+
 	private void TokenizeIdentifier()
 	{
 		var p = _position;
-		while (char.IsAsciiLetterOrDigit(current))
+		while (char.IsAsciiLetterOrDigit(current) || IdentifierPermitted.Contains(current))
 		{
 			Next();
 		}
@@ -159,24 +171,29 @@ public class Tokenizer
 
 	private void TokenizeStartSlide()
 	{
-		var p = _position;
 		ConsumeWhitespace();
 		Consume('#');
 		Consume('#');
 		Consume('#');
-		_tokens.Add(new Token(TokenType.StartSlide, _source.Substring(p,3)));
+		_tokens.Add(new Token(TokenType.StartSlide, _source.Substring(_position-3,3)));
 		TokenizeCustomDelimOptional();
+		
+		//###--- is allowed. it's a shorthand.
+		if (current != '-')
+		{
+			ConsumeWhitespace(true);
+		}
 	}
 
 	private void TokenizeEndFrontmatter()
 	{
 		ConsumeWhitespace(false);
-		var p = _position;
 		Consume('-');
 		Consume('-');
 		Consume('-');
-		_tokens.Add(new Token(TokenType.EndFrontmatter, _source.Substring(p, 3)));
+		_tokens.Add(new Token(TokenType.EndFrontmatter, _source.Substring(_position-3, 3)));
 		TokenizeCustomDelimOptional();
+		ConsumeWhitespace(false);
 		ConsumeLinebreak();
 	}
 
@@ -187,7 +204,12 @@ public class Tokenizer
 		{
 			Next();
 		}
-		Consume('\n');
+		
+		//line break and end of file are the same. 
+		if (current != '\0')
+		{
+			Consume('\n');
+		}
 	}
 
 	void TokenizeCustomDelimOptional()
@@ -195,11 +217,31 @@ public class Tokenizer
 		if (current != '-' && current != '#' && !char.IsWhiteSpace(current) && current != '\0')
 		{
 			TokenizeIdentifier();
-			_tokens[^1].Type = TokenType.CustomDelim;
+			if (_tokens[^1].Type == TokenType.Ident)
+			{
+				_tokens[^1].Type = TokenType.CustomDelim;
+			}
+			else
+			{
+				//huh
+			}
 		}
 	}
 
+	void TokenizeLinebreak()
+	{
+		ConsumeWhitespace(false);
+		if (current == '\r')
+		{
+			Next();
+		}
 
+		if (current == '\n')
+		{
+			_tokens.Add(new Token(TokenType.Linebreak, _source.Substring(_position,1)));
+			Next();
+		}
+	}
 	
 	public void Consume(char c)
 	{

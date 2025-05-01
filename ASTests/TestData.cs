@@ -27,4 +27,28 @@ public static class TestData
 	                                 
 	                                 
 	                                 """;
+
+	public static string TestPres2 = """
+	                                 background #000
+	                                 foreground #FFF
+
+	                                 ###
+	                                 ---
+	                                                                            __          __  .__               
+	                                 _____________   ____   ______ ____   _____/  |______ _/  |_|__| ____   ____  
+	                                 \____ \_  __ \_/ __ \ /  ___// __ \ /    \   __\__  \\   __\  |/  _ \ /    \ 
+	                                 |  |_> >  | \/\  ___/ \___ \\  ___/|   |  \  |  / __ \|  | |  (  <_> )   |  \
+	                                 |   __/|__|    \___  >____  >\___  >___|  /__| (____  /__| |__|\____/|___|  /
+	                                 |__|               \/     \/     \/     \/          \/                    \/ 
+
+	                                 ###
+	                                 ---
+	                                 this is a slide
+
+	                                 ###
+	                                 type youtube
+	                                 backgrond tomato
+	                                 ---
+	                                 this concludes my TED talk.
+	                                 """;
 }
