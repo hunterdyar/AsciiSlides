@@ -1,8 +1,6 @@
 ﻿using System.Text.RegularExpressions;
-using Superpower;
-using Superpower.Model;
 
-namespace AsciiSlides.Parser;
+namespace AsciiSlidesCore.Parser;
 
 public enum TokenType
 {

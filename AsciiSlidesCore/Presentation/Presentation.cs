@@ -1,4 +1,4 @@
-﻿namespace AsciiSlides;
+﻿namespace AsciiSlidesCore;
 
 //a list of slides, etc.
 //serializable and immutable.

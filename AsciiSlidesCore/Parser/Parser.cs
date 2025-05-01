@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using Superpower;
-
-namespace AsciiSlides.Parser;
+namespace AsciiSlidesCore.Parser;
 
 public static class PresentationParser
 { 

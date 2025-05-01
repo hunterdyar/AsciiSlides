@@ -1,4 +1,4 @@
-﻿namespace AsciiSlides;
+﻿namespace AsciiSlidesCore;
 
 public class Frontmatter
 {

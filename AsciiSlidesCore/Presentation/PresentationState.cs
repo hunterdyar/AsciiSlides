@@ -1,14 +1,15 @@
 ﻿using System.Text;
 using Rectangle = Eto.Drawing.Rectangle;
 
-namespace AsciiSlides;
+namespace AsciiSlidesCore;
 
 public class PresentationState
 {
+	public static Action<PresentationState> OnNewSlide;
 	private Presentation _presentation = new Presentation(new Frontmatter(),[]);
 	
-	public int CurrentSlide;
-	private int _currentSlide => CurrentSlide;
+	public int CurrentSlide => _currentSlide;
+	private int _currentSlide = 0;
 	public int RowCount = 30;
 	public int ColumnCount = 40;
 	public static Action OnCurrentSlideChanged;
@@ -17,7 +18,7 @@ public class PresentationState
 	public PresentationState(Presentation presentation)
 	{
 		_presentation = presentation;
-		CurrentSlide = 0;
+		_currentSlide = 0;
 	}
 	public void NavigateRelative(int delta)
 	{
@@ -25,6 +26,15 @@ public class PresentationState
 		{
 			return;
 		}
+		_currentSlide += delta;
+		if (_currentSlide >= _presentation.SlideCount)
+		{
+			_currentSlide = (_presentation.SlideCount - _currentSlide);
+		}else if (_currentSlide < 0)
+		{
+			_currentSlide = _presentation.SlideCount + _currentSlide;
+		}
+		OnCurrentSlideChanged?.Invoke();
 	}
 
 	public string GetCurrentAsHTML(Rectangle bounds)
