@@ -1,7 +1,6 @@
 using System.IO;
-using AsciiSlides.Parser;
+using AsciiSlidesCore.Parser;
 using NUnit.Framework;
-using Superpower;
 
 namespace TestProject1
 {

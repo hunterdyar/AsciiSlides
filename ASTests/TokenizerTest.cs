@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using AsciiSlides.Parser;
+using AsciiSlidesCore.Parser;
 using NUnit.Framework;
 
 namespace TestProject1;
