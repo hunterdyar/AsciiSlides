@@ -1,8 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsciiSlides", "AsciiSlides\AsciiSlides.csproj", "{CE5C0B0D-43C2-4EEA-8F81-A9E8A32D1ABF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsciiSlidesWin", "AsciiSlidesWin\AsciiSlidesWin.csproj", "{CE5C0B0D-43C2-4EEA-8F81-A9E8A32D1ABF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASTests", "ASTests\ASTests.csproj", "{800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsciiSlidesMac", "AsciiSlidesMac\AsciiSlidesMac.csproj", "{34564949-3383-44B9-B0F3-C010754D3352}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsciiSlidesCore", "AsciiSlidesCore\AsciiSlidesCore.csproj", "{5C3354BD-4466-4CFD-875B-5C90A5394415}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +19,15 @@ Global
 		{CE5C0B0D-43C2-4EEA-8F81-A9E8A32D1ABF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE5C0B0D-43C2-4EEA-8F81-A9E8A32D1ABF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34564949-3383-44B9-B0F3-C010754D3352}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34564949-3383-44B9-B0F3-C010754D3352}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34564949-3383-44B9-B0F3-C010754D3352}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34564949-3383-44B9-B0F3-C010754D3352}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C3354BD-4466-4CFD-875B-5C90A5394415}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C3354BD-4466-4CFD-875B-5C90A5394415}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C3354BD-4466-4CFD-875B-5C90A5394415}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C3354BD-4466-4CFD-875B-5C90A5394415}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

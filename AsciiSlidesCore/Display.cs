@@ -1,6 +1,7 @@
-using System.Runtime.InteropServices;
 using Eto.Drawing;
 using Eto.Forms;
+
+
 using Form = Eto.Forms.Form;
 using KeyEventArgs = Eto.Forms.KeyEventArgs;
 using Keys = Eto.Forms.Keys;
@@ -11,7 +12,8 @@ using Rectangle = Eto.Drawing.Rectangle;
 #if UNIX
 using MonoMac.AppKit;
 #endif
-namespace AsciiSlides;
+
+namespace AsciiSlidesCore;
 
 /// <summary>
 /// Display is a window that renders the current Presentation with a given PresentationState.
@@ -57,6 +59,13 @@ public class Display : Form
         {
             ResizePanel();
         };
+        
+        PresentationState.OnCurrentSlideChanged += OnCurrentSlideChanged;
+    }
+
+    private void OnCurrentSlideChanged()
+    {
+        _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds)); 
     }
 
     private void RegisterShortcuts()

@@ -1,7 +1,7 @@
 ﻿using Eto.Drawing;
 using Color = Eto.Drawing.Color;
 
-namespace AsciiSlides.Configuration;
+namespace AsciiSlidesCore.Configuration;
 using Keys = Eto.Forms.Keys;
 public static class Configuration
 {
