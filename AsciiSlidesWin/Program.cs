@@ -1,6 +1,7 @@
 ﻿using AsciiSlidesCore;
 using AsciiSlidesCore.Configuration;
 using Eto.Forms;
+using Application = Eto.Forms.Application;
 
 public class AsciiSlidesWindowsProgram {
     [STAThread]
@@ -9,6 +10,6 @@ public class AsciiSlidesWindowsProgram {
         //Load settings from disc, etc.
         Configuration.InitializeOnLaunch();
         //run window.
-        new Eto.Forms.Application().Run(new SlidesManager());
+        new Application().Run(new SlidesManager());
     }
 }

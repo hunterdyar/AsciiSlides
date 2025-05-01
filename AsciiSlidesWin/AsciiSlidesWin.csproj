@@ -1,21 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <OutputType>WinExe</OutputType>
         <TargetFramework>net9.0-windows</TargetFramework>
-<!--        net9.0-macos;net6.0-windows-->
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RuntimeIdentifiers>win-x64;osx-x64;osx-arm64</RuntimeIdentifiers>
-        <AppDesignerFolder>Properties</AppDesignerFolder>
-        <UseWindowsForms>true</UseWindowsForms>
-        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <RootNamespace>AsciiSlides</RootNamespace>
     </PropertyGroup>
     
 
     <ItemGroup>
       <PackageReference Include="Eto.Forms" Version="2.9.0" />
-        <PackageReference Include="Superpower" Version="3.0.0" />
+      <PackageReference Include="Eto.Platform.Wpf" Version="2.9.0" />
     </ItemGroup>
     
 

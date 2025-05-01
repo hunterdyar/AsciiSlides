@@ -13,7 +13,7 @@ public class MonitorSelect : StackLayout
 {
 	private RadioButtonList _rb;
 	private List<string> _monitors = new List<string>();
-	private int defaultScreen;
+	private int _defaultScreen;
 	public MonitorSelect()
 	{
 		_rb = new RadioButtonList()
@@ -33,7 +33,7 @@ public class MonitorSelect : StackLayout
 			var screen = Screen.Screens.ToArray()[i];
 			if (screen == Screen.PrimaryScreen)
 			{
-				defaultScreen = i;
+				_defaultScreen = i;
 			}
 			_monitors.Add(i+" "+screen.ToString());
 		}
