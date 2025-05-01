@@ -1,5 +1,5 @@
 ﻿using Eto.Forms;
-using Button = System.Windows.Forms.Button;
+using Button = Eto.Forms.Button;
 using Control = Eto.Forms.Control;
 using Form = Eto.Forms.Form;
 using Label = Eto.Forms.Label;
@@ -7,7 +7,7 @@ using Orientation = Eto.Forms.Orientation;
 using RadioButton = Eto.Forms.RadioButton;
 using Screen = Eto.Forms.Screen;
 
-namespace AsciiSlides.Components;
+namespace AsciiSlidesCore.Components;
 
 public class MonitorSelect : StackLayout
 {

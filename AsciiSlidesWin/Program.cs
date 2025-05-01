@@ -9,6 +9,6 @@ public class AsciiSlidesWindowsProgram {
         //Load settings from disc, etc.
         Configuration.InitializeOnLaunch();
         //run window.
-        new Application().Run(new SlidesManager());
+        new Eto.Forms.Application().Run(new SlidesManager());
     }
 }
