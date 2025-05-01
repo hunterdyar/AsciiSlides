@@ -7,7 +7,8 @@ foreground #FFF
 
 this is a slide!
 
-###---
+###
+---
 this is a slide
 ###
 type youtube
