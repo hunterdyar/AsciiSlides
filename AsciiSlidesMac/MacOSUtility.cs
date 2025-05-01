@@ -1,0 +1,20 @@
+﻿using AsciiSlidesCore;
+using Eto.Forms;
+using MonoMac.AppKit;
+using MonoMac.AppKit;
+
+namespace AsciiSlidesMac;
+
+public class MacOSUtility : OSUtility
+{
+	public override bool ToggleFullscreen(Form form, bool fullscreen)
+	{
+		var nativeView = form.ToNative();
+		nativeView.CollectionBehavior = NSWindowCollectionBehavior.Default |
+		                                NSWindowCollectionBehavior.FullScreenPrimary |
+		                                NSWindowCollectionBehavior.CanJoinAllSpaces |
+		                                NSWindowCollectionBehavior.FullScreenAllowsTiling;
+		nativeView.ToggleFullScreen(nativeView);
+		return fullscreen;
+	}
+}

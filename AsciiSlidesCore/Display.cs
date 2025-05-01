@@ -10,7 +10,6 @@ using Panel = Eto.Forms.Panel;
 using Rectangle = Eto.Drawing.Rectangle;
 
 #if UNIX
-using MonoMac.AppKit;
 #endif
 
 namespace AsciiSlidesCore;
@@ -163,7 +162,9 @@ public class Display : Form
     }
     private void SetFullscreen(bool fullscreen = true)
     {
-        #if UNIX
+        OSUtility.Instance.ToggleFullscreen(this, fullscreen);
+        
+#if UNIX
             //todo: Differentiate between mac and linux with different constant?
             var nativeView = this.ToNative();
             nativeView.CollectionBehavior = NSWindowCollectionBehavior.Default |
@@ -172,7 +173,7 @@ public class Display : Form
                                             NSWindowCollectionBehavior.FullScreenAllowsTiling;
             nativeView.ToggleFullScreen(nativeView);
             _isFullscreen = fullscreen;
-        #elif WINDOWS
+#elif WINDOWS
         var view = WinFormsHelpers.ToNative(this);
         if (view != null)
         {
@@ -191,6 +192,6 @@ public class Display : Form
             }
         }
 
-        #endif
+#endif
     }
 }

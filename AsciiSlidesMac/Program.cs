@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using AsciiSlidesCore;
 using AsciiSlidesCore.Configuration;
+using AsciiSlidesMac;
 using Eto;
 using Eto.Forms;
 using Eto.Drawing;
@@ -18,6 +19,7 @@ public class AsciiSlidesMacProgram
     {
         //Load settings from disc, etc.
         Configuration.InitializeOnLaunch();
+        OSUtility.Instance = new MacOSUtility();
         //run window.
         new Application().Run(new SlidesManager());
     }
