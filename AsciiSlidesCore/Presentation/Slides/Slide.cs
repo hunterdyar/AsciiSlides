@@ -98,7 +98,6 @@ public class Slide
 		                 .slide{
 		             }
 		             """);
-		Console.WriteLine($"Setting width height to: {w}x{h}, margins left/top: {marginLeft}/{marginTop}");
 		sb.AppendLine("</style>");
 	}
 

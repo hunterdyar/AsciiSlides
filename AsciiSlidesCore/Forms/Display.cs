@@ -1,13 +1,9 @@
-using System.Runtime.CompilerServices;
 using Eto.Drawing;
 using Eto.Forms;
 
-
 using Form = Eto.Forms.Form;
 using KeyEventArgs = Eto.Forms.KeyEventArgs;
-using Keys = Eto.Forms.Keys;
-using Label = Eto.Forms.Label;
-using Panel = Eto.Forms.Panel;
+
 using Rectangle = Eto.Drawing.Rectangle;
 
 #if UNIX
