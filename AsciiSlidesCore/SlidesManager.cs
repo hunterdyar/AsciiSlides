@@ -21,7 +21,7 @@ public class SlidesManager : Form
     public SlidesManager()
     {
         Title = "ASCIISlides Manager";
-        ClientSize = new Size(Configuration.ManagerWindowWidth, Configuration.ManagerWindowWidth);
+        ClientSize = new Size(Configuration.ManagerWindowWidth, Configuration.ManagerWindowHeight);
 
         var presentButton = new Button { Text = "Present" };
         var presentCommand = new Command() { MenuText = "Present" };
@@ -131,7 +131,7 @@ public class SlidesManager : Form
         contentLayout.AddSpace();
         Content = contentLayout;
         
-        AsciiSlidesCore.EventHandler.RegisterFormAsSlideController(this);
+        EventHandler.RegisterFormAsSlideController(this);
     }
 }
 	

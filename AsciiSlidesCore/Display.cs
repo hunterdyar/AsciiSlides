@@ -22,23 +22,14 @@ public class Display : Form
 {
     public bool IsFullscreen => _isFullscreen;
     private bool _isFullscreen = false;
-
     private WebView _webPanel;
-
-    //ascii character row/column counts set by the presentation, with per-slide overrides.
-
+    
     public Display(bool inFullscreen)
     {
-        // WindowState = WindowState.Normal;
-        // Bounds = Screen.PrimaryScreen.Bounds;
-        // Topmost = true;
         Topmost = inFullscreen;
-        //todo: get the aspect ratio of the presentation, use a centered rectangle that large
-        Bounds = new Rectangle(Screen.Bounds * 0.8f);
         Maximizable = true;
         Show();
         Focus();
-        //Maximize();
 
         _webPanel = new Eto.Forms.WebView()
         {

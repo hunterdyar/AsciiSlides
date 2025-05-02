@@ -4,12 +4,10 @@ namespace AsciiSlidesCore.Parser;
 
 public enum TokenType
 {
-	ASCII,
 	StartSlide,
 	EndFrontmatter,
 	Delimiter,
 	Ident,
-	Linebreak,
 	SlideBody
 }
 public class Token 
@@ -24,19 +22,21 @@ public class Token
 
 	public override string ToString()
 	{
-		var s = Regex.Escape(Source);
+		string s = Regex.Escape(Source);
 		return Type.ToString() + "("+s+")";
 	}
 }
 public class Tokenizer
 {
+	private static readonly char[] OpeningBraceCharacters = ['[', '{', '(', '<'];
+	
 	public List<Token> Tokens => _tokens;
 	private readonly List<Token> _tokens = new List<Token>();
 	private int _position = 0;
 	private char _current = '\0';
 	private char PosCurrent => _source[_position];
 	
-	private string _source;
+	private readonly string _source;
 	public Tokenizer(string source)
 	{
 		_source = source;
@@ -56,8 +56,6 @@ public class Tokenizer
 			return;
 		}
 	}
-
-
 
 	private void TokenizeSlide()
 	{
@@ -117,7 +115,7 @@ public class Tokenizer
 
 	private void TokenizeIdentifier()
 	{
-		var p = _position;
+		int p = _position;
 		while (char.IsAsciiLetterOrDigit(_current) || IdentifierPermitted.Contains(_current))
 		{
 			Next();
@@ -133,7 +131,7 @@ public class Tokenizer
 		}
 	}
 
-	public void Next()
+	private void Next()
 	{
 		_position++;
 		if (_position >= _source.Length)
@@ -146,7 +144,7 @@ public class Tokenizer
 		}
 	}
 
-	private void ConsumeWhitespace(bool consumeLineBreaks = false)
+	private void ConsumeWhitespace(bool consumeLineBreaks)
 	{
 		if (_position >= _source.Length)
 		{
@@ -172,7 +170,7 @@ public class Tokenizer
 		}
 	}
 
-	public void TokenizeIdentifierValueDelimited()
+	private void TokenizeIdentifierValueDelimited()
 	{
 		if (_current == '"')
 		{
@@ -192,7 +190,7 @@ public class Tokenizer
 		
 		//how to decide what the custom delim is? Non-letterNumber is first guess.
 		//we would tokenize the delim!
-		string delimiter = "\n";
+		string delimiter;
 		//consume up to closing delimiter.
 		if (IsOpeningSymbol(_current))
 		{
@@ -234,13 +232,12 @@ public class Tokenizer
 
 	private bool IsOpeningSymbol(char c)
 	{
-		var openings = new char[]{'[', '{', '(', '<'};
-		return openings.Contains(c);
+		return OpeningBraceCharacters.Contains(c);
 	}
 
 	private void TokenizeStartSlide()
 	{
-		ConsumeWhitespace();
+		ConsumeWhitespace(false);
 		Consume('#');
 		Consume('#');
 		Consume('#');
@@ -281,7 +278,7 @@ public class Tokenizer
 		}
 	}
 
-	void TokenizeCustomDelimOptional()
+	private void TokenizeCustomDelimOptional()
 	{
 		if (_current != '-' && _current != '#' && !char.IsWhiteSpace(_current) && _current != '\0')
 		{
@@ -297,22 +294,7 @@ public class Tokenizer
 		}
 	}
 
-	void TokenizeLinebreak()
-	{
-		ConsumeWhitespace(false);
-		if (_current == '\r')
-		{
-			Next();
-		}
-
-		if (_current == '\n')
-		{
-			_tokens.Add(new Token(TokenType.Linebreak, _source.Substring(_position,1)));
-			Next();
-		}
-	}
-	
-	public void Consume(char c)
+	private void Consume(char c)
 	{
 		if (_position >= _source.Length)
 		{
@@ -324,6 +306,4 @@ public class Tokenizer
 			Next();
 		}
 	}
-	
-
 }
