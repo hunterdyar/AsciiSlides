@@ -1,10 +1,13 @@
 ﻿using Eto.Drawing;
 using Color = Eto.Drawing.Color;
 
-namespace AsciiSlidesCore.Configuration;
+namespace AsciiSlidesCore;
 using Keys = Eto.Forms.Keys;
 public static class Configuration
 {
+	//UX
+	public static int ManagerWindowWidth = 300;
+	public static int ManagerwindowHeight = 600;
 	//Configuration
 	public static Eto.Forms.Keys[] ExitKey = [Keys.Escape, Keys.Q];
 	public static Keys ToggleFullscreen = Keys.F;

@@ -94,11 +94,11 @@ public class Display : Form
     private void OnKeyDown(object? sender, KeyEventArgs e)
     {
         // Console.WriteLine("Display Hook OnKeyDown: "+e.Key.ToString());
-        if (Configuration.Configuration.ExitKey.Contains(e.Key))
+        if (Configuration.ExitKey.Contains(e.Key))
         {
             Close();
         }
-        // else if (e.Key == Configuration.Configuration.ToggleFullscreen)
+        // else if (e.Key == Configuration.ToggleFullscreen)
         // {
         //     SetFullscreen(!_isFullscreen);
         // }

@@ -1,4 +1,5 @@
 using Eto;
+using Eto.Drawing;
 
 //bleh
 using Eto.Forms;
@@ -17,12 +18,14 @@ namespace AsciiSlidesCore;
 public class SlidesManager : Form
 {
     private Display? _display = null;
-    public static Presentation Presentation = new Presentation();
-    public static PresentationState PresentationState = new PresentationState(Presentation);
+    public static bool IsPresentationLoaded = false;
+    public static Presentation? Presentation = null;
+    public static PresentationState PresentationState = new PresentationState();
+    
     public SlidesManager()
     {
         Title = "ASCIISlides Manager";
-        ClientSize = new Size(300, 600);
+        ClientSize = new Size(Configuration.ManagerWindowWidth, Configuration.ManagerWindowWidth);
 
         var presentButton = new Button { Text = "Present" };
         var presentCommand = new Command() { MenuText = "Present" };
@@ -50,8 +53,14 @@ public class SlidesManager : Form
         };
         
         presentButton.Command = presentCommand;
+        presentButton.Enabled = IsPresentationLoaded;
 
         var loadFilePicker = new FilePicker();
+        var fileLoadedLabel = new Label()
+        {
+            Text = "Loaded: None"
+        };
+        
         loadFilePicker.Filters.Add(new FileFilter("Text Documents", ".txt", ".text"));
         loadFilePicker.Filters.Add(new FileFilter("Markdown Documents",  ".md", ".markdown"));
         loadFilePicker.Filters.Add(new FileFilter("All", "*"));
@@ -66,18 +75,41 @@ public class SlidesManager : Form
                 Presentation = Parser.PresentationParser.Parse(fileStream.ReadToEnd());
                 PresentationState = new PresentationState(Presentation);
                 Console.WriteLine("Loaded " + loadFilePicker.FilePath);
+                fileLoadedLabel.Text = "Loaded: " + Path.GetFileName(loadFilePicker.FilePath);
+                IsPresentationLoaded = true;
+                presentButton.Enabled = IsPresentationLoaded;
             }
             else
             {
+                
                 Console.WriteLine("File does not exist " + loadFilePicker.FilePath);
             }
         };
-        Content = new StackLayout()
+        
+        //
+        var contentLayout = new DynamicLayout();
+        var fileGroup = new GroupBox()
         {
-            Items =
+            Text = "File",
+            Content = new StackLayout()
             {
-                loadFilePicker,
-                new StackLayout()
+                Orientation = Orientation.Vertical,
+                VerticalContentAlignment = VerticalAlignment.Center,
+                Spacing = 10,
+                Items =
+                {
+                    loadFilePicker,
+                    fileLoadedLabel,
+                }
+            },
+            Width = Configuration.ManagerWindowWidth
+        };
+        contentLayout.Add(fileGroup);
+        var presentGroup = new GroupBox()
+            {
+                Text = "Presentation",
+                Width = Configuration.ManagerWindowWidth,
+                Content = new StackLayout()
                 {
                     Orientation = Orientation.Horizontal,
                     VerticalContentAlignment = VerticalAlignment.Center,
@@ -89,10 +121,11 @@ public class SlidesManager : Form
                     }
                 }
 
-
-            }
-        };
-
+            };
+        contentLayout.AddRow(presentGroup);
+        contentLayout.AddSpace();
+        Content = contentLayout;
+        
         AsciiSlidesCore.EventHandler.RegisterFormAsSlideController(this);
     }
 }

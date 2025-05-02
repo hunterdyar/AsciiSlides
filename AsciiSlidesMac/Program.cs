@@ -1,17 +1,7 @@
-﻿using System.Text;
-using AsciiSlidesCore;
-using AsciiSlidesCore.Configuration;
-using AsciiSlidesMac;
-using Eto;
-using Eto.Forms;
-using Eto.Drawing;
-
-using MonoMac.AppKit;
-
-//bleh
-using Form = Eto.Forms.Form;
+﻿using AsciiSlidesCore;
 using Application = Eto.Forms.Application;
 
+namespace AsciiSlidesMac;
 public class AsciiSlidesMacProgram
 {
     [STAThread]

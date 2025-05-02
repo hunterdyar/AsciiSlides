@@ -1,8 +1,8 @@
 ﻿using AsciiSlidesCore;
-using AsciiSlidesCore.Configuration;
-using AsciiSlidesWin;
 using Eto.Forms;
 using Application = Eto.Forms.Application;
+
+namespace AsciiSlidesWin;
 
 public class AsciiSlidesWindowsProgram {
     

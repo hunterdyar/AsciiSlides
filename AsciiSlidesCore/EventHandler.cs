@@ -21,12 +21,12 @@ public static class EventHandler
 		Console.WriteLine("Keyboard OnKeyDown: " + e.Key.ToString());
 
 
-		if (Configuration.Configuration.NextSlide.Contains(e.Key))
+		if (Configuration.NextSlide.Contains(e.Key))
 		{
 			SlidesManager.PresentationState?.NavigateRelative(1);
 			e.Handled = true;
 		}
-		else if (Configuration.Configuration.PreviousSlide.Contains(e.Key))
+		else if (Configuration.PreviousSlide.Contains(e.Key))
 		{
 			if (e.Control)
 			{

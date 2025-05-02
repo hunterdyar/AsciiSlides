@@ -15,6 +15,11 @@ public class PresentationState
 	public static Action OnCurrentSlideChanged;
 	private StringBuilder _builder = new StringBuilder();
 
+	public PresentationState()
+	{
+		_presentation = new Presentation();
+		_currentSlide = 0;
+	}
 	public PresentationState(Presentation presentation)
 	{
 		_presentation = presentation;
@@ -89,17 +94,18 @@ public class PresentationState
 		int fontHeight = (int)Math.Floor(h / (float)RowCount);
 		_builder.Append($$$"""
 		                body{
-		                   background-color: color: #{{{Configuration.Configuration.BGColor.ToHex()}}};
+		                   background-color: color: #{{{Configuration.BGColor.ToHex()}}};
 		                   padding: 0;
 		                   margin: 0;
 		                   font-family: Consolas, monospace, ui-monospace;
 		                   font-size: {{{fontHeight}}}px;
-		                   color: #{{{Configuration.Configuration.FontColor.ToHex()}}};
+		                   color: #{{{Configuration.FontColor.ToHex()}}};
 		                   overflow: hidden;
 		                   scrollbar-width: none;
 		                }
 		                .container {
 		                 padding: 0;
+	
 		                 display: block;
 		                 width: {{{w}}}px;
 		                 height: {{{h}}}px;
@@ -107,7 +113,7 @@ public class PresentationState
 		                  margin-right: {{{marginLeft}}};
 		                  marigin-bottom: {{{marginTop}}};
 		                  margin-top: {{{marginTop}}};
-		                  background-color: color: #{{{Configuration.Configuration.ASCIIAreaBGColor.ToHex()}}};
+		                  background-color: color: #{{{Configuration.ASCIIAreaBGColor.ToHex()}}};
 		                   }
 		                    .slide{
 		                    }
