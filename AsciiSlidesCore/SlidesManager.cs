@@ -1,17 +1,13 @@
 using Eto;
-using Eto.Drawing;
 
 //bleh
 using Eto.Forms;
 using Form = Eto.Forms.Form;
-using Application = Eto.Forms.Application;
 using Button = Eto.Forms.Button;
 using CheckBox = Eto.Forms.CheckBox;
-using Keys = Eto.Forms.Keys;
 using Label = Eto.Forms.Label;
 using Orientation = Eto.Forms.Orientation;
 using Size = Eto.Drawing.Size;
-
 
 namespace AsciiSlidesCore;
 
@@ -36,9 +32,8 @@ public class SlidesManager : Form
         };
         presentCommand.Executed += (sender, args) =>
         {
-            if (Presentation.SlideCount > 0)
+            if (IsPresentationLoaded)
             {
-
                 Console.WriteLine("Present");
                 if (_display != null)
                 {
@@ -72,12 +67,22 @@ public class SlidesManager : Form
             if (File.Exists(loadFilePicker.FilePath))
             {
                 using var fileStream = new StreamReader(loadFilePicker.FilePath);
-                Presentation = Parser.PresentationParser.Parse(fileStream.ReadToEnd());
-                PresentationState = new PresentationState(Presentation);
-                Console.WriteLine("Loaded " + loadFilePicker.FilePath);
-                fileLoadedLabel.Text = "Loaded: " + Path.GetFileName(loadFilePicker.FilePath);
-                IsPresentationLoaded = true;
-                presentButton.Enabled = IsPresentationLoaded;
+                try
+                {
+                    Presentation = Parser.PresentationParser.Parse(fileStream.ReadToEnd());
+                    PresentationState = new PresentationState(Presentation);
+                    Console.WriteLine("Loaded " + loadFilePicker.FilePath);
+                    fileLoadedLabel.Text = "Loaded: " + Path.GetFileName(loadFilePicker.FilePath);
+                    IsPresentationLoaded = true;
+                    presentButton.Enabled = IsPresentationLoaded;
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                    IsPresentationLoaded = false;
+                    presentButton.Enabled = IsPresentationLoaded;
+                    fileLoadedLabel.Text = "Error Loading:\n " +exception.Message;
+                }
             }
             else
             {

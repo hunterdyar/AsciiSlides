@@ -5,14 +5,14 @@ namespace AsciiSlidesCore;
 
 public class PresentationState
 {
-	public static Action<PresentationState> OnNewSlide;
+	public static Action<PresentationState> OnNewSlide = delegate { };
 	private Presentation _presentation = new Presentation(new Frontmatter(),[]);
 	
 	public int CurrentSlide => _currentSlide;
 	private int _currentSlide = 0;
 	public int RowCount = 30;
 	public int ColumnCount = 40;
-	public static Action OnCurrentSlideChanged;
+	public static Action OnCurrentSlideChanged = delegate { };
 	private StringBuilder _builder = new StringBuilder();
 
 	public PresentationState()

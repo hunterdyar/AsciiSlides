@@ -21,7 +21,7 @@ namespace AsciiSlidesCore;
 public class Display : Form
 {
     public bool IsFullscreen => _isFullscreen;
-    private bool _isFullscreen;
+    private bool _isFullscreen = false;
 
     private WebView _webPanel;
 
@@ -69,7 +69,9 @@ public class Display : Form
             this.KeyDown -= OnKeyDown;
             this.KeyUp -= OnKeyUp;
             //unhandle events
+
             PresentationState.OnCurrentSlideChanged -= OnCurrentSlideChanged;
+            
         };
     //on resizing.... registering last to prevent multiple 
     this.LogicalPixelSizeChanged += (sender, args) =>
@@ -135,24 +137,9 @@ public class Display : Form
         ResizePanel();
     }
 
-    public void LeaveFullscreen()
-    {
-        if (_isFullscreen)
-        {
-            SetFullscreen(false);
-        }
-    }
-
-    public void EnterFullscreen()
-    {
-        if (!_isFullscreen)
-        {
-            SetFullscreen(true);
-        }
-    }
     private void SetFullscreen(bool fullscreen = true)
     {
-        OSUtility.Instance.ToggleFullscreen(this, fullscreen);
+        _isFullscreen = OSUtility.Instance.ToggleFullscreen(this, fullscreen);
     }
     
     

@@ -30,24 +30,19 @@ public class Token
 }
 public class Tokenizer
 {
-	private enum TState
-	{
-		Initial
-	}
 	public List<Token> Tokens => _tokens;
-	private List<Token> _tokens = new List<Token>();
+	private readonly List<Token> _tokens = new List<Token>();
 	private int _position = 0;
-	private char current = '\0';
+	private char _current = '\0';
 	private char PosCurrent => _source[_position];
 	
 	private string _source;
-	private TState _state = TState.Initial;
 	public Tokenizer(string source)
 	{
 		_source = source;
 		if (_position < _source.Length)
 		{
-			current = _source[_position];
+			_current = _source[_position];
 			
 			TokenizeOptionalFrontmatter();
 			while (_position < _source.Length)
@@ -87,14 +82,14 @@ public class Tokenizer
 			//the slide is from here to the end of the file.
 			_tokens.Add(new Token(TokenType.SlideBody, _source.Substring(_position)));
 			_position = _source.Length;
-			current = '\0';
+			_current = '\0';
 		}
 		else
 		{
 			//the body is from here to the index, then we sometimes consume the delim? if it's custom?
 			_tokens.Add(new Token(TokenType.SlideBody, _source.Substring(_position, end)));
 			_position += end;
-			current = _source[_position];
+			_current = _source[_position];
 		}
 	}
 
@@ -123,7 +118,7 @@ public class Tokenizer
 	private void TokenizeIdentifier()
 	{
 		var p = _position;
-		while (char.IsAsciiLetterOrDigit(current) || IdentifierPermitted.Contains(current))
+		while (char.IsAsciiLetterOrDigit(_current) || IdentifierPermitted.Contains(_current))
 		{
 			Next();
 		}
@@ -143,11 +138,11 @@ public class Tokenizer
 		_position++;
 		if (_position >= _source.Length)
 		{
-			current = '\0';
+			_current = '\0';
 		}
 		else
 		{
-			current = _source[_position];
+			_current = _source[_position];
 		}
 	}
 
@@ -170,7 +165,7 @@ public class Tokenizer
 		}
 		else
 		{
-			if (current == ' ' || current == '\t' || current == '\u00A0' || current == '\v' || current == '\f')
+			if (_current == ' ' || _current == '\t' || _current == '\u00A0' || _current == '\v' || _current == '\f')
 			{
 				Next();
 			}
@@ -179,15 +174,15 @@ public class Tokenizer
 
 	public void TokenizeIdentifierValueDelimited()
 	{
-		if (current == '"')
+		if (_current == '"')
 		{
 			string s = "";
 			Next();
 			bool escaping = false;
-			while (current != '"' || escaping)
+			while (_current != '"' || escaping)
 			{
-				escaping = current == '\\';
-				s+= current;
+				escaping = _current == '\\';
+				s+= _current;
 				Next();
 			}
 			Next();//eat the closing "
@@ -199,14 +194,14 @@ public class Tokenizer
 		//we would tokenize the delim!
 		string delimiter = "\n";
 		//consume up to closing delimiter.
-		if (IsOpeningSymbol(current))
+		if (IsOpeningSymbol(_current))
 		{
 			//instead of going up to the newline we will go to the delim.
-			delimiter = current.ToString();
+			delimiter = _current.ToString();
 			Next();
-			while (!char.IsWhiteSpace(current))
+			while (!char.IsWhiteSpace(_current))
 			{
-				delimiter += current;
+				delimiter += _current;
 				Next();
 			}
 		}
@@ -222,7 +217,7 @@ public class Tokenizer
 		{
 			_tokens.Add(new Token(TokenType.Ident,_source.Substring(_position, closePos)));
 			_position += closePos+delimiter.Length;
-			current = _source[_position];//can't do Next()
+			_current = _source[_position];//can't do Next()
 		}
 		else
 		{
@@ -253,7 +248,7 @@ public class Tokenizer
 		TokenizeCustomDelimOptional();
 		
 		//###--- is allowed. it's a shorthand.
-		if (current != '-')
+		if (_current != '-')
 		{
 			ConsumeWhitespace(true);
 		}
@@ -274,13 +269,13 @@ public class Tokenizer
 	private void ConsumeLinebreak()
 	{
 		ConsumeWhitespace(false);
-		if (current == '\r')
+		if (_current == '\r')
 		{
 			Next();
 		}
 		
 		//line break and end of file are the same. 
-		if (current != '\0')
+		if (_current != '\0')
 		{
 			Consume('\n');
 		}
@@ -288,7 +283,7 @@ public class Tokenizer
 
 	void TokenizeCustomDelimOptional()
 	{
-		if (current != '-' && current != '#' && !char.IsWhiteSpace(current) && current != '\0')
+		if (_current != '-' && _current != '#' && !char.IsWhiteSpace(_current) && _current != '\0')
 		{
 			TokenizeIdentifier();
 			if (_tokens[^1].Type == TokenType.Ident)
@@ -305,12 +300,12 @@ public class Tokenizer
 	void TokenizeLinebreak()
 	{
 		ConsumeWhitespace(false);
-		if (current == '\r')
+		if (_current == '\r')
 		{
 			Next();
 		}
 
-		if (current == '\n')
+		if (_current == '\n')
 		{
 			_tokens.Add(new Token(TokenType.Linebreak, _source.Substring(_position,1)));
 			Next();
@@ -324,7 +319,7 @@ public class Tokenizer
 			throw new Exception("Unexpected end of file.");
 		}
 
-		if (current == c)
+		if (_current == c)
 		{
 			Next();
 		}

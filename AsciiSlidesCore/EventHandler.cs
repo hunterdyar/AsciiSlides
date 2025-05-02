@@ -4,7 +4,7 @@ namespace AsciiSlidesCore;
 
 public static class EventHandler
 {
-	public static Action<int> OnSlideChanged;
+	public static Action<int> OnSlideChanged = delegate { };
 
 
 	public static void RegisterFormAsSlideController(Form form)

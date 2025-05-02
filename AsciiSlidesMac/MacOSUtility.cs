@@ -1,7 +1,6 @@
 ﻿using AsciiSlidesCore;
 using Eto.Forms;
 using MonoMac.AppKit;
-using MonoMac.AppKit;
 
 namespace AsciiSlidesMac;
 
