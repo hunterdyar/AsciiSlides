@@ -1,3 +1,4 @@
+using AsciiSlidesCore.Components;
 using Eto;
 using Eto.Drawing;
 using Eto.Forms;
@@ -44,6 +45,10 @@ public class SlidesManager : Form
         
         presentButton.Command = presentCommand;
         presentButton.Enabled = IsPresentationLoaded;
+        EventHandler.OnPresentationLoadedChanged += b =>
+        {
+            presentButton.Enabled = b;
+        };
 
         var presenterViewButton = new Button { Text = "Presenter View" };
         var presenterViewCommand = new Command() { MenuText = "Presenter View" };
@@ -73,68 +78,10 @@ public class SlidesManager : Form
 
         presenterViewButton.Command = presenterViewCommand;
         presenterViewButton.Enabled = IsPresentationLoaded;
-        
-        var loadFilePicker = new FilePicker();
-        var fileLoadedLabel = new Label()
-        {
-            Text = "Loaded: None"
-        };
-        
-        loadFilePicker.Filters.Add(new FileFilter("Text Documents", ".txt", ".text"));
-        loadFilePicker.Filters.Add(new FileFilter("Markdown Documents",  ".md", ".markdown"));
-        loadFilePicker.Filters.Add(new FileFilter("All", "*"));
-
-        loadFilePicker.FileAction = FileAction.OpenFile;
-        loadFilePicker.Title = "Open Presentation";
-        loadFilePicker.FilePathChanged += (sender, args) =>
-        {
-            if (File.Exists(loadFilePicker.FilePath))
-            {
-                using var fileStream = new StreamReader(loadFilePicker.FilePath);
-                try
-                {
-                    Presentation = Parser.PresentationParser.Parse(fileStream.ReadToEnd());
-                    PresentationState = new PresentationState(Presentation);
-                    Console.WriteLine("Loaded " + loadFilePicker.FilePath);
-                    fileLoadedLabel.Text = "Loaded: " + Path.GetFileName(loadFilePicker.FilePath);
-                    IsPresentationLoaded = true;
-                    presentButton.Enabled = IsPresentationLoaded;
-                    presenterViewButton.Enabled = IsPresentationLoaded;
-
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception);
-                    IsPresentationLoaded = false;
-                    presentButton.Enabled = IsPresentationLoaded;
-                    fileLoadedLabel.Text = "Error Loading:\n " +exception.Message;
-                }
-            }
-            else
-            {
-                
-                Console.WriteLine("File does not exist " + loadFilePicker.FilePath);
-            }
-        };
-        
+        EventHandler.OnPresentationLoadedChanged += b => { presenterViewButton.Enabled = b; };
         //
         var contentLayout = new DynamicLayout();
-        var fileGroup = new GroupBox()
-        {
-            Text = "File",
-            Content = new StackLayout()
-            {
-                Orientation = Orientation.Vertical,
-                VerticalContentAlignment = VerticalAlignment.Center,
-                Spacing = 10,
-                Items =
-                {
-                    loadFilePicker,
-                    fileLoadedLabel,
-                }
-            },
-            Width = Configuration.ManagerWindowWidth
-        };
+        var fileGroup = new FilesComponent();
         contentLayout.Add(fileGroup);
         var presentGroup = new GroupBox()
             {
@@ -173,8 +120,43 @@ public class SlidesManager : Form
         contentLayout.AddRow(presentGroup);
         contentLayout.AddSpace();
         Content = contentLayout;
-        
+
+        EventHandler.OnFilePicked += OnFilePicked;
         EventHandler.RegisterFormAsSlideController(this);
+        Closed += (sender, args) =>
+        {
+            EventHandler.OnFilePicked -= OnFilePicked;
+        };
+    }
+
+    private void OnFilePicked(string path)
+    {
+        using var fileStream = new StreamReader(path);
+        LoadPresentation(Path.GetFileName(path),fileStream.ReadToEnd());
+    }
+
+    private void LoadPresentation(string fileName, string presentationText)
+    {
+        try
+        {
+            Presentation = Parser.PresentationParser.Parse(presentationText);
+            Presentation.FileName = fileName;
+            PresentationState = new PresentationState(Presentation);
+            SetPresentationLoaded(true);
+            EventHandler.OnPresentationLoaded.Invoke(Presentation);
+          
+        }
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception);
+            IsPresentationLoaded = false;
+        }
+    }
+
+    private void SetPresentationLoaded(bool b)
+    {
+        IsPresentationLoaded = b;
+        EventHandler.OnPresentationLoadedChanged.Invoke(IsPresentationLoaded);
     }
 }
 	

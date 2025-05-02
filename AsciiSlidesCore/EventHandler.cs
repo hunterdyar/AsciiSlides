@@ -5,8 +5,9 @@ namespace AsciiSlidesCore;
 public static class EventHandler
 {
 	public static Action<int> OnSlideChanged = delegate { };
-
-
+	public static Action<string> OnFilePicked = delegate { };
+	public static Action<Presentation> OnPresentationLoaded = delegate { };
+	public static Action<bool> OnPresentationLoadedChanged = delegate { };
 	public static void RegisterFormAsSlideController(Form form)
 	{
 		form.KeyDown += FormOnKeyDown;
@@ -19,7 +20,6 @@ public static class EventHandler
 	private static void FormOnKeyDown(object? sender, KeyEventArgs e)
 	{
 		Console.WriteLine("Keyboard OnKeyDown: " + e.Key.ToString());
-
 
 		if (Configuration.NextSlide.Contains(e.Key))
 		{
@@ -41,6 +41,5 @@ public static class EventHandler
 			}
 		}
 	}
-
 	
 }
