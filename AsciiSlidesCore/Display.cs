@@ -54,15 +54,21 @@ public class Display : Form
         SetFullscreen(inFullscreen);
         _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds));
         //register
+        AsciiSlidesCore.EventHandler.RegisterFormAsSlideController(this);
+        
+        //handle our own shortcuts.
         this.KeyDown += OnKeyDown;
         this.KeyUp += OnKeyUp;
+        //handle events we care about
         PresentationState.OnCurrentSlideChanged += OnCurrentSlideChanged;
 
         //unregsister
         this.Closed += (sender, args) =>
         {
+            //unhandle shortcuts
             this.KeyDown -= OnKeyDown;
             this.KeyUp -= OnKeyUp;
+            //unhandle events
             PresentationState.OnCurrentSlideChanged -= OnCurrentSlideChanged;
         };
     //on resizing.... registering last to prevent multiple 
@@ -87,30 +93,21 @@ public class Display : Form
 
     private void OnKeyDown(object? sender, KeyEventArgs e)
     {
-        Console.WriteLine("Display Hook OnKeyDown: "+e.Key.ToString());
+        // Console.WriteLine("Display Hook OnKeyDown: "+e.Key.ToString());
         if (Configuration.Configuration.ExitKey.Contains(e.Key))
         {
-            Console.WriteLine("Exiting...");
             Close();
-        }else if (e.Key == Configuration.Configuration.ToggleFullscreen)
-        {
-            SetFullscreen(!_isFullscreen);
-        }else if (Configuration.Configuration.NextSlide.Contains(e.Key))
-        {
-            SlidesManager.PresentationState?.NavigateRelative(1);
-        }else if (Configuration.Configuration.PreviousSlide.Contains(e.Key))
-        {
-            if (e.Control)
-            {
-                //Cycle Down list of screens.
-                MoveScreens(-1);
-            }
-            else
-            {
-                //Go back a slide.
-                SlidesManager.PresentationState?.NavigateRelative(-1);
-            }
         }
+        // else if (e.Key == Configuration.Configuration.ToggleFullscreen)
+        // {
+        //     SetFullscreen(!_isFullscreen);
+        // }
+        // if (e.Control)
+        // {
+        //     //Cycle Down list of screens.
+        //     MoveScreens(-1);
+        // }
+        
     }
 
     private void OnKeyUp(object? sender, KeyEventArgs e)

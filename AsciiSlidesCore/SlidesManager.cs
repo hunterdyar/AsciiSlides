@@ -19,7 +19,6 @@ public class SlidesManager : Form
     private Display? _display = null;
     public static Presentation Presentation = new Presentation();
     public static PresentationState PresentationState = new PresentationState(Presentation);
-
     public SlidesManager()
     {
         Title = "ASCIISlides Manager";
@@ -94,10 +93,7 @@ public class SlidesManager : Form
             }
         };
 
-        this.KeyDown += (s, e) =>
-        {
-            Console.WriteLine("SlidesManager Hook OnKeyDown: " + e.Key.ToString());
-        };
+        AsciiSlidesCore.EventHandler.RegisterFormAsSlideController(this);
     }
 }
 	
