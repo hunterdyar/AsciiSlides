@@ -26,6 +26,7 @@ public class Display : Form
     
     public Display(bool inFullscreen)
     {
+        Title = "Presentation";
         Topmost = inFullscreen;
         Maximizable = true;
         Show();
@@ -44,6 +45,7 @@ public class Display : Form
         //fullscreen
         SetFullscreen(inFullscreen);
         _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds));
+        Title = "Slide " + SlidesManager.PresentationState.CurrentSlide.SlideNumber + "/" + SlidesManager.PresentationState.Presentation.SlideCount;
         //register
         AsciiSlidesCore.EventHandler.RegisterFormAsSlideController(this);
         
@@ -51,7 +53,7 @@ public class Display : Form
         this.KeyDown += OnKeyDown;
         this.KeyUp += OnKeyUp;
         //handle events we care about
-        PresentationState.OnCurrentSlideChanged += OnCurrentSlideChanged;
+        PresentationState.OnSlideChanged += OnCurrentSlideChanged;
 
         //unregsister
         this.Closed += (sender, args) =>
@@ -61,7 +63,7 @@ public class Display : Form
             this.KeyUp -= OnKeyUp;
             //unhandle events
 
-            PresentationState.OnCurrentSlideChanged -= OnCurrentSlideChanged;
+            PresentationState.OnSlideChanged -= OnCurrentSlideChanged;
             
         };
     //on resizing.... registering last to prevent multiple 
@@ -72,9 +74,10 @@ public class Display : Form
         
     }
 
-    private void OnCurrentSlideChanged()
+    private void OnCurrentSlideChanged(Slide slide)
     {
-        _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds)); 
+        _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds));
+        Title = "Slide " + slide.SlideNumber + "/" + SlidesManager.PresentationState.Presentation.SlideCount;
     }
 
     private void ResizePanel()

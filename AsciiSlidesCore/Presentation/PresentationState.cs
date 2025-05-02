@@ -5,25 +5,27 @@ namespace AsciiSlidesCore;
 
 public class PresentationState
 {
-	public static Action<PresentationState> OnNewSlide = delegate { };
+	private static Slide EndOfSlideSlide = new BlankSlide("end of slide");
+	public static Action<Slide> OnSlideChanged = delegate { };
+	public Presentation Presentation => _presentation;
 	private Presentation _presentation = new Presentation(new Frontmatter(),[]);
 	
-	public int CurrentSlide => _currentSlide;
-	private int _currentSlide = 0;
+	public Slide CurrentSlide => _presentation.Slides[_currentSlideIndex];
+	private int _currentSlideIndex = 0;
+	public float Aspect => RowCount / (float)ColumnCount;
 	public int RowCount = 30;
 	public int ColumnCount = 40;
-	public static Action OnCurrentSlideChanged = delegate { };
 	private StringBuilder _builder = new StringBuilder();
 
 	public PresentationState()
 	{
 		_presentation = new Presentation();
-		_currentSlide = 0;
+		_currentSlideIndex = 0;
 	}
 	public PresentationState(Presentation presentation)
 	{
 		_presentation = presentation;
-		_currentSlide = 0;
+		_currentSlideIndex = 0;
 	}
 	public void NavigateRelative(int delta)
 	{
@@ -31,94 +33,30 @@ public class PresentationState
 		{
 			return;
 		}
-		_currentSlide += delta;
-		if (_currentSlide >= _presentation.SlideCount)
+		_currentSlideIndex += delta;
+		if (_currentSlideIndex >= _presentation.SlideCount)
 		{
-			_currentSlide = (_presentation.SlideCount - _currentSlide);
-		}else if (_currentSlide < 0)
+			//asdflkj
+			_currentSlideIndex = (_presentation.SlideCount - _currentSlideIndex);
+		}else if (_currentSlideIndex < 0)
 		{
-			_currentSlide = _presentation.SlideCount + _currentSlide;
+			_currentSlideIndex = _presentation.SlideCount + _currentSlideIndex;
 		}
-		OnCurrentSlideChanged?.Invoke();
+		OnSlideChanged?.Invoke(_presentation.Slides[_currentSlideIndex]);
 	}
 
 	public string GetCurrentAsHTML(Rectangle bounds)
 	{
-		
-		_builder.Clear();
-		_builder.AppendLine("<html>");
-		_builder.AppendLine("<head>");
-		AppendStyle(bounds);
-		_builder.AppendLine("</head>");
-		_builder.AppendLine("<body>");
-		_builder.AppendLine("<div class=\"container\">");
-		_builder.AppendLine("<pre class=\"slide\">");
-		_builder.AppendLine(_presentation.Slides[CurrentSlide].rawContent);
-		_builder.AppendLine("</pre>");
-		_builder.AppendLine("</div>");
-		_builder.AppendLine("</body>");
-		_builder.AppendLine("</html>");
-		
-		return _builder.ToString();
+		return _presentation.Slides[_currentSlideIndex].GetSlideAsHTML(this, bounds, false);
 	}
 
-	private void AppendStyle(Rectangle bounds)
+	public string GetPreviewAsHTML(Rectangle bounds)
 	{
-		_builder.AppendLine("<style>");
-
-		//these are clearly bad defaults... 
-		int h = 0;
-		int w = 0;
-		
-		var aspect = ColumnCount / (float)RowCount;
-		var screenAspect = bounds.Width / (float)bounds.Height;
-		
-		if (aspect >= screenAspect)
+		int preview = _currentSlideIndex + 1;
+		if (preview >= _presentation.SlideCount || preview < 0)
 		{
-			//if aspect is equal, we can do either branch and it doesn't matter.
-
-			//we are wider, and will letterbox top and bottom.
-			//Set the width to full bounds width, adjust height by aspect.
-			w = (int)(bounds.Width);
-			h = (int)(bounds.Width / aspect);
+			return EndOfSlideSlide.GetSlideAsHTML(this,bounds,false);
 		}
-		else if (aspect < screenAspect)
-		{
-			//we are narrow, screen is wide. will letterbox sides.
-			//set the height to full bounds height, adjust the width by aspet.
-			w = (int)(bounds.Height * aspect);
-			h = (int)(bounds.Height);
-		}
-		int marginLeft = (bounds.Width - w) / 2;
-		int marginTop = (bounds.Height - h) / 2;
-		int fontHeight = (int)Math.Floor(h / (float)RowCount);
-		_builder.Append($$$"""
-		                body{
-		                   background-color: color: #{{{Configuration.BGColor.ToHex()}}};
-		                   padding: 0;
-		                   margin: 0;
-		                   font-family: Consolas, monospace, ui-monospace;
-		                   font-size: {{{fontHeight}}}px;
-		                   color: #{{{Configuration.FontColor.ToHex()}}};
-		                   overflow: hidden;
-		                   scrollbar-width: none;
-		                }
-		                .container {
-		                 padding: 0;
-	
-		                 display: block;
-		                 width: {{{w}}}px;
-		                 height: {{{h}}}px;
-		                 margin-left: {{{marginLeft}}};
-		                  margin-right: {{{marginLeft}}};
-		                  marigin-bottom: {{{marginTop}}};
-		                  margin-top: {{{marginTop}}};
-		                  background-color: color: #{{{Configuration.ASCIIAreaBGColor.ToHex()}}};
-		                   }
-		                    .slide{
-		                    }
-		                """);
-		Console.WriteLine($"Setting width height to: {w}x{h}, margins left/top: {marginLeft}/{marginTop}");
-		_builder.AppendLine("</style>");
+		return _presentation.Slides[_currentSlideIndex].GetSlideAsHTML(this, bounds, false);
 	}
 }

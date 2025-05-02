@@ -1,19 +1,14 @@
 using Eto;
+using Eto.Drawing;
+using Eto.Forms;
 
 //bleh
-using Eto.Forms;
-using Form = Eto.Forms.Form;
-using Button = Eto.Forms.Button;
-using CheckBox = Eto.Forms.CheckBox;
-using Label = Eto.Forms.Label;
-using Orientation = Eto.Forms.Orientation;
-using Size = Eto.Drawing.Size;
-
 namespace AsciiSlidesCore;
 
 public class SlidesManager : Form
 {
     private Display? _display = null;
+    private PresenterView? _presenterDisplay = null;
     public static bool IsPresentationLoaded = false;
     public static Presentation? Presentation = null;
     public static PresentationState PresentationState = new PresentationState();
@@ -25,7 +20,7 @@ public class SlidesManager : Form
 
         var presentButton = new Button { Text = "Present" };
         var presentCommand = new Command() { MenuText = "Present" };
-        var inFullscreen = new CheckBox()
+        var displayInFullscreen = new CheckBox()
         {
             Text = "Fullscreen",
             Checked = true,
@@ -41,7 +36,7 @@ public class SlidesManager : Form
                     _display.Dispose();
                 }
 
-                _display = new Display(inFullscreen.Checked.Value);
+                _display = new Display(displayInFullscreen.Checked.Value);
             }else{
                 Console.WriteLine("No Presentation or Empty presentation loaded.");
             }
@@ -50,6 +45,35 @@ public class SlidesManager : Form
         presentButton.Command = presentCommand;
         presentButton.Enabled = IsPresentationLoaded;
 
+        var presenterViewButton = new Button { Text = "Presenter View" };
+        var presenterViewCommand = new Command() { MenuText = "Presenter View" };
+        var presenterViewInFullscreen = new CheckBox()
+        {
+            Text = "Fullscreen",
+            Checked = true,
+        };
+        presenterViewCommand.Executed += (sender, args) =>
+        {
+            if (IsPresentationLoaded)
+            {
+                Console.WriteLine("Presenter View");
+                if (_presenterDisplay != null)
+                {
+                    _presenterDisplay.Close();
+                    _presenterDisplay.Dispose();
+                }
+
+                _presenterDisplay = new PresenterView();
+            }
+            else
+            {
+                Console.WriteLine("No Presentation or Empty presentation loaded.");
+            }
+        };
+
+        presenterViewButton.Command = presenterViewCommand;
+        presenterViewButton.Enabled = IsPresentationLoaded;
+        
         var loadFilePicker = new FilePicker();
         var fileLoadedLabel = new Label()
         {
@@ -75,6 +99,8 @@ public class SlidesManager : Form
                     fileLoadedLabel.Text = "Loaded: " + Path.GetFileName(loadFilePicker.FilePath);
                     IsPresentationLoaded = true;
                     presentButton.Enabled = IsPresentationLoaded;
+                    presenterViewButton.Enabled = IsPresentationLoaded;
+
                 }
                 catch (Exception exception)
                 {
@@ -116,14 +142,31 @@ public class SlidesManager : Form
                 Width = Configuration.ManagerWindowWidth,
                 Content = new StackLayout()
                 {
-                    Orientation = Orientation.Horizontal,
-                    VerticalContentAlignment = VerticalAlignment.Center,
-                    Spacing = 5,
-                    Items =
-                    {
-                        presentButton,
-                        inFullscreen,
-                    }
+                    Orientation = Orientation.Vertical, 
+                    Items = {
+                                new StackLayout()
+                                {
+                                    Orientation = Orientation.Horizontal,
+                                    VerticalContentAlignment = VerticalAlignment.Center,
+                                    Spacing = 5,
+                                    Items =
+                                    {
+                                        presentButton,
+                                        displayInFullscreen,
+                                    }
+                                },
+                                new StackLayout()
+                                {
+                                    Orientation = Orientation.Horizontal,
+                                    VerticalContentAlignment = VerticalAlignment.Center,
+                                    Spacing = 5,
+                                    Items =
+                                    {
+                                        presenterViewButton,
+                                        presenterViewInFullscreen,
+                                    }
+                                }
+                            }
                 }
 
             };
