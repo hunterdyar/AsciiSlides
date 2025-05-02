@@ -10,7 +10,7 @@ public class HTMLSlide : Slide
 	public HTMLSlide()
 	{
 		//Coding design note.... should this be in the factory?
-		if (!frontmatter.TryGetKey("style", out style))
+		if (!Frontmatter.TryGetKey("style", out style))
 		{
 			style = "";
 		}
@@ -18,7 +18,7 @@ public class HTMLSlide : Slide
 
 	protected override void AppendContent(StringBuilder sb)
 	{
-		sb.Append(rawContent);
+		sb.Append(RawContent);
 	}
 
 	protected override void AppendStyle(StringBuilder sb, PresentationState state, Rectangle bounds)

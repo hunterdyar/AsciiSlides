@@ -10,13 +10,21 @@ public static class SlideFactory
 		}
 		
 		Slide slide;
-		switch (slideType)
+		switch (slideType.ToLower())
 		{
+			case "youtube":
+				slide = new YTSlide
+				{
+					Frontmatter = frontmatter,
+					RawContent = rawContent,
+					SlideNumber = number
+				};
+				break;
 			case "html":
 				slide = new HTMLSlide
 				{
-					frontmatter = frontmatter,
-					rawContent = rawContent,
+					Frontmatter = frontmatter,
+					RawContent = rawContent,
 					SlideNumber = number
 				};
 				break;
@@ -24,8 +32,8 @@ public static class SlideFactory
 			default:
 				slide = new Slide
 				{
-					frontmatter = frontmatter,
-					rawContent = rawContent,
+					Frontmatter = frontmatter,
+					RawContent = rawContent,
 					SlideNumber = number
 				};
 				break;

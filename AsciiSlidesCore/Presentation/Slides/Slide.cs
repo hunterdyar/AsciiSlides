@@ -5,22 +5,22 @@ namespace AsciiSlidesCore;
 
 public class Slide
 {
-	public string rawContent;
-	public Frontmatter frontmatter;
+	public string RawContent;
+	public Frontmatter Frontmatter;
 	public bool HasSpeakerNotes = false;
 	public string SpeakerNotes; 
-	private StringBuilder _sb = new StringBuilder();
+	private StringBuilder _sb = new();
 
 	public int SlideNumber;
 
 	public Slide()
 	{
-		frontmatter = new Frontmatter();
-		rawContent = "";
+		Frontmatter = new Frontmatter();
+		RawContent = "";
 		SlideNumber = 0;
 	}
 
-	/// <param name="isPreview">If not primary slide view (don't autoplay videos no matter what, etc)</param>
+	/// <param name="isPreview">If not primary slide view (don't autoplay videos no matter what, etc.)</param>
 	public string GetSlideAsHTML(PresentationState state, Rectangle windowBounds, bool isPreview)
 	{
 		_sb.Clear();
@@ -41,7 +41,7 @@ public class Slide
 	protected virtual void AppendContent(StringBuilder sb)
 	{
 		sb.AppendLine("<pre class=\"slide\">");
-		sb.AppendLine(rawContent);
+		sb.AppendLine(RawContent);
 		sb.AppendLine("</pre>");
 	}
 	protected virtual void AppendStyle(StringBuilder sb, PresentationState state, Rectangle bounds)
@@ -75,29 +75,28 @@ public class Slide
 		int fontHeight = (int)Math.Floor(h / (float)state.RowCount);
 		sb.Append($$$"""
 		             body{
-		                background-color: color: #{{{Configuration.BGColor.ToHex()}}};
-		                padding: 0;
-		                margin: 0;
-		                font-family: Consolas, monospace, ui-monospace;
-		                font-size: {{{fontHeight}}}px;
-		                color: #{{{Configuration.FontColor.ToHex()}}};
-		                overflow: hidden;
-		                scrollbar-width: none;
+		                 background-color: color: #{{{Configuration.BGColor.ToHex()}}};
+		                 padding: 0;
+		                 margin: 0;
+		                 font-family: Consolas, monospace, ui-monospace;
+		                 font-size: {{{fontHeight}}}px;
+		                 color: #{{{Configuration.FontColor.ToHex()}}};
+		                 overflow: hidden;
+		                 scrollbar-width: none;
 		             }
 		             .container {
-		              padding: 0;
-
-		              display: block;
-		              width: {{{w}}}px;
-		              height: {{{h}}}px;
-		              margin-left: {{{marginLeft}}};
-		               margin-right: {{{marginLeft}}};
-		               marigin-bottom: {{{marginTop}}};
-		               margin-top: {{{marginTop}}};
-		               background-color: color: #{{{Configuration.ASCIIAreaBGColor.ToHex()}}};
-		                }
+		                 padding: 0;
+		                 display: block;
+		                 width: {{{w}}}px;
+		                 height: {{{h}}}px;
+		                 margin-left: {{{marginLeft}}};
+		                 margin-right: {{{marginLeft}}};
+		                 marigin-bottom: {{{marginTop}}};
+		                 margin-top: {{{marginTop}}};
+		                 background-color: color: #{{{Configuration.ASCIIAreaBGColor.ToHex()}}};
+		             }
 		                 .slide{
-		                 }
+		             }
 		             """);
 		Console.WriteLine($"Setting width height to: {w}x{h}, margins left/top: {marginLeft}/{marginTop}");
 		sb.AppendLine("</style>");
@@ -105,24 +104,18 @@ public class Slide
 
 	protected virtual string GetSlideBGColor()
 	{
-		if (frontmatter.TryGetKey("background", out var bg))
+		if (Frontmatter.TryGetKey("background", out string bg))
 		{
-			if (bg != null)
-			{
-				return bg;
-			}
+			return bg;
 		}
 		return $"#{Configuration.BGColor.ToHex()}";
 	}
 
 	protected virtual string GetSlideTextColor()
 	{
-		if (frontmatter.TryGetKey("textcolor", out var fontColor))
+		if (Frontmatter.TryGetKey("textcolor", out var fontColor))
 		{
-			if (fontColor != null)
-			{
-				return fontColor;
-			}
+			return fontColor;
 		}
 
 		return $"#{Configuration.BGColor.ToHex()}";
