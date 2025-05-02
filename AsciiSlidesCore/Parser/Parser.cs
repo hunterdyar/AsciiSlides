@@ -44,7 +44,7 @@ public static class PresentationParser
 		{
 			throw new Exception("Expected slide body.");
 		}
-		return new Slide(f, body.Source, slideNumber);
+		return SlideFactory.CreateSlide(f, body.Source, slideNumber);
 	}
 
 	private static Frontmatter ParseFrontmatter(ref Queue<Token> tokens)

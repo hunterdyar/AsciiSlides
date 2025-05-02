@@ -2,7 +2,7 @@
 
 public class Frontmatter
 {
-	private Dictionary<string, string> _frontmatter = new Dictionary<string, string>();
+	private Dictionary<string, string> _frontmatter = new();
 
 	public Frontmatter()
 	{
@@ -21,8 +21,16 @@ public class Frontmatter
 		_frontmatter.Add(key.ToLower(), value);
 	}
 	
-	public bool TryGetKey(string key, out string? value)
+	public bool TryGetKey(string key, out string value)
 	{
-		return _frontmatter.TryGetValue(key, out value);
+		if (_frontmatter.TryGetValue(key, out value))
+		{
+			return true;
+		}
+		else
+		{
+			value = string.Empty;
+			return false;
+		}
 	}
 }

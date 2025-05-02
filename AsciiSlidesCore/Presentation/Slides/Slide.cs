@@ -5,13 +5,13 @@ namespace AsciiSlidesCore;
 
 public class Slide
 {
-	public readonly string rawContent;
-	public readonly Frontmatter frontmatter;
-	public readonly bool HasSpeakerNotes = false;
-	public readonly string SpeakerNotes; 
+	public string rawContent;
+	public Frontmatter frontmatter;
+	public bool HasSpeakerNotes = false;
+	public string SpeakerNotes; 
 	private StringBuilder _sb = new StringBuilder();
 
-	public readonly int SlideNumber;
+	public int SlideNumber;
 
 	public Slide()
 	{
@@ -19,24 +19,6 @@ public class Slide
 		rawContent = "";
 		SlideNumber = 0;
 	}
-	public Slide(Frontmatter frontmatter, string rawContent, int number)
-	{
-		this.frontmatter = frontmatter;
-		this.rawContent = rawContent;
-		this.SlideNumber = number;
-		
-		//Set Speaker Notes
-		if (frontmatter.TryGetKey("notes", out SpeakerNotes!))
-		{
-			HasSpeakerNotes = true;
-		}
-		else
-		{
-			//SpeakerNotes will be null, but we can surpress the compiler warning because this branch handles that case
-			SpeakerNotes = string.Empty;
-		}
-	}
-
 
 	/// <param name="isPreview">If not primary slide view (don't autoplay videos no matter what, etc)</param>
 	public string GetSlideAsHTML(PresentationState state, Rectangle windowBounds, bool isPreview)
