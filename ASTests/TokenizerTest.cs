@@ -103,6 +103,32 @@ public class TokenizerTest
 	}
 
 	[Test]
+	public void OneLinerSlideBreaks()
+	{
+		var s = """
+		        ###
+		        ---
+		        body
+		        ###---
+		        body
+		        ###---
+		        body
+		        """;
+		var t = new Tokenizer(s);
+		Assert.IsTrue(t.Matches(
+			TokenType.StartSlide,
+			TokenType.EndFrontmatter,
+			TokenType.SlideBody,
+			TokenType.StartSlide,
+			TokenType.EndFrontmatter,
+			TokenType.SlideBody,
+			TokenType.StartSlide,
+			TokenType.EndFrontmatter,
+			TokenType.SlideBody
+		));
+	}
+
+	[Test]
 	public void FrontmatterStrings()
 	{
 		var s = """

@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Eto.Drawing;
 using Eto.Forms;
 
@@ -25,7 +26,7 @@ public class Display : Form
     private WebView _webPanel;
 
     //ascii character row/column counts set by the presentation, with per-slide overrides.
-    
+
     public Display(bool inFullscreen)
     {
         // WindowState = WindowState.Normal;
@@ -33,12 +34,12 @@ public class Display : Form
         // Topmost = true;
         Topmost = inFullscreen;
         //todo: get the aspect ratio of the presentation, use a centered rectangle that large
-        Bounds = new Rectangle(Screen.Bounds*0.8f);
+        Bounds = new Rectangle(Screen.Bounds * 0.8f);
         Maximizable = true;
         Show();
         Focus();
         //Maximize();
-        
+
         _webPanel = new Eto.Forms.WebView()
         {
             BackgroundColor = Colors.LightYellow,
@@ -47,34 +48,35 @@ public class Display : Form
             BrowserContextMenuEnabled = false,
         };
         this.Content = _webPanel;
-        
+
         Console.WriteLine("Created Display.");
         //fullscreen
         SetFullscreen(inFullscreen);
         _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds));
-        RegisterShortcuts();
-        //on resizing.... registering last to prevent multiple 
-        this.LogicalPixelSizeChanged += (sender, args) =>
+        //register
+        this.KeyDown += OnKeyDown;
+        this.KeyUp += OnKeyUp;
+        PresentationState.OnCurrentSlideChanged += OnCurrentSlideChanged;
+
+        //unregsister
+        this.Closed += (sender, args) =>
+        {
+            this.KeyDown -= OnKeyDown;
+            this.KeyUp -= OnKeyUp;
+            PresentationState.OnCurrentSlideChanged -= OnCurrentSlideChanged;
+        };
+    //on resizing.... registering last to prevent multiple 
+    this.LogicalPixelSizeChanged += (sender, args) =>
         {
             ResizePanel();
         };
         
-        PresentationState.OnCurrentSlideChanged += OnCurrentSlideChanged;
     }
 
     private void OnCurrentSlideChanged()
     {
         _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds)); 
     }
-
-    private void RegisterShortcuts()
-    {
-        Console.WriteLine("Registering Shortcuts.");
-        this.KeyDown += OnKeyDown;
-        this.KeyUp += OnKeyUp;
-    }
-
-
 
     private void ResizePanel()
     {
@@ -93,19 +95,10 @@ public class Display : Form
         }else if (e.Key == Configuration.Configuration.ToggleFullscreen)
         {
             SetFullscreen(!_isFullscreen);
-        }else if (e.Key == Keys.Right)
+        }else if (Configuration.Configuration.NextSlide.Contains(e.Key))
         {
-            if (e.Control)
-            {
-                //Cycle up list of screens.
-                MoveScreens(1);
-            }
-            else
-            {
-                SlidesManager.PresentationState?.NavigateRelative(1);
-                //go right!
-            }
-        }else if (e.Key == Keys.Left)
+            SlidesManager.PresentationState?.NavigateRelative(1);
+        }else if (Configuration.Configuration.PreviousSlide.Contains(e.Key))
         {
             if (e.Control)
             {
@@ -163,35 +156,7 @@ public class Display : Form
     private void SetFullscreen(bool fullscreen = true)
     {
         OSUtility.Instance.ToggleFullscreen(this, fullscreen);
-        
-#if UNIX
-            //todo: Differentiate between mac and linux with different constant?
-            var nativeView = this.ToNative();
-            nativeView.CollectionBehavior = NSWindowCollectionBehavior.Default |
-                                            NSWindowCollectionBehavior.FullScreenPrimary |
-                                            NSWindowCollectionBehavior.CanJoinAllSpaces |
-                                            NSWindowCollectionBehavior.FullScreenAllowsTiling;
-            nativeView.ToggleFullScreen(nativeView);
-            _isFullscreen = fullscreen;
-#elif WINDOWS
-        var view = WinFormsHelpers.ToNative(this);
-        if (view != null)
-        {
-            if (fullscreen)
-            {
-                view.FormBorderStyle = FormBorderStyle.None;
-                view.TopMost = true;
-                view.WindowState = FormWindowState.Maximized;
-                _isFullscreen = true;
-            }
-            else
-            {
-                view.FormBorderStyle = FormBorderStyle.Sizable;
-                view.WindowState = FormWindowState.Normal;
-                _isFullscreen = false;
-            }
-        }
-
-#endif
     }
+    
+    
 }

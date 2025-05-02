@@ -8,8 +8,8 @@ public static class Configuration
 	//Configuration
 	public static Eto.Forms.Keys[] ExitKey = [Keys.Escape, Keys.Q];
 	public static Keys ToggleFullscreen = Keys.F;
-	public static Keys Right = Keys.Right;
-	public static Keys Left = Keys.Left;
+	public static Keys[] NextSlide = [Keys.Right, Keys.Space];
+	public static Keys[] PreviousSlide = [Keys.Left, Keys.Backspace];
 
 	//Presentation Style
 	public static Color BGColor;

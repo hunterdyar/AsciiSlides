@@ -34,28 +34,44 @@ public class SlidesManager : Form
         };
         presentCommand.Executed += (sender, args) =>
         {
-            Console.WriteLine("Present");
-            if (_display != null)
+            if (Presentation.SlideCount > 0)
             {
-                _display.Close();
-                _display.Dispose();
+
+                Console.WriteLine("Present");
+                if (_display != null)
+                {
+                    _display.Close();
+                    _display.Dispose();
+                }
+
+                _display = new Display(inFullscreen.Checked.Value);
+            }else{
+                Console.WriteLine("No Presentation or Empty presentation loaded.");
             }
-
-            _display = new Display(inFullscreen.Checked.Value);
-
         };
+        
         presentButton.Command = presentCommand;
 
         var loadFilePicker = new FilePicker();
-        loadFilePicker.Filters.Add(new FileFilter("Text Documents", ".txt", ".text", ",md"));
+        loadFilePicker.Filters.Add(new FileFilter("Text Documents", ".txt", ".text"));
+        loadFilePicker.Filters.Add(new FileFilter("Markdown Documents",  ".md", ".markdown"));
+        loadFilePicker.Filters.Add(new FileFilter("All", "*"));
+
         loadFilePicker.FileAction = FileAction.OpenFile;
         loadFilePicker.Title = "Open Presentation";
         loadFilePicker.FilePathChanged += (sender, args) =>
         {
-            using var fileStream = new StreamReader(loadFilePicker.FilePath);
-            Presentation = Parser.PresentationParser.Parse(fileStream.ReadToEnd());
-            PresentationState = new PresentationState(Presentation);
-            Console.WriteLine("Loaded " + loadFilePicker.FilePath);
+            if (File.Exists(loadFilePicker.FilePath))
+            {
+                using var fileStream = new StreamReader(loadFilePicker.FilePath);
+                Presentation = Parser.PresentationParser.Parse(fileStream.ReadToEnd());
+                PresentationState = new PresentationState(Presentation);
+                Console.WriteLine("Loaded " + loadFilePicker.FilePath);
+            }
+            else
+            {
+                Console.WriteLine("File does not exist " + loadFilePicker.FilePath);
+            }
         };
         Content = new StackLayout()
         {
@@ -76,6 +92,11 @@ public class SlidesManager : Form
 
 
             }
+        };
+
+        this.KeyDown += (s, e) =>
+        {
+            Console.WriteLine("SlidesManager Hook OnKeyDown: " + e.Key.ToString());
         };
     }
 }

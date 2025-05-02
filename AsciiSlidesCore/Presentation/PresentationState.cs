@@ -39,6 +39,7 @@ public class PresentationState
 
 	public string GetCurrentAsHTML(Rectangle bounds)
 	{
+		
 		_builder.Clear();
 		_builder.AppendLine("<html>");
 		_builder.AppendLine("<head>");
