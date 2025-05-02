@@ -118,6 +118,9 @@ public class SlidesManager : Form
 
             };
         contentLayout.AddRow(presentGroup);
+        
+        var outputGroup = new OutputComponent();
+        contentLayout.AddRow(outputGroup);
         contentLayout.AddSpace();
         Content = contentLayout;
 
