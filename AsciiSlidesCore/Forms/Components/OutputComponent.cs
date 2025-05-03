@@ -17,6 +17,7 @@ public class OutputComponent : GroupBox
 		Text = "Output";
 		_presentationDropdown = new DropDown();
 		_speakerDropdown = new DropDown();
+		_swapButton = new Button { Text = "Swap" };
 		PopulateOptions();
 		
 
@@ -44,15 +45,17 @@ public class OutputComponent : GroupBox
 	private void PopulateOptions()
 	{
 		_options.Clear();
+		var monitors = OSUtility.Instance.GetMonitors();
+		
 		int screenCount = Screen.Screens.ToArray().Length;
-		for (var i = 0; i < screenCount; i++)
+		for (var i = 0; i < monitors.Length; i++)
 		{
-			var screen = Screen.Screens.ToArray()[i];
+			var screen = Screen.Screens.ToArray()[monitors[i].screenIndex];
 			if (screen == Screen.PrimaryScreen)
 			{
 				primaryDisplayOptionIndex = i;
 			}
-			_options.Add(screen.ToString());
+			_options.Add(monitors[i].name);
 		}
 		_options.Add("Windowed");
 

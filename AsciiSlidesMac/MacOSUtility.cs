@@ -16,4 +16,9 @@ public class MacOSUtility : OSUtility
 		nativeView.ToggleFullScreen(nativeView);
 		return fullscreen;
 	}
+
+	override public MonitorInfo[] GetMonitors()
+	{
+		throw new NotImplementedException();
+	}
 }

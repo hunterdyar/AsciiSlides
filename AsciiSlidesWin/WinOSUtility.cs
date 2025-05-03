@@ -3,6 +3,7 @@ using AsciiSlidesCore;
 using Eto.Forms;
 using Eto.Wpf;
 using Form = Eto.Forms.Form;
+using Screen = System.Windows.Forms.Screen;
 
 namespace AsciiSlidesWin;
 
@@ -24,4 +25,20 @@ public class WinOSUtility : OSUtility
 			return false;
 		}
 	}
+	
+	public override MonitorInfo[] GetMonitors()
+	{
+		var allScreens = Screen.AllScreens;
+		MonitorInfo[] allMonitors = new MonitorInfo[allScreens.Length];
+		for (int i = 0; i < allScreens.Length; i++)
+		{
+			allMonitors[i] = new MonitorInfo();
+			allMonitors[i].name =  allScreens[i].DeviceName;
+			allMonitors[i].screenIndex = i;
+		}
+		return allMonitors;
+	}
+	
+	
+	
 }

@@ -8,7 +8,7 @@ public class PresentationState
 	private static Slide EndOfSlideSlide = new BlankSlide("end of slide");
 	public static Action<Slide> OnSlideChanged = delegate { };
 	public Presentation Presentation => _presentation;
-	private Presentation _presentation = new Presentation(new Frontmatter(),[]);
+	private Presentation _presentation = new Presentation();
 	
 	public Slide CurrentSlide => _presentation.Slides[_currentSlideIndex];
 	private int _currentSlideIndex = 0;

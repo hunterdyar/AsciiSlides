@@ -8,7 +8,7 @@ public class Slide
 	public string RawContent;
 	public Frontmatter Frontmatter;
 	public bool HasSpeakerNotes = false;
-	public string SpeakerNotes; 
+	public string SpeakerNotes = String.Empty; 
 	private StringBuilder _sb = new();
 
 	public int SlideNumber;

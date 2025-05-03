@@ -18,7 +18,7 @@ public class SlidesManager : Form
     {
         Title = "ASCIISlides Manager";
         ClientSize = new Size(Configuration.ManagerWindowWidth, Configuration.ManagerWindowHeight);
-
+            
         var presentButton = new Button { Text = "Present" };
         var presentCommand = new Command() { MenuText = "Present" };
         var displayInFullscreen = new CheckBox()
@@ -84,39 +84,39 @@ public class SlidesManager : Form
         var fileGroup = new FilesComponent();
         contentLayout.Add(fileGroup);
         var presentGroup = new GroupBox()
+        {
+            Text = "Presentation",
+            Width = Configuration.ManagerWindowWidth,
+            Content = new StackLayout()
             {
-                Text = "Presentation",
-                Width = Configuration.ManagerWindowWidth,
-                Content = new StackLayout()
+                Orientation = Orientation.Vertical, 
+                Items =
                 {
-                    Orientation = Orientation.Vertical, 
-                    Items = {
-                                new StackLayout()
-                                {
-                                    Orientation = Orientation.Horizontal,
-                                    VerticalContentAlignment = VerticalAlignment.Center,
-                                    Spacing = 5,
-                                    Items =
-                                    {
-                                        presentButton,
-                                        displayInFullscreen,
-                                    }
-                                },
-                                new StackLayout()
-                                {
-                                    Orientation = Orientation.Horizontal,
-                                    VerticalContentAlignment = VerticalAlignment.Center,
-                                    Spacing = 5,
-                                    Items =
-                                    {
-                                        presenterViewButton,
-                                        presenterViewInFullscreen,
-                                    }
-                                }
-                            }
+                    new StackLayout()
+                    {
+                        Orientation = Orientation.Horizontal,
+                        VerticalContentAlignment = VerticalAlignment.Center,
+                        Spacing = 5,
+                        Items =
+                        {
+                            presentButton,
+                            displayInFullscreen,
+                        }
+                    },
+                    new StackLayout()
+                    {
+                        Orientation = Orientation.Horizontal,
+                        VerticalContentAlignment = VerticalAlignment.Center,
+                        Spacing = 5,
+                        Items =
+                        {
+                            presenterViewButton,
+                            presenterViewInFullscreen,
+                        }
+                    }
                 }
-
-            };
+            } 
+        };
         contentLayout.AddRow(presentGroup);
         
         var outputGroup = new OutputComponent();
