@@ -1,16 +1,16 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Shapes;
 using AsciiSlidesCore;
 using Eto.Forms;
 using Eto.Wpf;
 using Form = Eto.Forms.Form;
-using Screen = System.Windows.Forms.Screen;
-
+using Rectangle = Eto.Drawing.Rectangle;
 namespace AsciiSlidesWin;
 
 public class WinOSUtility : OSUtility
 {
-	public override bool ToggleFullscreen(Form view, bool fullscreen)
+	public override bool ToggleFullscreen(Form view, Eto.Forms.Screen screen, bool fullscreen)
 	{
 		if (fullscreen)
 		{
@@ -23,6 +23,7 @@ public class WinOSUtility : OSUtility
 		{
 			view.WindowState = WindowState.Normal;
 			view.WindowStyle = WindowStyle.Default;
+			view.Bounds = new Rectangle(screen.Bounds / 2);
 			return false;
 		}
 	}

@@ -6,7 +6,7 @@ namespace AsciiSlidesMac;
 
 public class MacOSUtility : OSUtility
 {
-	public override bool ToggleFullscreen(Form form, bool fullscreen)
+	public override bool ToggleFullscreen(Form form, Screen screen, bool fullscreen)
 	{
 		var nativeView = form.ToNative();
 		nativeView.CollectionBehavior = NSWindowCollectionBehavior.Default |

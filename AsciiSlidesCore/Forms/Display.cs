@@ -14,20 +14,15 @@ namespace AsciiSlidesCore;
 /// <summary>
 /// Display is a window (the fullscreen presentation) that renders the current Presentation using a webview, from a given PresentationState.
 /// </summary>
-public class Display : Form
+public class Display : PresentationForm
 {
-    public bool IsFullscreen => _isFullscreen;
-    private bool _isFullscreen = false;
+   
     private WebView _webPanel;
-    
-    public Display(bool inFullscreen)
+    public Display(Screen screen, bool inFullscreen) : base(screen, inFullscreen)
     {
         Title = "Presentation";
-        Topmost = inFullscreen;
         Maximizable = true;
-        Show();
-        Focus();
-
+        
         _webPanel = new Eto.Forms.WebView()
         {
             BackgroundColor = Colors.LightYellow,
@@ -39,11 +34,9 @@ public class Display : Form
 
         Console.WriteLine("Created Display.");
         //fullscreen
-        SetFullscreen(inFullscreen);
         _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds));
         Title = "Slide " + SlidesManager.PresentationState.CurrentSlide.SlideNumber + "/" + SlidesManager.PresentationState.Presentation.SlideCount;
         //register
-        AsciiSlidesCore.EventHandler.RegisterFormAsSlideController(this);
         
         //handle our own shortcuts.
         this.KeyDown += OnKeyDown;
@@ -60,14 +53,14 @@ public class Display : Form
             //unhandle events
 
             PresentationState.OnSlideChanged -= OnCurrentSlideChanged;
-            
         };
         //on resizing.... registering last to prevent multiple 
         this.LogicalPixelSizeChanged += (sender, args) =>
         {
             ResizePanel();
         };
-        
+
+        Focus();
     }
 
     private void OnCurrentSlideChanged(Slide slide)
@@ -76,9 +69,9 @@ public class Display : Form
         Title = "Slide " + slide.SlideNumber + "/" + SlidesManager.PresentationState.Presentation.SlideCount;
     }
 
-    private void ResizePanel()
+    protected override void ResizePanel()
     {
-        Console.WriteLine("Resizing Panel.");
+        base.ResizePanel();
         //todo: right now we just reload everything, but once we support video embeddes, will have to do this by running some JS or such to dynamically change the style properties and not do a reload.
         _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds));
     }
@@ -92,7 +85,7 @@ public class Display : Form
         }
         else if (e.Key == Configuration.ToggleFullscreen)
         {
-            SetFullscreen(!_isFullscreen);
+            SetFullscreen(_screen, !_isFullscreen);
         }
     }
 
@@ -100,31 +93,5 @@ public class Display : Form
     {
 
     }
-    
-    private void MoveScreens(int delta)
-    {
-        //untested, I only have 1 screen right now.
-        var screens = Eto.Forms.Screen.Screens.ToList();
-        var current = screens.IndexOf(this.Screen);
-        var next = current + delta;
-        
-        //cycle
-        if (next < 0)
-        {
-            next += screens.Count;
-        }else if (next >= screens.Count)
-        {
-            next -= screens.Count;
-        }
-        
-        this.Bounds = new Rectangle(screens[next].Bounds);
-        ResizePanel();
-    }
-
-    private void SetFullscreen(bool fullscreen = true)
-    {
-        _isFullscreen = OSUtility.Instance.ToggleFullscreen(this, fullscreen);
-    }
-    
     
 }

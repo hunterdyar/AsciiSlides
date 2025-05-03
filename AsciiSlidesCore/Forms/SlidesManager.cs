@@ -24,98 +24,26 @@ public class SlidesManager : Form
         ClientSize = new Size(Configuration.ManagerWindowWidth, Configuration.ManagerWindowHeight);
             
         var presentButton = new Button { Text = "Present" };
-        var presentCommand = new Command() { MenuText = "Present" };
         var displayInFullscreen = new CheckBox()
         {
             Text = "Fullscreen",
             Checked = true,
         };
-        presentCommand.Executed += (sender, args) =>
-        {
-            
-        };
         
-        presentButton.Command = presentCommand;
-        presentButton.Enabled = PresentationState.IsPresentationReady;
-        PresentationState.OnIsPresentationReadyChanged += b =>
-        {
-            presentButton.Enabled = b;
-        };
-
-        var presenterViewButton = new Button { Text = "Presenter View" };
-        var presenterViewCommand = new Command() { MenuText = "Presenter View" };
-        var presenterViewInFullscreen = new CheckBox()
-        {
-            Text = "Fullscreen",
-            Checked = true,
-        };
-        presenterViewCommand.Executed += (sender, args) =>
-        {
-            if (PresentationState.IsPresentationReady)
-            {
-                Console.WriteLine("Presenter View");
-                if (_presenterDisplay != null)
-                {
-                    _presenterDisplay.Close();
-                    _presenterDisplay.Dispose();
-                }
-
-                _presenterDisplay = new PresenterView();
-            }
-            else
-            {
-                Console.WriteLine("No Presentation or Empty presentation loaded.");
-            }
-        };
-
-        presenterViewButton.Command = presenterViewCommand;
-        presenterViewButton.Enabled = PresentationState.IsPresentationReady;
-        PresentationState.OnIsPresentationReadyChanged += b => { presenterViewButton.Enabled = b; };
-        //
+        //Layout
         var contentLayout = new DynamicLayout();
+        Content = contentLayout;
+
+        //files
         _filesComponent = new FilesComponent(this);
         contentLayout.Add(_filesComponent);
-        var presentGroup = new GroupBox()
-        {
-            Text = "Presentation",
-            Width = Configuration.ManagerWindowWidth,
-            Content = new StackLayout()
-            {
-                Orientation = Orientation.Vertical, 
-                Items =
-                {
-                    new StackLayout()
-                    {
-                        Orientation = Orientation.Horizontal,
-                        VerticalContentAlignment = VerticalAlignment.Center,
-                        Spacing = 5,
-                        Items =
-                        {
-                            presentButton,
-                            displayInFullscreen,
-                        }
-                    },
-                    new StackLayout()
-                    {
-                        Orientation = Orientation.Horizontal,
-                        VerticalContentAlignment = VerticalAlignment.Center,
-                        Spacing = 5,
-                        Items =
-                        {
-                            presenterViewButton,
-                            presenterViewInFullscreen,
-                        }
-                    }
-                }
-            } 
-        };
-        contentLayout.AddRow(presentGroup);
         
+        //output
         _outputComponent = new OutputComponent(this);
         contentLayout.AddRow(_outputComponent);
         contentLayout.AddSpace();
-        Content = contentLayout;
 
+        //event registration
         EventHandler.OnFilePicked += OnFilePicked;
         EventHandler.RegisterFormAsSlideController(this);
         Closed += (sender, args) =>
@@ -145,26 +73,65 @@ public class SlidesManager : Form
         }
     }
 
-    public void LaunchPresentation()
+    public void LaunchPresentation(DisplaySelection displaySelection)
     {
+        Console.WriteLine($"Launching Presentation with {displaySelection}");
         if (PresentationState.IsPresentationReady)
         {
             Console.WriteLine("Present");
+            //is there a situation where we don't close previous?
             if (_display != null)
             {
                 _display.Close();
                 _display.Dispose();
             }
             
-            _display = new Display(false);
-            
-            
+            if (displaySelection.DisplayOutputType != OutputType.None)
+            {
+                //close previous
+                if (displaySelection.DisplayOutputType == OutputType.Fullscreen)
+                {
+                    if (displaySelection.DisplayScreen != null)
+                    {
+                        _display = new Display(displaySelection.DisplayScreen, true);
+                    }
+                    else
+                    {
+                        throw new Exception("Display Screen Not Set, but output type is fullscreen.");
+                    }
+                }else if (displaySelection.DisplayOutputType == OutputType.Fullscreen)
+                {
+                    _display = new Display(displaySelection.DisplayScreen,false);
+                }
+            }
+
             if (_presenterDisplay != null)
             {
                 _presenterDisplay.Close();
                 _presenterDisplay.Dispose();
             }
-            _presenterDisplay  = new PresenterView();
+
+            if (displaySelection.SpeakerNotesOutputType != OutputType.None)
+            {
+                //close previous
+                if (displaySelection.SpeakerNotesOutputType == OutputType.Fullscreen)
+                {
+                    if (displaySelection.SpeakerNotesScreen != null)
+                    {
+                        _presenterDisplay = new PresenterView(displaySelection.SpeakerNotesScreen, true);
+                    }
+                    else
+                    {
+                        throw new Exception("Display Screen Not Set, but output type is fullscreen.");
+                    }
+                }
+                else if (displaySelection.SpeakerNotesOutputType == OutputType.Fullscreen)
+                {
+                    _presenterDisplay = new PresenterView(displaySelection.SpeakerNotesScreen, false);
+                }
+            }
+
+            
             
         }
         else
