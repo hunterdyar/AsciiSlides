@@ -10,9 +10,13 @@ public class SlidesManager : Form
 {
     private Display? _display = null;
     private PresenterView? _presenterDisplay = null;
-    public static bool IsPresentationLoaded = false;
+    private OutputComponent _outputComponent;
+    private FilesComponent _filesComponent;
     public static Presentation? Presentation = null;
     public static PresentationState PresentationState = new PresentationState();
+    
+    private int _selectedDisplayIndex = -1;
+    private int _selectedSpeakerViewIndex = -1;
     
     public SlidesManager()
     {
@@ -28,24 +32,12 @@ public class SlidesManager : Form
         };
         presentCommand.Executed += (sender, args) =>
         {
-            if (IsPresentationLoaded)
-            {
-                Console.WriteLine("Present");
-                if (_display != null)
-                {
-                    _display.Close();
-                    _display.Dispose();
-                }
-
-                _display = new Display(displayInFullscreen.Checked.Value);
-            }else{
-                Console.WriteLine("No Presentation or Empty presentation loaded.");
-            }
+            
         };
         
         presentButton.Command = presentCommand;
-        presentButton.Enabled = IsPresentationLoaded;
-        EventHandler.OnPresentationLoadedChanged += b =>
+        presentButton.Enabled = PresentationState.IsPresentationReady;
+        PresentationState.OnIsPresentationReadyChanged += b =>
         {
             presentButton.Enabled = b;
         };
@@ -59,7 +51,7 @@ public class SlidesManager : Form
         };
         presenterViewCommand.Executed += (sender, args) =>
         {
-            if (IsPresentationLoaded)
+            if (PresentationState.IsPresentationReady)
             {
                 Console.WriteLine("Presenter View");
                 if (_presenterDisplay != null)
@@ -77,12 +69,12 @@ public class SlidesManager : Form
         };
 
         presenterViewButton.Command = presenterViewCommand;
-        presenterViewButton.Enabled = IsPresentationLoaded;
-        EventHandler.OnPresentationLoadedChanged += b => { presenterViewButton.Enabled = b; };
+        presenterViewButton.Enabled = PresentationState.IsPresentationReady;
+        PresentationState.OnIsPresentationReadyChanged += b => { presenterViewButton.Enabled = b; };
         //
         var contentLayout = new DynamicLayout();
-        var fileGroup = new FilesComponent();
-        contentLayout.Add(fileGroup);
+        _filesComponent = new FilesComponent(this);
+        contentLayout.Add(_filesComponent);
         var presentGroup = new GroupBox()
         {
             Text = "Presentation",
@@ -119,8 +111,8 @@ public class SlidesManager : Form
         };
         contentLayout.AddRow(presentGroup);
         
-        var outputGroup = new OutputComponent();
-        contentLayout.AddRow(outputGroup);
+        _outputComponent = new OutputComponent(this);
+        contentLayout.AddRow(_outputComponent);
         contentLayout.AddSpace();
         Content = contentLayout;
 
@@ -145,21 +137,40 @@ public class SlidesManager : Form
             Presentation = Parser.PresentationParser.Parse(presentationText);
             Presentation.FileName = fileName;
             PresentationState = new PresentationState(Presentation);
-            SetPresentationLoaded(true);
-            EventHandler.OnPresentationLoaded.Invoke(Presentation);
-          
         }
         catch (Exception exception)
         {
             Console.WriteLine(exception);
-            IsPresentationLoaded = false;
+            PresentationState.SetPresentationReady(false);
         }
     }
 
-    private void SetPresentationLoaded(bool b)
+    public void LaunchPresentation()
     {
-        IsPresentationLoaded = b;
-        EventHandler.OnPresentationLoadedChanged.Invoke(IsPresentationLoaded);
+        if (PresentationState.IsPresentationReady)
+        {
+            Console.WriteLine("Present");
+            if (_display != null)
+            {
+                _display.Close();
+                _display.Dispose();
+            }
+            
+            _display = new Display(false);
+            
+            
+            if (_presenterDisplay != null)
+            {
+                _presenterDisplay.Close();
+                _presenterDisplay.Dispose();
+            }
+            _presenterDisplay  = new PresenterView();
+            
+        }
+        else
+        {
+            Console.WriteLine("No Presentation or Empty presentation loaded.");
+        }
     }
 }
 	

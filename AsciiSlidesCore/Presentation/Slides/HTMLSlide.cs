@@ -7,7 +7,7 @@ public class HTMLSlide : Slide
 {
 	private string style;
 
-	public HTMLSlide()
+	public HTMLSlide(string rawContent) : base(rawContent)
 	{
 		//Coding design note.... should this be in the factory?
 		if (!Frontmatter.TryGetKey("style", out style))

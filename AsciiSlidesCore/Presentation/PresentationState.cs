@@ -5,6 +5,10 @@ namespace AsciiSlidesCore;
 
 public class PresentationState
 {
+	public static bool IsPresentationReady = false;
+	public static Action<bool> OnIsPresentationReadyChanged = delegate {};
+	public static Action<Presentation> OnPresentationLoaded = delegate { };
+
 	private static Slide EndOfSlideSlide = new BlankSlide("end of slide");
 	public static Action<Slide> OnSlideChanged = delegate { };
 	public Presentation Presentation => _presentation;
@@ -26,7 +30,26 @@ public class PresentationState
 	{
 		_presentation = presentation;
 		_currentSlideIndex = 0;
+		if (presentation.SlideCount > 0)
+		{
+			SetPresentationReady(true);
+		}
+		else
+		{
+			Console.WriteLine("Empty Presentation!");
+			SetPresentationReady(false);
+		}
 	}
+
+	public void SetPresentationReady(bool ready)
+	{
+		if (ready != IsPresentationReady)
+		{
+			IsPresentationReady = ready;
+			OnIsPresentationReadyChanged?.Invoke(ready);
+		}
+	}
+	
 	public void NavigateRelative(int delta)
 	{
 		if (delta == 0)
@@ -44,7 +67,7 @@ public class PresentationState
 		}
 		OnSlideChanged?.Invoke(_presentation.Slides[_currentSlideIndex]);
 	}
-
+	
 	public string GetCurrentAsHTML(Rectangle bounds)
 	{
 		return _presentation.Slides[_currentSlideIndex].GetSlideAsHTML(this, bounds, false);

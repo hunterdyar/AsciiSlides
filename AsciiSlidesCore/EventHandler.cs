@@ -6,8 +6,6 @@ public static class EventHandler
 {
 	public static Action<int> OnSlideChanged = delegate { };
 	public static Action<string> OnFilePicked = delegate { };
-	public static Action<Presentation> OnPresentationLoaded = delegate { };
-	public static Action<bool> OnPresentationLoadedChanged = delegate { };
 	public static void RegisterFormAsSlideController(Form form)
 	{
 		form.KeyDown += FormOnKeyDown;

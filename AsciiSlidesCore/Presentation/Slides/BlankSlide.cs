@@ -4,20 +4,19 @@ namespace AsciiSlidesCore;
 
 public class BlankSlide : Slide
 {
-	private readonly string _message;
 
-	public BlankSlide(string message)
+	public BlankSlide(string rawContent) : base(rawContent)
 	{
-		_message = message;
 	}
 
 	protected override void AppendContent(StringBuilder sb)
 	{
-		if (!string.IsNullOrEmpty(_message))
+		if (!string.IsNullOrEmpty(RawContent))
 		{
-			sb.AppendLine($"<p style='text-align: center;'>{_message}</p>");
+			sb.AppendLine($"<p style='text-align: center;'>{RawContent}</p>");
 		}
-		base.AppendContent(sb);
+
+		return;
 	}
 
 	protected override string GetSlideBGColor()

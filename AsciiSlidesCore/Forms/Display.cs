@@ -12,7 +12,7 @@ using Rectangle = Eto.Drawing.Rectangle;
 namespace AsciiSlidesCore;
 
 /// <summary>
-/// Display is a window that renders the current Presentation with a given PresentationState.
+/// Display is a window (the fullscreen presentation) that renders the current Presentation using a webview, from a given PresentationState.
 /// </summary>
 public class Display : Form
 {
@@ -62,8 +62,8 @@ public class Display : Form
             PresentationState.OnSlideChanged -= OnCurrentSlideChanged;
             
         };
-    //on resizing.... registering last to prevent multiple 
-    this.LogicalPixelSizeChanged += (sender, args) =>
+        //on resizing.... registering last to prevent multiple 
+        this.LogicalPixelSizeChanged += (sender, args) =>
         {
             ResizePanel();
         };
@@ -90,16 +90,10 @@ public class Display : Form
         {
             Close();
         }
-        // else if (e.Key == Configuration.ToggleFullscreen)
-        // {
-        //     SetFullscreen(!_isFullscreen);
-        // }
-        // if (e.Control)
-        // {
-        //     //Cycle Down list of screens.
-        //     MoveScreens(-1);
-        // }
-        
+        else if (e.Key == Configuration.ToggleFullscreen)
+        {
+            SetFullscreen(!_isFullscreen);
+        }
     }
 
     private void OnKeyUp(object? sender, KeyEventArgs e)

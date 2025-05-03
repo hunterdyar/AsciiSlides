@@ -5,14 +5,20 @@ namespace AsciiSlidesCore.Components;
 
 public class FilesComponent : GroupBox
 {
-	public FilesComponent()
+	public string FilePath => FilePath;
+	private string _filePath = string.Empty;
+	public string FileName => _fileName;
+	private string _fileName = string.Empty;
+	private SlidesManager _slidesManager;
+	public FilesComponent(SlidesManager slidesManager)
 	{
+		_slidesManager = slidesManager;
 		var loadFilePicker = new FilePicker();
 		var fileLoadedLabel = new Label()
 		{
 			Text = "Loaded: None"
 		};
-		EventHandler.OnPresentationLoaded += presentation =>
+		PresentationState.OnPresentationLoaded += presentation =>
 		{
 			fileLoadedLabel.Text = "Loaded: " + Path.GetFileName(presentation.FileName);
 		};
@@ -28,11 +34,15 @@ public class FilesComponent : GroupBox
 		{
 			if (File.Exists(loadFilePicker.FilePath))
 			{
+				_filePath = loadFilePicker.FilePath;
+				_fileName = Path.GetFileName(_filePath);
 				PickFile(loadFilePicker.FilePath);
 			}
 			else
 			{
 				Console.WriteLine("File does not exist " + loadFilePicker.FilePath);
+				_filePath = string.Empty;
+				_fileName = string.Empty;
 			}
 		};
 

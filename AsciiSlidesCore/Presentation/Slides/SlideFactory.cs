@@ -13,31 +13,27 @@ public static class SlideFactory
 		switch (slideType.ToLower())
 		{
 			case "youtube":
-				slide = new YTSlide
+				slide = new YTSlide(rawContent)
 				{
 					Frontmatter = frontmatter,
-					RawContent = rawContent,
 					SlideNumber = number
 				};
 				break;
 			case "html":
-				slide = new HTMLSlide
+				slide = new HTMLSlide(rawContent)
 				{
 					Frontmatter = frontmatter,
-					RawContent = rawContent,
 					SlideNumber = number
 				};
 				break;
 			case "ascii":
 			default:
-				slide = new Slide
+				slide = new ASCIISlide(rawContent)
 				{
 					Frontmatter = frontmatter,
-					RawContent = rawContent,
 					SlideNumber = number
 				};
 				break;
-			
 		}
 
 		bool hasSpeaker;

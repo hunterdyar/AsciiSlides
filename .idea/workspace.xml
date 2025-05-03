@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6823db37-7635-451c-90b3-4578784f43be" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/slideDesignScratch.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AsciiSlides/Configuration/Configuration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AsciiSlides/Configuration/Configuration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AsciiSlides/Display.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AsciiSlides/Display.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AsciiSlides/Presentation/PresentationState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AsciiSlides/Presentation/PresentationState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AsciiSlides/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AsciiSlides/Program.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AsciiSlidesCore/DisplaySelection.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AsciiSlidesCore/EventHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AsciiSlidesCore/EventHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AsciiSlidesCore/Forms/Components/FilesComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AsciiSlidesCore/Forms/Components/FilesComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AsciiSlidesCore/Forms/Components/OutputComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AsciiSlidesCore/Forms/Components/OutputComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AsciiSlidesCore/Forms/SlidesManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AsciiSlidesCore/Forms/SlidesManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AsciiSlidesCore/Presentation/PresentationState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AsciiSlidesCore/Presentation/PresentationState.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,43 +27,43 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "hunterdyar"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;hunterdyar&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/hunterdyar/AsciiSlides.git",
-    "accountId": "e41a067c-e9bc-4fbd-ab25-37fde39b950f"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/hunterdyar/AsciiSlides.git&quot;,
+    &quot;accountId&quot;: &quot;e41a067c-e9bc-4fbd-ab25-37fde39b950f&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="2wQ6xniIWPWL2dpNnmIkdbG4lGY" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "S:/csharp/AsciiSlides",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;S:/csharp/AsciiSlides&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -78,6 +79,7 @@
       <option name="presentableId" value="Default" />
       <updated>1745961699385</updated>
       <workItem from="1745961700447" duration="2452000" />
+      <workItem from="1746285186262" duration="21000" />
     </task>
     <servers />
   </component>

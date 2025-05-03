@@ -7,7 +7,7 @@ public class YTSlide : Slide
 {
 	private string url;
 
-	public YTSlide()
+	public YTSlide(string rawContent) : base(rawContent)
 	{
 		//you can make the url the body.
 		if (!Frontmatter.TryGetKey("url", out url))
