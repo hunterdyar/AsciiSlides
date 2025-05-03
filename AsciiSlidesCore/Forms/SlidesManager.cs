@@ -9,7 +9,7 @@ namespace AsciiSlidesCore;
 public class SlidesManager : Form
 {
     private Display? _display = null;
-    private PresenterView? _presenterDisplay = null;
+    private SpeakerView? _speakerView = null;
     private OutputComponent _outputComponent;
     private FilesComponent _filesComponent;
     public static Presentation? Presentation = null;
@@ -105,10 +105,10 @@ public class SlidesManager : Form
                 }
             }
 
-            if (_presenterDisplay != null)
+            if (_speakerView != null)
             {
-                _presenterDisplay.Close();
-                _presenterDisplay.Dispose();
+                _speakerView.Close();
+                _speakerView.Dispose();
             }
 
             if (displaySelection.SpeakerNotesOutputType != OutputType.None)
@@ -118,7 +118,7 @@ public class SlidesManager : Form
                 {
                     if (displaySelection.SpeakerNotesScreen != null)
                     {
-                        _presenterDisplay = new PresenterView(displaySelection.SpeakerNotesScreen, true);
+                        _speakerView = new SpeakerView(displaySelection.SpeakerNotesScreen, true);
                     }
                     else
                     {
@@ -127,7 +127,7 @@ public class SlidesManager : Form
                 }
                 else if (displaySelection.SpeakerNotesOutputType == OutputType.Fullscreen)
                 {
-                    _presenterDisplay = new PresenterView(displaySelection.SpeakerNotesScreen, false);
+                    _speakerView = new SpeakerView(displaySelection.SpeakerNotesScreen, false);
                 }
             }
 

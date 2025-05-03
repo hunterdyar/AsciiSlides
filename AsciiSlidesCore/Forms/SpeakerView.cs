@@ -3,12 +3,12 @@ using Eto.Forms;
 
 namespace AsciiSlidesCore;
 
-public class PresenterView : PresentationForm
+public class SpeakerView : PresentationForm
 {
 	private readonly Label _notesView;
 	private readonly WebView _previewView;
 	private readonly Label _timerView;
-	public PresenterView(Screen screen, bool inFullScreen) : base(screen, inFullScreen)
+	public SpeakerView(Screen screen, bool inFullScreen) : base(screen, inFullScreen)
 	{
 		//generally done to not cast color on presenters.
 		BackgroundColor = Colors.Black;

@@ -78,6 +78,8 @@ public class OutputComponent : GroupBox
 		Content = layout;
 	}
 
+	//todo: Right now, SelectedIndex and DisplaySelection object are manually/externally sync'd. I don't love it.
+	//I also don't love keeping the Windowed and None options in the same list... The list should be a list of Option objects and Bound to the dropdown form. one source of truth and data flow.
 	private void SwapOutputsCommandOnExecuted(object? sender, EventArgs e)
 	{
 		//swap indices
@@ -149,7 +151,7 @@ public class OutputComponent : GroupBox
 			if (_options.Count == 2)
 			{
 				//uh oh! only one monitor!
-				//we just set the speaker to be the output instead of the presenter view. That's probably wrong, but it's allowed.
+				//we just set the speaker to be the output instead of the speaker view. That's probably wrong, but it's allowed.
 				other.SelectedIndex = _windowedIndex;
 			}
 
