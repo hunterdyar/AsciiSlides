@@ -117,16 +117,40 @@ public abstract class Slide
 
 	protected virtual int GetRowCount(PresentationState state)
 	{
+		if (!Frontmatter.TryGetKey("rows", out var rows))
+		{
+			return state.RowCount;
+		}
+
+		if (int.TryParse(rows, out var rowcount))
+		{
+			return rowcount;
+		}
+		Console.WriteLine($"Warning: Unable to parse int ({rows})");
+		
 		return state.RowCount;
 	}
 
 	protected virtual int GetColCount(PresentationState state)
 	{
+		if (!Frontmatter.TryGetKey("cols", out var cols))
+		{
+			return state.RowCount;
+		}
+
+		if (int.TryParse(cols, out var colcount))
+		{
+			return colcount;
+		}
+
+		Console.WriteLine($"Warning: Unable to parse int ({cols})");
+
 		return state.ColumnCount;
 	}
 
 	protected virtual float GetAspect(PresentationState state)
 	{
+		//todo: rows/cols...
 		return state.Aspect;
 	}
 	protected virtual string GetSlideBGColor()

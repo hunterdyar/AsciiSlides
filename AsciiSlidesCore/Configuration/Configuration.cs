@@ -31,15 +31,12 @@ public static class Configuration
 		if (_configuration == null)
 		{
 			_configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-			
 		}
 	}
 	public static void InitializeOnLaunch()
 	{
-		
 		//load settings from file or create settings file.
 		LoadDefaultStyle();
-		
 	}
 
 	public static void SetKey(string key, string value)
