@@ -13,23 +13,19 @@ public static class PresentationParser
 	{
 		Presentation presentation = new Presentation();
 		var t = new Queue<Token>(tokens);
-		presentation.Frontmatter = ParseFrontmatter(ref t);
-
-		if (!presentation.Frontmatter.TryGetKey("type", out string defaultSlideType))
-		{
-			defaultSlideType = "ascii";
-		}
+		presentation.Frontmatter = ParseFrontmatter(ref t, null);
+		
 		var slides = new List<Slide>();
 		while (t.Count > 0)
 		{
-			slides.Add(ParseSlide(ref t, slides.Count+1,defaultSlideType));
+			slides.Add(ParseSlide(ref t, slides.Count+1,presentation.Frontmatter));
 		}
 		presentation.Slides = slides.ToArray();
 		
 		return presentation;
 	}
 
-	private static Slide ParseSlide(ref Queue<Token> tokens, int slideNumber, string defaultSlideType)
+	private static Slide ParseSlide(ref Queue<Token> tokens, int slideNumber, Frontmatter defaultFrontmatter)
 	{
 		var startSlide = tokens.Dequeue();
 		if (startSlide.Type != TokenType.StartSlide)
@@ -37,7 +33,7 @@ public static class PresentationParser
 			throw new Exception("Expected start slide.");
 		}
 		//optional delimiter? or does that even get emitted?
-		Frontmatter f = ParseFrontmatter(ref tokens);
+		Frontmatter f = ParseFrontmatter(ref tokens, defaultFrontmatter);
 		var endFront = tokens.Dequeue();
 		if (endFront.Type != TokenType.EndFrontmatter)
 		{
@@ -48,10 +44,10 @@ public static class PresentationParser
 		{
 			throw new Exception("Expected slide body.");
 		}
-		return SlideFactory.CreateSlide(f, body.Source, slideNumber, defaultSlideType);
+		return SlideFactory.CreateSlide(f, body.Source, slideNumber);
 	}
 
-	private static Frontmatter ParseFrontmatter(ref Queue<Token> tokens)
+	private static Frontmatter ParseFrontmatter(ref Queue<Token> tokens, Frontmatter? parentFrontmatter = null)
 	{
 		var frontmatter = new Frontmatter();
 		while (tokens.Peek().Type == TokenType.Ident)
@@ -64,6 +60,8 @@ public static class PresentationParser
 			}
 			frontmatter.AddKeyValuePair(key.Source,value.Source);
 		}
+
+		frontmatter.SetParentFrontmatter(parentFrontmatter);
 		return frontmatter;
 	}
 }

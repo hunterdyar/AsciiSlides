@@ -3,7 +3,7 @@
 public class Frontmatter
 {
 	private Dictionary<string, string> _frontmatter = new();
-
+	private Frontmatter? _parent;
 	public Frontmatter()
 	{
 		
@@ -27,10 +27,20 @@ public class Frontmatter
 		{
 			return true;
 		}
-		else
+		
+		//now check our parent.
+		if (_parent != null)
 		{
-			value = string.Empty;
-			return false;
+			return _parent.TryGetKey(key, out value);
 		}
+		
+		value = string.Empty;
+		return false;
+	}
+
+	//todo: this could be set parent, and then a recursive lookup. This will prevent the pointless data dupes.
+	public void SetParentFrontmatter(Frontmatter? parentFrontmatter)
+	{
+		_parent = parentFrontmatter;
 	}
 }

@@ -1,6 +1,6 @@
 ﻿background: #000
 textcolor: #FFF
-type: md
+type: ascii
 
 ###
 notes: { listty }

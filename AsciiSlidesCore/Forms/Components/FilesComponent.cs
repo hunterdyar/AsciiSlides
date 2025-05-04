@@ -16,7 +16,7 @@ public class FilesComponent : GroupBox
 		var loadFilePicker = new FilePicker();
 		var fileLoadedLabel = new Label()
 		{
-			Text = "Loaded: None"
+			Text = "No Presentation File Loaded"
 		};
 		SlidesManager.OnPresentationLoaded += presentation =>
 		{
@@ -33,6 +33,12 @@ public class FilesComponent : GroupBox
 
 		loadFilePicker.FileAction = FileAction.OpenFile;
 		loadFilePicker.Title = "Open Presentation";
+
+		//todo: when we save the file, and reload it, we don't realize we've reloaded it.
+		//hacky temp is to add a 'reload' button.
+		//data watch feature feels correct to me, however. Like, we're not loading the presentation, the user should feel like we're just pointing to a file.
+		
+		
 		loadFilePicker.FilePathChanged += (sender, args) =>
 		{
 			if (File.Exists(loadFilePicker.FilePath))
