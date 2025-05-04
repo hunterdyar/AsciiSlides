@@ -45,11 +45,11 @@ public class SlidesManager : Form
         contentLayout.AddSpace();
 
         //event registration
-        EventHandler.OnFilePicked += OnFilePicked;
-        EventHandler.RegisterFormAsSlideController(this);
+        FilesComponent.OnFilePicked += OnFilePicked;
+        InputHandler.RegisterFormAsSlideController(this);
         Closed += (sender, args) =>
         {
-            EventHandler.OnFilePicked -= OnFilePicked;
+            FilesComponent.OnFilePicked -= OnFilePicked;
         };
     }
 

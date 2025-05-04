@@ -2,10 +2,8 @@
 
 namespace AsciiSlidesCore;
 
-public static class EventHandler
+public static class InputHandler
 {
-	public static Action<int> OnSlideChanged = delegate { };
-	public static Action<string> OnFilePicked = delegate { };
 	public static void RegisterFormAsSlideController(Form form)
 	{
 		form.KeyDown += FormOnKeyDown;

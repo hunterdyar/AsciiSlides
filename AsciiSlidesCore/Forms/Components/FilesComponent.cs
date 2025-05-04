@@ -5,6 +5,8 @@ namespace AsciiSlidesCore.Components;
 
 public class FilesComponent : GroupBox
 {
+	public static Action<string> OnFilePicked = delegate { };
+
 	public string FilePath => FilePath;
 	private string _filePath = string.Empty;
 	public string FileName => _fileName;
@@ -72,6 +74,6 @@ public class FilesComponent : GroupBox
 
 	void PickFile(string path)
 	{
-		EventHandler.OnFilePicked?.Invoke(path);
+		OnFilePicked?.Invoke(path);
 	}
 }

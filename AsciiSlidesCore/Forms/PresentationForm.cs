@@ -17,7 +17,7 @@ public class PresentationForm : Form
 		Show();
 
 		SetFullscreen(screen, inFullscreen);
-		AsciiSlidesCore.EventHandler.RegisterFormAsSlideController(this);
+		AsciiSlidesCore.InputHandler.RegisterFormAsSlideController(this);
 
 		//handle our own shortcuts.
 		this.KeyDown += OnKeyDown;
