@@ -11,9 +11,9 @@ public enum OutputType
 public class DisplaySelection
 {
 	public OutputType DisplayOutputType;
-	public Screen? DisplayScreen;
+	public MonitorInfo? DisplayScreen;
 	public OutputType SpeakerNotesOutputType;
-	public Screen? SpeakerNotesScreen;
+	public MonitorInfo? SpeakerNotesScreen;
 
 	public void Swap()
 	{

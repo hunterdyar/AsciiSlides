@@ -18,11 +18,14 @@ public class FilesComponent : GroupBox
 		{
 			Text = "Loaded: None"
 		};
-		PresentationState.OnPresentationLoaded += presentation =>
+		SlidesManager.OnPresentationLoaded += presentation =>
 		{
 			fileLoadedLabel.Text = "Loaded: " + Path.GetFileName(presentation.FileName);
 		};
-
+		SlidesManager.OnPresentationFailedToLoad += message =>
+		{
+			fileLoadedLabel.Text = message;
+		};
 
 		loadFilePicker.Filters.Add(new FileFilter("Text Documents", ".txt", ".text"));
 		loadFilePicker.Filters.Add(new FileFilter("Markdown Documents", ".md", ".markdown"));

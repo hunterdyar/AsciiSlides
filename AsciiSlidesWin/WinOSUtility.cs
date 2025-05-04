@@ -32,11 +32,13 @@ public class WinOSUtility : OSUtility
 	{
 		var allScreens = AsciiSlidesWin.Screen.AllScreens.ToArray();
 		MonitorInfo[] allMonitors = new MonitorInfo[allScreens.Length];
+		var etoscreens = Eto.Forms.Screen.Screens.ToArray();
 		for (int i = 0; i < allScreens.Length; i++)
 		{
-			allMonitors[i] = new MonitorInfo();
-			allMonitors[i].name = allScreens[i].DeviceName;
-			allMonitors[i].screenIndex = i;
+			//todo: check assumption that the Winscreens and the EtoForm screens are aligned/the same. 
+			//I fear it won't be when things like plug/unplug happen during runtime because of cacheing.
+			allMonitors[i] = new MonitorInfo(etoscreens[i], allScreens[i].DeviceName);
+			
 		}
 
 		return allMonitors;

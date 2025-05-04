@@ -14,7 +14,8 @@ public class SlidesManager : Form
     private FilesComponent _filesComponent;
     public static Presentation? Presentation = null;
     public static PresentationState PresentationState = new PresentationState();
-    
+    public static Action<Presentation> OnPresentationLoaded = delegate { };
+    public static Action<string> OnPresentationFailedToLoad = delegate { };
     private int _selectedDisplayIndex = -1;
     private int _selectedSpeakerViewIndex = -1;
     
@@ -65,11 +66,14 @@ public class SlidesManager : Form
             Presentation = Parser.PresentationParser.Parse(presentationText);
             Presentation.FileName = fileName;
             PresentationState = new PresentationState(Presentation);
+            //PresentationState.SetPresentationReady(true);//this gets called by listener. uhg.
+            OnPresentationLoaded?.Invoke(Presentation);
         }
         catch (Exception exception)
         {
             Console.WriteLine(exception);
             PresentationState.SetPresentationReady(false);
+            OnPresentationFailedToLoad?.Invoke(exception.Message);
         }
     }
 
@@ -91,9 +95,9 @@ public class SlidesManager : Form
                 //close previous
                 if (displaySelection.DisplayOutputType == OutputType.Fullscreen)
                 {
-                    if (displaySelection.DisplayScreen != null)
+                    if (displaySelection.DisplayScreen?.Screen != null)
                     {
-                        _display = new Display(displaySelection.DisplayScreen, true);
+                        _display = new Display(displaySelection.DisplayScreen.Screen, true);
                     }
                     else
                     {
@@ -101,7 +105,7 @@ public class SlidesManager : Form
                     }
                 }else if (displaySelection.DisplayOutputType == OutputType.Fullscreen)
                 {
-                    _display = new Display(displaySelection.DisplayScreen,false);
+                    _display = new Display(displaySelection.DisplayScreen.Screen,false);
                 }
             }
 
@@ -116,23 +120,20 @@ public class SlidesManager : Form
                 //close previous
                 if (displaySelection.SpeakerNotesOutputType == OutputType.Fullscreen)
                 {
-                    if (displaySelection.SpeakerNotesScreen != null)
+                    if (displaySelection.SpeakerNotesScreen?.Screen != null)
                     {
-                        _speakerView = new SpeakerView(displaySelection.SpeakerNotesScreen, true);
+                        _speakerView = new SpeakerView(displaySelection.SpeakerNotesScreen.Screen, true);
                     }
                     else
                     {
-                        throw new Exception("Display Screen Not Set, but output type is fullscreen.");
+                        throw new Exception("Speaker Screen Not Set, but output type is fullscreen.");
                     }
                 }
                 else if (displaySelection.SpeakerNotesOutputType == OutputType.Fullscreen)
                 {
-                    _speakerView = new SpeakerView(displaySelection.SpeakerNotesScreen, false);
+                    _speakerView = new SpeakerView(displaySelection.SpeakerNotesScreen.Screen, false);
                 }
             }
-
-            
-            
         }
         else
         {

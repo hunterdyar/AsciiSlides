@@ -7,7 +7,6 @@ public class PresentationState
 {
 	public static bool IsPresentationReady = false;
 	public static Action<bool> OnIsPresentationReadyChanged = delegate {};
-	public static Action<Presentation> OnPresentationLoaded = delegate { };
 
 	private static Slide EndOfSlideSlide = new BlankSlide("end of slide");
 	public static Action<Slide> OnSlideChanged = delegate { };

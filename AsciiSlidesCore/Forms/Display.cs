@@ -38,32 +38,12 @@ public class Display : PresentationForm
         Title = "Slide " + SlidesManager.PresentationState.CurrentSlide.SlideNumber + "/" + SlidesManager.PresentationState.Presentation.SlideCount;
         //register
         
-        //handle our own shortcuts.
-        this.KeyDown += OnKeyDown;
-        this.KeyUp += OnKeyUp;
-        //handle events we care about
-        PresentationState.OnSlideChanged += OnCurrentSlideChanged;
-
-        //unregsister
-        this.Closed += (sender, args) =>
-        {
-            //unhandle shortcuts
-            this.KeyDown -= OnKeyDown;
-            this.KeyUp -= OnKeyUp;
-            //unhandle events
-
-            PresentationState.OnSlideChanged -= OnCurrentSlideChanged;
-        };
-        //on resizing.... registering last to prevent multiple 
-        this.LogicalPixelSizeChanged += (sender, args) =>
-        {
-            ResizePanel();
-        };
+       
 
         Focus();
     }
 
-    private void OnCurrentSlideChanged(Slide slide)
+    protected override void OnCurrentSlideChanged(Slide slide)
     {
         _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds));
         Title = "Slide " + slide.SlideNumber + "/" + SlidesManager.PresentationState.Presentation.SlideCount;
@@ -74,24 +54,6 @@ public class Display : PresentationForm
         base.ResizePanel();
         //todo: right now we just reload everything, but once we support video embeddes, will have to do this by running some JS or such to dynamically change the style properties and not do a reload.
         _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds));
-    }
-
-    private void OnKeyDown(object? sender, KeyEventArgs e)
-    {
-        // Console.WriteLine("Display Hook OnKeyDown: "+e.Key.ToString());
-        if (Configuration.ExitKey.Contains(e.Key))
-        {
-            Close();
-        }
-        else if (e.Key == Configuration.ToggleFullscreen)
-        {
-            SetFullscreen(_screen, !_isFullscreen);
-        }
-    }
-
-    private void OnKeyUp(object? sender, KeyEventArgs e)
-    {
-
     }
     
 }

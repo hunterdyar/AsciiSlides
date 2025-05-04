@@ -13,7 +13,7 @@ public class OutputComponent : GroupBox
 	private Button _swapButton;
 	private Button _presentButton;
 
-	private ListItemCollection _options = new ();
+	private List<MonitorInfo> _options = new ();
 	private int primaryDisplayOptionIndex = 0;
 	private SlidesManager _slidesManager;
 	private int _windowedIndex;
@@ -97,12 +97,14 @@ public class OutputComponent : GroupBox
 
 	private void SpeakerDropdownOnDropDownClosed(int newIndex)
 	{
+		Console.WriteLine("speaker notes set to "+newIndex);
 		SetDropdownToDifferentMonitor(_speakerDropdown, _presentationDropdown);
 		int i = newIndex;
-		var s = Screen.Screens.ToArray();
-		if (i > 0 && i < s.Length)
+		//todo: cache screens, reload at appropriate times.
+		var s = Screen.Screens.Count();
+		if (i >= 0 && i < s)
 		{
-			DisplaySelection.SpeakerNotesScreen = s[i];
+			DisplaySelection.SpeakerNotesScreen = _options[i];
 		}
 		else
 		{
@@ -112,12 +114,13 @@ public class OutputComponent : GroupBox
 
 	private void PresentationDropdownOnDropDownClosed(int newIndex)
 	{
+		Console.WriteLine("display set to " + newIndex);
 		SetDropdownToDifferentMonitor(_presentationDropdown, _speakerDropdown);
 		int i = newIndex;
-		var s = Screen.Screens.ToArray();
-		if (i > 0 && i < s.Length)
+		var s = Screen.Screens.Count();
+		if (i >= 0 && i < s)
 		{
-			DisplaySelection.DisplayScreen = s[_presentationDropdown.SelectedIndex];
+			DisplaySelection.DisplayScreen = _options[_presentationDropdown.SelectedIndex];
 		}
 		else
 		{
@@ -195,26 +198,26 @@ public class OutputComponent : GroupBox
 		DisplaySelection = new DisplaySelection();
 		_options.Clear();
 		var monitors = OSUtility.Instance.GetMonitors();
-		var screens = Screen.Screens.ToArray();
-		int screenCount = screens.Length;
-
+		int screenCount = 0;
 		for (var i = 0; i < monitors.Length; i++)
 		{
-			var screen = screens[monitors[i].screenIndex];
+			var screen = monitors[i].Screen;
 			if (screen == Screen.PrimaryScreen)
 			{
 				primaryDisplayOptionIndex = i;
 			}
-			_options.Add(monitors[i].name);
+			_options.Add(monitors[i]);
+			screenCount++;
 		}
 		_windowedIndex = _options.Count;
-		_options.Add("Windowed");
+		_options.Add(MonitorInfo.Windowed);
 		_noneIndex = _options.Count;
-		_options.Add("None");
+		_options.Add(MonitorInfo.None);
 
 		_speakerDropdown.DataStore = _options;
 		_speakerDropdown.SelectedIndex = primaryDisplayOptionIndex;
 		_presentationDropdown.DataStore = _options;
+
 		if (screenCount == 0)
 		{
 			_presentationDropdown.SelectedIndex = _noneIndex;
@@ -226,24 +229,25 @@ public class OutputComponent : GroupBox
 		if (screenCount == 1)
 		{
 			_presentationDropdown.SelectedIndex = primaryDisplayOptionIndex;
-			DisplaySelection.DisplayScreen = screens[primaryDisplayOptionIndex];
+			_speakerDropdown.SelectedIndex = _noneIndex;
+
+			DisplaySelection.DisplayScreen = _options[primaryDisplayOptionIndex];
 
 			if (DisplaySelection.DisplayScreen == null)
 			{
-				throw new Exception("Display Screen Not Set! WHy don't we know the primary screen?");
+				throw new Exception("Display Screen Not Set! Why don't we know the primary screen?");
 			}
-			_speakerDropdown.SelectedIndex = _noneIndex;
 			
 			DisplaySelection.SpeakerNotesOutputType = OutputType.None;
 			DisplaySelection.DisplayOutputType = OutputType.Fullscreen;
 
 		}else if (screenCount > 1)
 		{
-			DisplaySelection.SpeakerNotesScreen = screens[primaryDisplayOptionIndex];
+			DisplaySelection.SpeakerNotesScreen = _options[primaryDisplayOptionIndex];
 			_presentationDropdown.SelectedIndex = primaryDisplayOptionIndex;
 			
 			int externalScreen = GetNextOutputOption(primaryDisplayOptionIndex);
-			DisplaySelection.DisplayScreen = screens[externalScreen];
+			DisplaySelection.DisplayScreen = _options[externalScreen];
 			_speakerDropdown.SelectedIndex = externalScreen;
 			
 			DisplaySelection.DisplayOutputType = OutputType.Fullscreen;

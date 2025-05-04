@@ -19,6 +19,46 @@ public class PresentationForm : Form
 		SetFullscreen(screen, inFullscreen);
 		AsciiSlidesCore.EventHandler.RegisterFormAsSlideController(this);
 
+		//handle our own shortcuts.
+		this.KeyDown += OnKeyDown;
+		this.KeyUp += OnKeyUp;
+		//handle events we care about
+		PresentationState.OnSlideChanged += OnCurrentSlideChanged;
+
+		//unregsister
+		this.Closed += (sender, args) =>
+		{
+			//unhandle shortcuts
+			this.KeyDown -= OnKeyDown;
+			this.KeyUp -= OnKeyUp;
+			//unhandle events
+
+			PresentationState.OnSlideChanged -= OnCurrentSlideChanged;
+		};
+		//on resizing.... registering last to prevent multiple 
+		this.LogicalPixelSizeChanged += (sender, args) => { ResizePanel(); };
+	}
+
+	protected virtual void OnCurrentSlideChanged(Slide obj)
+	{
+		
+	}
+
+	protected virtual void OnKeyUp(object? sender, KeyEventArgs e)
+	{
+		// Console.WriteLine("Display Hook OnKeyDown: "+e.Key.ToString());
+		if (Configuration.ExitKey.Contains(e.Key))
+		{
+			Close();
+		}
+		else if (e.Key == Configuration.ToggleFullscreen)
+		{
+			SetFullscreen(_screen, !_isFullscreen);
+		}
+	}
+
+	protected virtual void OnKeyDown(object? sender, KeyEventArgs e)
+	{
 	}
 
 	protected void MoveScreens(int delta)
