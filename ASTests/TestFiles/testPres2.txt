@@ -1,0 +1,22 @@
+﻿background: #000
+textcolor: #FFF
+type: md
+
+###
+notes: { listty }
+
+---
+- this is a list
+- from markdown
+- here you go
+
+###
+notes: { I think it's important for the audience to know that this is a slide. }
+---
+some normal text
+
+a [broken](link) linkl
+
+> this is a quote.
+
+yay.

@@ -14,18 +14,22 @@ public static class PresentationParser
 		Presentation presentation = new Presentation();
 		var t = new Queue<Token>(tokens);
 		presentation.Frontmatter = ParseFrontmatter(ref t);
-		
+
+		if (!presentation.Frontmatter.TryGetKey("type", out string defaultSlideType))
+		{
+			defaultSlideType = "ascii";
+		}
 		var slides = new List<Slide>();
 		while (t.Count > 0)
 		{
-			slides.Add(ParseSlide(ref t, slides.Count+1));
+			slides.Add(ParseSlide(ref t, slides.Count+1,defaultSlideType));
 		}
 		presentation.Slides = slides.ToArray();
 		
 		return presentation;
 	}
 
-	private static Slide ParseSlide(ref Queue<Token> tokens, int slideNumber)
+	private static Slide ParseSlide(ref Queue<Token> tokens, int slideNumber, string defaultSlideType)
 	{
 		var startSlide = tokens.Dequeue();
 		if (startSlide.Type != TokenType.StartSlide)
@@ -44,7 +48,7 @@ public static class PresentationParser
 		{
 			throw new Exception("Expected slide body.");
 		}
-		return SlideFactory.CreateSlide(f, body.Source, slideNumber);
+		return SlideFactory.CreateSlide(f, body.Source, slideNumber, defaultSlideType);
 	}
 
 	private static Frontmatter ParseFrontmatter(ref Queue<Token> tokens)

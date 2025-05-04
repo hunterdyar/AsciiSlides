@@ -2,11 +2,11 @@
 
 public static class SlideFactory
 {
-	public static Slide CreateSlide(Frontmatter frontmatter, string rawContent, int number)
+	public static Slide CreateSlide(Frontmatter frontmatter, string rawContent, int number, string defaultType="ascii")
 	{
 		if(!frontmatter.TryGetKey("type", out string slideType))
 		{
-			slideType = "ascii";
+			slideType = defaultType;
 		}
 		
 		Slide slide;
@@ -21,6 +21,14 @@ public static class SlideFactory
 				break;
 			case "html":
 				slide = new HTMLSlide(rawContent)
+				{
+					Frontmatter = frontmatter,
+					SlideNumber = number
+				};
+				break;
+			case "md":
+			case "markdown":
+				slide = new MarkdownSlides(rawContent)
 				{
 					Frontmatter = frontmatter,
 					SlideNumber = number
