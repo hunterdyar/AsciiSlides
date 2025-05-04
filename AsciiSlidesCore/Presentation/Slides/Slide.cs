@@ -68,14 +68,24 @@ public abstract class Slide
 		int marginLeft = (bounds.Width - w) / 2;
 		int marginTop = (bounds.Height - h) / 2;
 		int fontHeight = (int)Math.Floor(h / (float)GetRowCount(state));
+		
+		if (!Frontmatter.TryGetKey("background", out var background))
+		{
+			background = Configuration.BGColor.ToHex();
+		}
+
+		if (!Frontmatter.TryGetKey("textcolor", out var fontcolor))
+		{
+			background = Configuration.FontColor.ToHex();
+		}
 		sb.Append($$"""
 		             body{
-		                 background-color: color: #{{Configuration.BGColor.ToHex()}};
+		                 background-color: color: #{{background}};
 		                 padding: 0;
 		                 margin: 0;
 		                 font-family: Consolas, monospace, ui-monospace;
 		                 font-size: {{fontHeight}}px;
-		                 color: #{{Configuration.FontColor.ToHex()}};
+		                 color: #{{fontcolor}};
 		                 overflow: hidden;
 		                 scrollbar-width: none;
 		             }
@@ -94,6 +104,14 @@ public abstract class Slide
 		             }
 		             """);
 		sb.AppendLine("</style>");
+
+		//append user-specific styling.
+		if (Frontmatter.TryGetKey("style", out string value))
+		{
+			_sb.AppendLine("<style>");
+			_sb.AppendLine(value);
+			_sb.AppendLine("</style>");
+		}
 	}
 
 	protected virtual int GetRowCount(PresentationState state)

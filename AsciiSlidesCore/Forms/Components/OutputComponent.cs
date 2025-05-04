@@ -23,6 +23,8 @@ public class OutputComponent : GroupBox
 	{
 		_slidesManager = slidesManager;
 		Text = "Output";
+		
+		//Create Components
 		_presentationDropdown = new DropDown();
 		_presentationDropdown.DropDownClosed += (sender, args) =>
 		{
@@ -73,6 +75,9 @@ public class OutputComponent : GroupBox
 				new TableRow(
 					_presentButton
 					)
+				{
+					
+				}
 			}
 		};
 		Content = layout;
@@ -97,7 +102,20 @@ public class OutputComponent : GroupBox
 
 	private void SpeakerDropdownOnDropDownClosed(int newIndex)
 	{
-		Console.WriteLine("speaker notes set to "+newIndex);
+		if (newIndex == _windowedIndex)
+		{
+			//todo: pull this from a config file. Where it was when it last closed.
+			DisplaySelection.SpeakerNotesScreen = MonitorInfo.PrimaryScreen;
+			DisplaySelection.SpeakerNotesOutputType = OutputType.Windowed;
+			return;
+		}
+		else if (newIndex == _noneIndex)
+		{
+			DisplaySelection.SpeakerNotesScreen = null;
+			DisplaySelection.SpeakerNotesOutputType = OutputType.None;
+			return;
+		}
+
 		SetDropdownToDifferentMonitor(_speakerDropdown, _presentationDropdown);
 		int i = newIndex;
 		//todo: cache screens, reload at appropriate times.
@@ -108,24 +126,40 @@ public class OutputComponent : GroupBox
 		}
 		else
 		{
-			DisplaySelection.SpeakerNotesScreen = null;
+			throw new Exception("Not a valid screen/monitor index, but it must be?");
 		}
 	}
 
 	private void PresentationDropdownOnDropDownClosed(int newIndex)
 	{
-		Console.WriteLine("display set to " + newIndex);
+
+		if (newIndex == _windowedIndex)
+		{
+			DisplaySelection.DisplayScreen = MonitorInfo.PrimaryScreen;
+			DisplaySelection.DisplayOutputType = OutputType.Windowed;
+			return;
+		}
+		else if (newIndex == _noneIndex)
+		{
+			DisplaySelection.DisplayScreen = null;
+			DisplaySelection.DisplayOutputType = OutputType.None;
+			return;
+		}
+		
 		SetDropdownToDifferentMonitor(_presentationDropdown, _speakerDropdown);
 		int i = newIndex;
+		
 		var s = Screen.Screens.Count();
 		if (i >= 0 && i < s)
 		{
 			DisplaySelection.DisplayScreen = _options[_presentationDropdown.SelectedIndex];
+			DisplaySelection.DisplayOutputType = OutputType.Fullscreen;
 		}
 		else
 		{
-			DisplaySelection.DisplayScreen = null;
+			throw new Exception("Not a valid screen/monitor index, but it must be?");
 		}
+		
 	}
 
 	private void SetDropdownToDifferentMonitor(DropDown changed, DropDown other)

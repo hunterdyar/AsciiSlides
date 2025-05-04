@@ -1,5 +1,5 @@
 ﻿background: #000
-foreground: #FFF
+textcolor: #FFF
 
 ----===-&&&asdf###
 ---

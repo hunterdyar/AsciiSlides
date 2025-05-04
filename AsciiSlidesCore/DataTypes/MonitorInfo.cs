@@ -19,6 +19,14 @@ public class MonitorInfo : IListItem
 
 	public static MonitorInfo Windowed = new MonitorInfo(null,"") { isFullscreen = false,Text="Windowed" };
 	public static MonitorInfo None = new MonitorInfo(null,"") { isNone = true,Text="None" };
+	
+	//this is used for which screen to launch windowed on.
+	public static MonitorInfo PrimaryScreen = new MonitorInfo(Screen.PrimaryScreen, "Primary Screen")
+	{
+		isFullscreen = true,
+		Text = "Primary",
+		isNone = false,
+	};
 
 	public override string ToString()
 	{

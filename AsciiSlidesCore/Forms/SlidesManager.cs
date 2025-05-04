@@ -103,7 +103,7 @@ public class SlidesManager : Form
                     {
                         throw new Exception("Display Screen Not Set, but output type is fullscreen.");
                     }
-                }else if (displaySelection.DisplayOutputType == OutputType.Fullscreen)
+                }else if (displaySelection.DisplayOutputType == OutputType.Windowed)
                 {
                     _display = new Display(displaySelection.DisplayScreen.Screen,false);
                 }
@@ -117,7 +117,6 @@ public class SlidesManager : Form
 
             if (displaySelection.SpeakerNotesOutputType != OutputType.None)
             {
-                //close previous
                 if (displaySelection.SpeakerNotesOutputType == OutputType.Fullscreen)
                 {
                     if (displaySelection.SpeakerNotesScreen?.Screen != null)
@@ -129,7 +128,7 @@ public class SlidesManager : Form
                         throw new Exception("Speaker Screen Not Set, but output type is fullscreen.");
                     }
                 }
-                else if (displaySelection.SpeakerNotesOutputType == OutputType.Fullscreen)
+                else if (displaySelection.SpeakerNotesOutputType == OutputType.Windowed)
                 {
                     _speakerView = new SpeakerView(displaySelection.SpeakerNotesScreen.Screen, false);
                 }

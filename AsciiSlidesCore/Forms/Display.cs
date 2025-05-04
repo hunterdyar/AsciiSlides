@@ -38,8 +38,6 @@ public class Display : PresentationForm
         Title = "Slide " + SlidesManager.PresentationState.CurrentSlide.SlideNumber + "/" + SlidesManager.PresentationState.Presentation.SlideCount;
         //register
         
-       
-
         Focus();
     }
 

@@ -11,7 +11,7 @@ public class PresentationForm : Form
 	
 	public PresentationForm(Screen screen, bool inFullscreen)
 	{
-		Topmost = inFullscreen;
+		//Topmost = inFullscreen;
 		_screen = screen;
 
 		Show();
