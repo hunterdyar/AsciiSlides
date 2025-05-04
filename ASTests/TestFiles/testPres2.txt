@@ -1,9 +1,9 @@
-﻿background: #000
-textcolor: #FFF
+﻿background: #010101
+textcolor: #F0F
 type: ascii
 
 ###
-notes: { listty }
+notes: { this should be a list. }
 
 ---
 - this is a list

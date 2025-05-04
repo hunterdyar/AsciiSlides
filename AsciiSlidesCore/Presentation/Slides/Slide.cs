@@ -71,21 +71,22 @@ public abstract class Slide
 		
 		if (!Frontmatter.TryGetKey("background", out var background))
 		{
-			background = Configuration.BGColor.ToHex();
+			background = "#"+Configuration.BGColor.ToHex();
 		}
 
 		if (!Frontmatter.TryGetKey("textcolor", out var fontcolor))
 		{
-			background = Configuration.FontColor.ToHex();
+			background = "#"+Configuration.FontColor.ToHex();
 		}
 		sb.Append($$"""
 		             body{
-		                 background-color: color: #{{background}};
+		                 background-color: {{background}};
+		                 
 		                 padding: 0;
 		                 margin: 0;
 		                 font-family: Consolas, monospace, ui-monospace;
 		                 font-size: {{fontHeight}}px;
-		                 color: #{{fontcolor}};
+		                 color: {{fontcolor}};
 		                 overflow: hidden;
 		                 scrollbar-width: none;
 		             }
@@ -98,7 +99,7 @@ public abstract class Slide
 		                 margin-right: {{marginLeft}};
 		                 marigin-bottom: {{marginTop}};
 		                 margin-top: {{marginTop}};
-		                 background-color: color: #{{Configuration.ASCIIAreaBGColor.ToHex()}};
+		                 background-color: {{background}};
 		             }
 		                 .slide{
 		             }

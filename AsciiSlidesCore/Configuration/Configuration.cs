@@ -14,9 +14,8 @@ public static class Configuration
 	public static Keys[] NextSlide = [Keys.Right, Keys.Space];
 	public static Keys[] PreviousSlide = [Keys.Left, Keys.Backspace];
 
-	//Presentation Style
+	//Presentation Style Defaults
 	public static Color BGColor;
-	public static Color ASCIIAreaBGColor => BGColor;
 	public static Color FontColor;
 
 	public static void LoadDefaultStyle()
