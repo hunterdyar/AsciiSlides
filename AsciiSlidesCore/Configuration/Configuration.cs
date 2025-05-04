@@ -19,35 +19,44 @@ public static class Configuration
 	public static Color BGColor;
 	public static Color FontColor;
 
+	private static System.Configuration.Configuration _configuration;
 	public static void LoadDefaultStyle()
 	{
 		BGColor = new Color(0.97f, 0.97f, 0.97f);
 		FontColor = Colors.Black;
 	}
 
+	private static void LazyGetConfig()
+	{
+		if (_configuration == null)
+		{
+			_configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+			
+		}
+	}
 	public static void InitializeOnLaunch()
 	{
+		
 		//load settings from file or create settings file.
 		LoadDefaultStyle();
-		var c = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
 		
 	}
 
 	public static void SetKey(string key, string value)
 	{
-		var c = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
-		if (c != null)
+		LazyGetConfig();
+		if (_configuration != null)
 		{
-			c.AppSettings.Settings.Add(key,value);
+			_configuration.AppSettings.Settings[key].Value = value;
 		}
 	}
 
 	public static string GetKey(string key)
 	{
-		var c = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
-		if (c != null)
+		LazyGetConfig();
+		if (_configuration != null)
 		{
-			var kvp= c.AppSettings.Settings[key];
+			var kvp= _configuration.AppSettings.Settings[key];
 			if (kvp != null)
 			{
 				return kvp.Value;
@@ -60,11 +69,10 @@ public static class Configuration
 
 	public static void SaveKeys()
 	{
-		var c = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
-		if (c != null)
+		LazyGetConfig();
+		if (_configuration != null)
 		{
-			c.Save();
+			_configuration.Save(ConfigurationSaveMode.Minimal);
 		}
 	}
-	
 }
