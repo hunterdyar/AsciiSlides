@@ -11,4 +11,10 @@
       <PackageReference Include="Markdig" Version="0.41.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="System.Configuration.ConfigurationManager">
+        <HintPath>C:\Users\Blooper\.dotnet\shared\Microsoft.WindowsDesktop.App\9.0.2\System.Configuration.ConfigurationManager.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

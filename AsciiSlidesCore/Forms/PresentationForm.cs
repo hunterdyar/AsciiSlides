@@ -3,7 +3,7 @@ using Eto.Forms;
 
 namespace AsciiSlidesCore;
 
-public class PresentationForm : Form
+public abstract class PresentationForm : Form
 {
 	protected Screen _screen;
 	public bool IsFullscreen => _isFullscreen;

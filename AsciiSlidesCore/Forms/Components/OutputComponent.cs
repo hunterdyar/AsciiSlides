@@ -229,6 +229,8 @@ public class OutputComponent : GroupBox
 	
 	private void PopulateOptions()
 	{
+		
+
 		DisplaySelection = new DisplaySelection();
 		_options.Clear();
 		var monitors = OSUtility.Instance.GetMonitors();
@@ -252,6 +254,29 @@ public class OutputComponent : GroupBox
 		_speakerDropdown.SelectedIndex = primaryDisplayOptionIndex;
 		_presentationDropdown.DataStore = _options;
 
+		//attempt to find the saved string from the keystore.
+		var speakerSetting = Configuration.GetKey("speakerOutput");
+		var presentationSetting = Configuration.GetKey("presentationOutput");
+
+		if (!string.IsNullOrEmpty(speakerSetting) && !string.IsNullOrEmpty(presentationSetting))
+		{
+			var spi = _options.FindIndex(x=>x.Text == speakerSetting);
+			var pri = _options.FindIndex(x => x.Text == presentationSetting);
+
+			if (spi >= 0 && pri >= 0 && spi < _options.Count && pri < _options.Count)
+			{
+				_speakerDropdown.SelectedIndex = spi;
+				_presentationDropdown.SelectedIndex = pri;
+				return;
+			}
+		}
+		//set defaults if they aren't set by settings.
+		SetOutputsToDefault(screenCount);
+		
+	}
+
+	private void SetOutputsToDefault(int screenCount)
+	{
 		if (screenCount == 0)
 		{
 			_presentationDropdown.SelectedIndex = _noneIndex;
@@ -287,6 +312,11 @@ public class OutputComponent : GroupBox
 			DisplaySelection.DisplayOutputType = OutputType.Fullscreen;
 			DisplaySelection.SpeakerNotesOutputType = OutputType.Fullscreen;
 		}
-		
+	}
+
+	public void OnClose()
+	{
+		Configuration.SetKey("speakerOutput", (_speakerDropdown.SelectedValue as MonitorInfo).Text);
+		Configuration.SetKey("presentationOutput", (_presentationDropdown.SelectedValue as MonitorInfo).Text);
 	}
 }

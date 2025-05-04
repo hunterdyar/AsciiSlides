@@ -50,6 +50,8 @@ public class SlidesManager : Form
         Closed += (sender, args) =>
         {
             FilesComponent.OnFilePicked -= OnFilePicked;
+            OnClose();
+            Configuration.SaveKeys();
         };
     }
 
@@ -138,6 +140,11 @@ public class SlidesManager : Form
         {
             Console.WriteLine("No Presentation or Empty presentation loaded.");
         }
+    }
+
+    protected void OnClose()
+    {
+        _outputComponent.OnClose();
     }
 }
 	

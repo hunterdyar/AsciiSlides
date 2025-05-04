@@ -1,4 +1,5 @@
-﻿using Eto.Drawing;
+﻿using System.Configuration;
+using Eto.Drawing;
 using Color = Eto.Drawing.Color;
 
 namespace AsciiSlidesCore;
@@ -28,5 +29,42 @@ public static class Configuration
 	{
 		//load settings from file or create settings file.
 		LoadDefaultStyle();
+		var c = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
+		
 	}
+
+	public static void SetKey(string key, string value)
+	{
+		var c = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
+		if (c != null)
+		{
+			c.AppSettings.Settings.Add(key,value);
+		}
+	}
+
+	public static string GetKey(string key)
+	{
+		var c = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
+		if (c != null)
+		{
+			var kvp= c.AppSettings.Settings[key];
+			if (kvp != null)
+			{
+				return kvp.Value;
+			}
+		}
+		
+		return null;
+		
+	}
+
+	public static void SaveKeys()
+	{
+		var c = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
+		if (c != null)
+		{
+			c.Save();
+		}
+	}
+	
 }
