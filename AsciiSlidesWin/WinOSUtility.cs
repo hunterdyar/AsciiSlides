@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Configuration;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Shapes;
 using AsciiSlidesCore;
@@ -43,4 +44,54 @@ public class WinOSUtility : OSUtility
 
 		return allMonitors;
 	}
+
+	#region Settings
+
+	
+
+	private static System.Configuration.Configuration _configuration;
+
+	private static void LazyGetConfig()
+	{
+		if (_configuration == null)
+		{
+			_configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+		}
+	}
+	public override void SetSettingsKey(string key, string value)
+	{
+		LazyGetConfig();
+		if (_configuration != null)
+		{
+			_configuration.AppSettings.Settings[key].Value = value;
+		}
+	}
+
+	public override bool TryGetSettingsKey(string key, out string value)
+	{
+		LazyGetConfig();
+		if (_configuration != null)
+		{
+			var kvp = _configuration.AppSettings.Settings[key];
+			if (kvp != null)
+			{
+				value= kvp.Value;
+				return true;
+			}
+		}
+		value = null;
+		return false;
+	}
+
+	override public void SaveSettingsKeys()
+	{
+		LazyGetConfig();
+		if (_configuration != null)
+		{
+			_configuration.Save(ConfigurationSaveMode.Minimal);
+		}	
+	}
+
+	#endregion
+
 }

@@ -21,4 +21,20 @@ public class MacOSUtility : OSUtility
 	{
 		throw new NotImplementedException();
 	}
+
+	public override void SetSettingsKey(string key, string value)
+	{
+		
+	}
+
+	public override bool TryGetSettingsKey(string key, out string value)
+	{
+		value = null;
+		return false;
+	}
+
+	public override void SaveSettingsKeys()
+	{
+		
+	}
 }

@@ -8,4 +8,10 @@ public abstract class OSUtility
 	public abstract bool ToggleFullscreen(Form form, Screen screen, bool fullscreen);
 
 	public abstract MonitorInfo[] GetMonitors();
+
+	public abstract void SetSettingsKey(string key, string value);
+	public abstract bool TryGetSettingsKey(string key, out string value);
+	
+	public abstract void SaveSettingsKeys();
+
 }
