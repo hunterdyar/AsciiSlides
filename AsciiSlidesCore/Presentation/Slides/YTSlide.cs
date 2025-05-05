@@ -29,4 +29,10 @@ public class YTSlide : Slide
 		throw new NotImplementedException("Dynamic YT slides not yet supported. Use HTML slide");
 
 	}
+
+	public override void OnRender()
+	{
+		//todo: ask the webview to call some javascript?
+		base.OnRender();
+	}
 }

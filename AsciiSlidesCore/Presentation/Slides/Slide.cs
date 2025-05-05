@@ -73,12 +73,12 @@ public abstract class Slide
 		
 		if (!Frontmatter.TryGetKey("background", out var background))
 		{
-			background = "#"+Configuration.BGColor.ToHex();
+			background = Configuration.BGColor;
 		}
 
 		if (!Frontmatter.TryGetKey("textcolor", out var fontcolor))
 		{
-			background = "#"+Configuration.FontColor.ToHex();
+			background = Configuration.FontColor;
 		}
 		sb.Append($$"""
 		             body{
@@ -156,4 +156,8 @@ public abstract class Slide
 		return state.Aspect;
 	}
 
+	public virtual void OnRender()
+	{
+		//do nothing
+	}
 }

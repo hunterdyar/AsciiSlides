@@ -15,13 +15,13 @@ public static class Configuration
 	public static Keys[] PreviousSlide = [Keys.Left, Keys.Backspace];
 
 	//Presentation Style Defaults
-	public static Color BGColor;
-	public static Color FontColor;
+	public static string BGColor;
+	public static string FontColor;
 
 	public static void LoadDefaultStyle()
 	{
-		BGColor = new Color(0.97f, 0.97f, 0.97f);
-		FontColor = Colors.Black;
+		BGColor = "#080000";
+		FontColor = "#E2DDD9";
 	}
 
 	

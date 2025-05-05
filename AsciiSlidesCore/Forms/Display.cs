@@ -35,6 +35,7 @@ public class Display : PresentationForm
         Console.WriteLine("Created Display.");
         //fullscreen
         _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds));
+        _webPanel.BrowserContextMenuEnabled = true;
         Title = "Slide " + SlidesManager.PresentationState.CurrentSlide.SlideNumber + "/" + SlidesManager.PresentationState.Presentation.SlideCount;
         //register
         
@@ -45,6 +46,7 @@ public class Display : PresentationForm
     {
         _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds));
         Title = "Slide " + slide.SlideNumber + "/" + SlidesManager.PresentationState.Presentation.SlideCount;
+        
     }
 
     protected override void ResizePanel()

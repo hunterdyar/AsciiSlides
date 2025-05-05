@@ -67,6 +67,8 @@ public class PresentationState
 			_currentSlideIndex = _presentation.SlideCount + _currentSlideIndex;
 		}
 		OnSlideChanged?.Invoke(_presentation.Slides[_currentSlideIndex]);
+		//now displayed, we hope, call the callback.
+		_presentation.Slides[_currentSlideIndex].OnRender();
 	}
 	
 	public string GetCurrentAsHTML(Rectangle bounds)
