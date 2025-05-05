@@ -6,6 +6,8 @@ namespace AsciiSlidesCore;
 public class PresentationState
 {
 	public static bool IsPresentationReady = false;
+	public static bool IsPresenting = false;
+	public static Action<bool> OnIsPresentingChanged = delegate {};
 	public static Action<bool> OnIsPresentationReadyChanged = delegate {};
 	private static Slide EndOfSlideSlide = new BlankSlide(null,"end of slide");
 	public static Action<Slide> OnSlideChanged = delegate { };
@@ -84,6 +86,13 @@ public class PresentationState
 
 	public void ClosePresentation()
 	{
+		SetIsPresenting(false);
 		OnPresentationClosed?.Invoke();
+	}
+
+	public void SetIsPresenting(bool isPresenting)
+	{
+		IsPresenting = isPresenting;
+		OnIsPresentingChanged?.Invoke(isPresenting);
 	}
 }

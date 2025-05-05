@@ -1,3 +1,4 @@
+using System.Windows.Input;
 using AsciiSlidesCore.Components;
 using Eto;
 using Eto.Drawing;
@@ -12,12 +13,16 @@ public class SlidesManager : Form
     private SpeakerView? _speakerView = null;
     private OutputComponent _outputComponent;
     private FilesComponent _filesComponent;
+    private SlideControlComponent _slideControlComponent;
     public static Presentation? Presentation = null;
     public static PresentationState PresentationState = new PresentationState();
     public static Action<Presentation> OnPresentationLoaded = delegate { };
     public static Action<string> OnPresentationFailedToLoad = delegate { };
     private int _selectedDisplayIndex = -1;
     private int _selectedSpeakerViewIndex = -1;
+    
+    //commands
+    public Command CloseCommand { get; set; }
     
     public SlidesManager()
     {
@@ -30,6 +35,8 @@ public class SlidesManager : Form
             Text = "Fullscreen",
             Checked = true,
         };
+
+        CreateCommands();
         
         //Layout
         var contentLayout = new DynamicLayout();
@@ -42,6 +49,11 @@ public class SlidesManager : Form
         //output
         _outputComponent = new OutputComponent(this);
         contentLayout.AddRow(_outputComponent);
+        contentLayout.AddSpace();
+        
+        //slide control
+        _slideControlComponent = new SlideControlComponent(this);
+        contentLayout.AddRow(_slideControlComponent);
         contentLayout.AddSpace();
 
         //event registration
@@ -57,7 +69,23 @@ public class SlidesManager : Form
             //cleanup and save
             OnClose();
         };
+        
+        //Now shrink the window to meet the size. The dynamic layout used the original given size, so currently it will set width to from config, and height by the layout.
+        ClientSize = new Size(contentLayout.Size.Width, contentLayout.Size.Height);
     }
+
+    private void CreateCommands()
+    {
+        CloseCommand = new Command()
+        {
+            MenuText = "Close Presentation",
+            ToolTip = "Close Presentation",
+            Shortcut = Application.Instance.CommonModifier | Keys.Escape,
+
+        };
+        CloseCommand.Executed += (sender, args) => { SlidesManager.PresentationState.ClosePresentation(); };
+    }
+
 
     private void OnFilePicked(string path)
     {
@@ -156,6 +184,8 @@ public class SlidesManager : Form
         {
             Console.WriteLine("No Presentation or Empty presentation loaded.");
         }
+
+        PresentationState.SetIsPresenting(true);
     }
 
     public void ClosePresentation()
