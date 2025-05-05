@@ -132,7 +132,6 @@ public class OutputComponent : GroupBox
 
 	private void PresentationDropdownOnDropDownClosed(int newIndex)
 	{
-
 		if (newIndex == _windowedIndex)
 		{
 			DisplaySelection.DisplayScreen = MonitorInfo.PrimaryScreen;
@@ -266,7 +265,9 @@ public class OutputComponent : GroupBox
 			if (spi >= 0 && pri >= 0 && spi < _options.Count && pri < _options.Count)
 			{
 				_speakerDropdown.SelectedIndex = spi;
+				SpeakerDropdownOnDropDownClosed(spi);
 				_presentationDropdown.SelectedIndex = pri;
+				PresentationDropdownOnDropDownClosed(pri);				
 				return;
 			}
 		}

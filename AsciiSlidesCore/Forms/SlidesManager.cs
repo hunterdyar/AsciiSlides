@@ -86,6 +86,33 @@ public class SlidesManager : Form
         if (PresentationState.IsPresentationReady)
         {
             Console.WriteLine("Present");
+
+            if (_speakerView != null)
+            {
+                _speakerView.Close();
+                _speakerView.Dispose();
+            }
+
+            if (displaySelection.SpeakerNotesOutputType != OutputType.None)
+            {
+                if (displaySelection.SpeakerNotesOutputType == OutputType.Fullscreen)
+                {
+                    if (displaySelection.SpeakerNotesScreen?.Screen != null)
+                    {
+                        _speakerView = new SpeakerView(displaySelection.SpeakerNotesScreen.Screen, true);
+                    }
+                    else
+                    {
+                        throw new Exception("Speaker Screen Not Set, but output type is fullscreen.");
+                    }
+                }
+                else if (displaySelection.SpeakerNotesOutputType == OutputType.Windowed)
+                {
+                    _speakerView = new SpeakerView(displaySelection.SpeakerNotesScreen.Screen, false);
+                }
+            }
+            
+            
             //is there a situation where we don't close previous?
             if (_display != null)
             {
@@ -112,30 +139,7 @@ public class SlidesManager : Form
                 }
             }
 
-            if (_speakerView != null)
-            {
-                _speakerView.Close();
-                _speakerView.Dispose();
-            }
-
-            if (displaySelection.SpeakerNotesOutputType != OutputType.None)
-            {
-                if (displaySelection.SpeakerNotesOutputType == OutputType.Fullscreen)
-                {
-                    if (displaySelection.SpeakerNotesScreen?.Screen != null)
-                    {
-                        _speakerView = new SpeakerView(displaySelection.SpeakerNotesScreen.Screen, true);
-                    }
-                    else
-                    {
-                        throw new Exception("Speaker Screen Not Set, but output type is fullscreen.");
-                    }
-                }
-                else if (displaySelection.SpeakerNotesOutputType == OutputType.Windowed)
-                {
-                    _speakerView = new SpeakerView(displaySelection.SpeakerNotesScreen.Screen, false);
-                }
-            }
+            
         }
         else
         {
