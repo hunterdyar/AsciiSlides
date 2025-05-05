@@ -12,6 +12,7 @@ public class FilesComponent : GroupBox
 	public string FileName => _fileName;
 	private string _fileName = string.Empty;
 	private SlidesManager _slidesManager;
+	private const string LastFilePathSettingsKey = "LastPresentationFile";
 	public FilesComponent(SlidesManager slidesManager)
 	{
 		_slidesManager = slidesManager;
@@ -39,23 +40,14 @@ public class FilesComponent : GroupBox
 		//todo: when we save the file, and reload it, we don't realize we've reloaded it.
 		//hacky temp is to add a 'reload' button.
 		//data watch feature feels correct to me, however. Like, we're not loading the presentation, the user should feel like we're just pointing to a file.
-		
-		
-		loadFilePicker.FilePathChanged += (sender, args) =>
+		string lastFile = Configuration.GetKey(LastFilePathSettingsKey);
+		if (!string.IsNullOrEmpty(lastFile))
 		{
-			if (File.Exists(loadFilePicker.FilePath))
-			{
-				_filePath = loadFilePicker.FilePath;
-				_fileName = Path.GetFileName(_filePath);
-				PickFile(loadFilePicker.FilePath);
-			}
-			else
-			{
-				Console.WriteLine("File does not exist " + loadFilePicker.FilePath);
-				_filePath = string.Empty;
-				_fileName = string.Empty;
-			}
-		};
+			//we check again if the file exists.
+			//this should call FilePathChanged.
+			loadFilePicker.FilePath = lastFile;
+		}
+		loadFilePicker.FilePathChanged += (sender, args) => { TryPickFileFromPath(loadFilePicker.FilePath); };
 
 		Width = Configuration.ManagerWindowWidth;
 		Text = "File";
@@ -70,10 +62,33 @@ public class FilesComponent : GroupBox
 				fileLoadedLabel,
 			}
 		};
+
+		if (!string.IsNullOrEmpty(loadFilePicker.FilePath))
+		{
+			TryPickFileFromPath(loadFilePicker.FilePath);
+		}
 	}
+
+	private void TryPickFileFromPath(string filePath)
+	{
+		if (File.Exists(filePath))
+		{
+			_filePath = filePath;
+			_fileName = Path.GetFileName(_filePath);
+			PickFile(filePath);
+		}
+		else
+		{
+			Console.WriteLine("File does not exist " + filePath);
+			_filePath = string.Empty;
+			_fileName = string.Empty;
+		}
+	}
+
 
 	void PickFile(string path)
 	{
+		Configuration.SetKey(LastFilePathSettingsKey, path);	
 		OnFilePicked?.Invoke(path);
 	}
 }

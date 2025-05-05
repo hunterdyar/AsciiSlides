@@ -43,6 +43,7 @@ public class SlidesManager : Form
         Content = contentLayout;
 
         //files
+        FilesComponent.OnFilePicked += OnFilePicked;
         _filesComponent = new FilesComponent(this);
         contentLayout.Add(_filesComponent);
         
@@ -57,7 +58,6 @@ public class SlidesManager : Form
         contentLayout.AddSpace();
 
         //event registration
-        FilesComponent.OnFilePicked += OnFilePicked;
         InputHandler.RegisterFormAsSlideController(this);
         PresentationState.OnPresentationClosed += ClosePresentation;
         Closed += (sender, args) =>

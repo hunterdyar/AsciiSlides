@@ -18,6 +18,8 @@ public class OutputComponent : GroupBox
 	private SlidesManager _slidesManager;
 	private int _windowedIndex;
 	private int _noneIndex = 0;
+	private const string SpeakerOutputSettingsKey = "speakerOutput";
+	private const string PresentationOutputSettingsKey = "presentationOutput";
 
 	public OutputComponent(SlidesManager slidesManager)
 	{
@@ -265,8 +267,8 @@ public class OutputComponent : GroupBox
 		_presentationDropdown.DataStore = _options;
 
 		//attempt to find the saved string from the keystore.
-		var speakerSetting = Configuration.GetKey("speakerOutput");
-		var presentationSetting = Configuration.GetKey("presentationOutput");
+		var speakerSetting = Configuration.GetKey(SpeakerOutputSettingsKey);
+		var presentationSetting = Configuration.GetKey(PresentationOutputSettingsKey);
 
 		if (!string.IsNullOrEmpty(speakerSetting) && !string.IsNullOrEmpty(presentationSetting))
 		{
@@ -328,7 +330,8 @@ public class OutputComponent : GroupBox
 
 	public void OnClose()
 	{
-		Configuration.SetKey("speakerOutput", (_speakerDropdown.SelectedValue as MonitorInfo).Text);
-		Configuration.SetKey("presentationOutput", (_presentationDropdown.SelectedValue as MonitorInfo).Text);
+		Configuration.SetKey(SpeakerOutputSettingsKey, (_speakerDropdown.SelectedValue as MonitorInfo).Text);
+		Configuration.SetKey(PresentationOutputSettingsKey, (_presentationDropdown.SelectedValue as MonitorInfo).Text);
 	}
+
 }
