@@ -155,22 +155,5 @@ public abstract class Slide
 		//todo: rows/cols...
 		return state.Aspect;
 	}
-	protected virtual string GetSlideBGColor()
-	{
-		if (Frontmatter.TryGetKey("background", out string bg))
-		{
-			return bg;
-		}
-		return $"#{Configuration.BGColor.ToHex()}";
-	}
 
-	protected virtual string GetSlideTextColor()
-	{
-		if (Frontmatter.TryGetKey("textcolor", out var fontColor))
-		{
-			return fontColor;
-		}
-
-		return $"#{Configuration.BGColor.ToHex()}";
-	}
 }

@@ -18,7 +18,14 @@ public class Frontmatter
 
 	public void AddKeyValuePair(string key, string value)
 	{
-		_frontmatter.Add(key.ToLower(), value);
+		if (_frontmatter.ContainsKey(key))
+		{
+			_frontmatter[key] = value;
+		}
+		else
+		{
+			_frontmatter.Add(key.ToLower(), value);
+		}
 	}
 	
 	//todo: GetKey with default passed in to collec t pattern

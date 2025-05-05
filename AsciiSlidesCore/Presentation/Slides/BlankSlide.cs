@@ -7,6 +7,9 @@ public class BlankSlide : Slide
 
 	public BlankSlide(Presentation presentation, string rawContent) : base(presentation, rawContent)
 	{
+		this.Frontmatter.AddKeyValuePair("background","black");
+		this.Frontmatter.AddKeyValuePair("textcolor", "white");
+
 	}
 
 	protected override void AppendContent(StringBuilder sb)
@@ -18,14 +21,5 @@ public class BlankSlide : Slide
 
 		return;
 	}
-
-	protected override string GetSlideBGColor()
-	{
-		return "#000";
-	}
-
-	protected override string GetSlideTextColor()
-	{
-		return "#FFF";
-	}
+	
 }

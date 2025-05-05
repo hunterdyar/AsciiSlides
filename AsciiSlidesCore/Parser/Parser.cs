@@ -20,6 +20,8 @@ public static class PresentationParser
 		{
 			slides.Add(ParseSlide(ref t, ref presentation, slides.Count+1,presentation.Frontmatter));
 		}
+		//end of slideshow slide.
+		slides.Add(new BlankSlide(presentation, "end of presentation"));
 		presentation.Slides = slides.ToArray();
 		
 		return presentation;
