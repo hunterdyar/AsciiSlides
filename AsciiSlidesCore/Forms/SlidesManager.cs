@@ -58,15 +58,16 @@ public class SlidesManager : Form
     private void OnFilePicked(string path)
     {
         using var fileStream = new StreamReader(path);
-        LoadPresentation(Path.GetFileName(path),fileStream.ReadToEnd());
+        LoadPresentation(path,fileStream.ReadToEnd());
     }
 
-    private void LoadPresentation(string fileName, string presentationText)
+    private void LoadPresentation(string path, string presentationText)
     {
         try
         {
             Presentation = Parser.PresentationParser.Parse(presentationText);
-            Presentation.FileName = fileName;
+            Presentation.Path = Path.GetDirectoryName(path)+"\\";
+            Presentation.FileName  = Path.GetFileNameWithoutExtension(path);
             PresentationState = new PresentationState(Presentation);
             //PresentationState.SetPresentationReady(true);//this gets called by listener. uhg.
             OnPresentationLoaded?.Invoke(Presentation);

@@ -21,6 +21,7 @@ public class Frontmatter
 		_frontmatter.Add(key.ToLower(), value);
 	}
 	
+	//todo: GetKey with default passed in to collec t pattern
 	public bool TryGetKey(string key, out string value)
 	{
 		if (_frontmatter.TryGetValue(key, out value))

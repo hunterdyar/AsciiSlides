@@ -2,10 +2,10 @@
 
 namespace AsciiSlidesCore;
 
-public class MarkdownSlides : Slide
+public class MarkdownSlide : Slide
 {
 	private string asHTMl;
-	public MarkdownSlides(string rawContent) : base(rawContent)
+	public MarkdownSlide(Presentation presentation, string rawContent) : base(presentation, rawContent)
 	{
 			asHTMl = Markdig.Markdown.ToHtml(RawContent);
 	}

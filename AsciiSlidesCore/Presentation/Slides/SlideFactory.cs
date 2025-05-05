@@ -2,7 +2,7 @@
 
 public static class SlideFactory
 {
-	public static Slide CreateSlide(Frontmatter frontmatter, string rawContent, int number, string defaultType="ascii")
+	public static Slide CreateSlide(Presentation presentation, Frontmatter frontmatter,string rawContent, int number, string defaultType="ascii")
 	{
 		if(!frontmatter.TryGetKey("type", out string slideType))
 		{
@@ -13,14 +13,14 @@ public static class SlideFactory
 		switch (slideType.ToLower())
 		{
 			case "youtube":
-				slide = new YTSlide(rawContent)
+				slide = new YTSlide(presentation, rawContent)
 				{
 					Frontmatter = frontmatter,
 					SlideNumber = number
 				};
 				break;
 			case "html":
-				slide = new HTMLSlide(rawContent)
+				slide = new HTMLSlide(presentation, rawContent)
 				{
 					Frontmatter = frontmatter,
 					SlideNumber = number
@@ -28,7 +28,15 @@ public static class SlideFactory
 				break;
 			case "md":
 			case "markdown":
-				slide = new MarkdownSlides(rawContent)
+				slide = new MarkdownSlide(presentation, rawContent)
+				{
+					Frontmatter = frontmatter,
+					SlideNumber = number
+				};
+				break;
+			case "image":
+			case "img":
+				slide = new ImageSlide(presentation, rawContent)
 				{
 					Frontmatter = frontmatter,
 					SlideNumber = number
@@ -36,7 +44,7 @@ public static class SlideFactory
 				break;
 			case "ascii":
 			default:
-				slide = new ASCIISlide(rawContent)
+				slide = new ASCIISlide(presentation, rawContent)
 				{
 					Frontmatter = frontmatter,
 					SlideNumber = number

@@ -5,7 +5,7 @@ namespace AsciiSlidesCore;
 public class BlankSlide : Slide
 {
 
-	public BlankSlide(string rawContent) : base(rawContent)
+	public BlankSlide(Presentation presentation, string rawContent) : base(presentation, rawContent)
 	{
 	}
 

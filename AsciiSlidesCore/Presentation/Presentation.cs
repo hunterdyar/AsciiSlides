@@ -7,6 +7,8 @@ public class Presentation
 	public Frontmatter Frontmatter;
 	public Slide[] Slides;
 	public int SlideCount => Slides.Length;
+	public string Path = string.Empty;
+
 	public string FileName = string.Empty;
 
 	//Construct an Empty Presentation

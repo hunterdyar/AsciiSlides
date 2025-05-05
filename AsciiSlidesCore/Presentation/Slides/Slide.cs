@@ -5,6 +5,7 @@ namespace AsciiSlidesCore;
 
 public abstract class Slide
 {
+	protected Presentation presentation;
 	public string RawContent;
 	public Frontmatter Frontmatter;
 	public bool HasSpeakerNotes = false;
@@ -13,8 +14,9 @@ public abstract class Slide
 
 	public int SlideNumber;
 
-	public Slide(string rawContent)
+	public Slide(Presentation presentation, string rawContent)
 	{
+		this.presentation = presentation;
 		Frontmatter = new Frontmatter();
 		RawContent = rawContent;
 		SlideNumber = 0;

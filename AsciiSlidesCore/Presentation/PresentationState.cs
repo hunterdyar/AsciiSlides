@@ -8,7 +8,7 @@ public class PresentationState
 	public static bool IsPresentationReady = false;
 	public static Action<bool> OnIsPresentationReadyChanged = delegate {};
 
-	private static Slide EndOfSlideSlide = new BlankSlide("end of slide");
+	private static Slide EndOfSlideSlide = new BlankSlide(null,"end of slide");
 	public static Action<Slide> OnSlideChanged = delegate { };
 	public Presentation Presentation => _presentation;
 	private Presentation _presentation = new Presentation();

@@ -7,7 +7,7 @@ public class HTMLSlide : Slide
 {
 	private string style;
 
-	public HTMLSlide(string rawContent) : base(rawContent)
+	public HTMLSlide(Presentation presentation, string rawContent) : base(presentation, rawContent)
 	{
 		//Coding design note.... should this be in the factory?
 		if (!Frontmatter.TryGetKey("style", out style))
@@ -16,6 +16,7 @@ public class HTMLSlide : Slide
 		}
 	}
 
+	//todo: definable font size in screen space.
 	protected override void AppendContent(StringBuilder sb)
 	{
 		sb.Append(RawContent);

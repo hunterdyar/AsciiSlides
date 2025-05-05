@@ -3,6 +3,11 @@ textcolor: #F0F
 type: ascii
 
 ###
+type image
+src arcusC3.jpg
+---
+argusC3.jpg
+###
 notes: { this should be a list. }
 
 ---
@@ -20,3 +25,4 @@ a [broken](link) linkl
 > this is a quote.
 
 yay.
+
