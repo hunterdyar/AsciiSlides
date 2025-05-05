@@ -35,6 +35,11 @@ public static class InputHandler
 				SlidesManager.PresentationState?.NavigateRelative(-1);
 				e.Handled = true;
 			}
+		}else if(Configuration.ClosePresentation.Contains(e.Key))
+		{
+			//Close the presentation.
+			SlidesManager.PresentationState.ClosePresentation();
+			e.Handled = true;
 		}
 	}
 	

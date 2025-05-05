@@ -15,7 +15,6 @@ public abstract class PresentationForm : Form
 		_screen = screen;
 
 		Show();
-
 		SetFullscreen(screen, inFullscreen);
 		AsciiSlidesCore.InputHandler.RegisterFormAsSlideController(this);
 
@@ -44,20 +43,16 @@ public abstract class PresentationForm : Form
 		
 	}
 
-	protected virtual void OnKeyUp(object? sender, KeyEventArgs e)
+	protected virtual void OnKeyDown(object? sender, KeyEventArgs e)
 	{
 		// Console.WriteLine("Display Hook OnKeyDown: "+e.Key.ToString());
-		if (Configuration.ExitKey.Contains(e.Key))
-		{
-			Close();
-		}
-		else if (e.Key == Configuration.ToggleFullscreen)
+		if (e.Key == Configuration.ToggleFullscreen)
 		{
 			SetFullscreen(_screen, !_isFullscreen);
 		}
 	}
 
-	protected virtual void OnKeyDown(object? sender, KeyEventArgs e)
+	protected virtual void OnKeyUp(object? sender, KeyEventArgs e)
 	{
 	}
 

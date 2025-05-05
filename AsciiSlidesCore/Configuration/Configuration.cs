@@ -9,7 +9,7 @@ public static class Configuration
 	public static int ManagerWindowWidth = 300;
 	public static int ManagerWindowHeight = 600;
 	//Configuration
-	public static Eto.Forms.Keys[] ExitKey = [Keys.Escape, Keys.Q];
+	public static Eto.Forms.Keys[] ClosePresentation = [Keys.Escape, Keys.Q];
 	public static Keys ToggleFullscreen = Keys.F;
 	public static Keys[] NextSlide = [Keys.Right, Keys.Space];
 	public static Keys[] PreviousSlide = [Keys.Left, Keys.Backspace];
@@ -52,4 +52,6 @@ public static class Configuration
 	{
 		OSUtility.Instance.SaveSettingsKeys();	
 	}
+
+
 }

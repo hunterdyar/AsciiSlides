@@ -13,14 +13,19 @@ public class WinOSUtility : OSUtility
 		{
 			view.WindowStyle = WindowStyle.None;
 			view.Topmost = true;
+			view.Bounds = new Rectangle(screen.Bounds);
 			view.WindowState = WindowState.Maximized;
 			return true;
 		}
 		else
 		{
-			view.WindowState = WindowState.Normal;
 			view.WindowStyle = WindowStyle.Default;
-			view.Bounds = new Rectangle(screen.Bounds / 2);
+			view.WindowState = WindowState.Normal;
+			view.Topmost = false;
+			view.Bounds = new Rectangle((int)(screen.Bounds.Left + screen.Bounds.Width / 4),
+				(int)(screen.Bounds.Top + screen.Bounds.Height / 4),
+				(int)(screen.Bounds.Width / 2),
+				(int)(screen.Bounds.Height / 2));
 			return false;
 		}
 	}
@@ -35,7 +40,7 @@ public class WinOSUtility : OSUtility
 			//todo: check assumption that the Winscreens and the EtoForm screens are aligned/the same. 
 			//I fear it won't be when things like plug/unplug happen during runtime because of cacheing.
 			allMonitors[i] = new MonitorInfo(etoscreens[i], allScreens[i].DeviceName);
-			
+
 		}
 
 		return allMonitors;
@@ -43,7 +48,7 @@ public class WinOSUtility : OSUtility
 
 	#region Settings
 
-	
+
 
 	private System.Configuration.Configuration _configuration;
 
@@ -54,12 +59,19 @@ public class WinOSUtility : OSUtility
 			_configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 		}
 	}
+
 	public override void SetSettingsKey(string key, string value)
 	{
 		LazyGetConfig();
 		if (_configuration != null)
 		{
-			_configuration.AppSettings.Settings[key].Value = value;
+			if (_configuration.AppSettings.Settings[key] == null)
+			{
+				_configuration.AppSettings.Settings.Add(key,value);
+			}else
+			{
+				_configuration.AppSettings.Settings[key].Value = value;
+			}
 		}
 	}
 
@@ -71,10 +83,11 @@ public class WinOSUtility : OSUtility
 			var kvp = _configuration.AppSettings.Settings[key];
 			if (kvp != null)
 			{
-				value= kvp.Value;
+				value = kvp.Value;
 				return true;
 			}
 		}
+
 		value = null;
 		return false;
 	}
@@ -85,9 +98,8 @@ public class WinOSUtility : OSUtility
 		if (_configuration != null)
 		{
 			_configuration.Save(ConfigurationSaveMode.Minimal);
-		}	
+		}
 	}
 
 	#endregion
-
 }

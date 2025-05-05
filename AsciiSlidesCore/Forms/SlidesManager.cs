@@ -47,11 +47,15 @@ public class SlidesManager : Form
         //event registration
         FilesComponent.OnFilePicked += OnFilePicked;
         InputHandler.RegisterFormAsSlideController(this);
+        PresentationState.OnPresentationClosed += ClosePresentation;
         Closed += (sender, args) =>
         {
+            //unregister from events
+            PresentationState.OnPresentationClosed -= ClosePresentation;
             FilesComponent.OnFilePicked -= OnFilePicked;
+
+            //cleanup and save
             OnClose();
-            Configuration.SaveKeys();
         };
     }
 
@@ -90,7 +94,10 @@ public class SlidesManager : Form
             if (_speakerView != null)
             {
                 _speakerView.Close();
-                _speakerView.Dispose();
+                if (!_speakerView.IsDisposed)
+                {
+                    _speakerView.Dispose();
+                }
             }
 
             if (displaySelection.SpeakerNotesOutputType != OutputType.None)
@@ -117,8 +124,12 @@ public class SlidesManager : Form
             if (_display != null)
             {
                 _display.Close();
-                _display.Dispose();
+                if (!_display.IsDisposed)
+                {
+                    _display.Dispose();
+                }
             }
+        
             
             if (displaySelection.DisplayOutputType != OutputType.None)
             {
@@ -147,9 +158,22 @@ public class SlidesManager : Form
         }
     }
 
-    protected void OnClose()
+    public void ClosePresentation()
+    {
+        if (_display != null)
+        {
+            _display.Close();
+        }
+
+        if (_speakerView != null)
+        {
+            _speakerView.Close();
+        }
+    }
+    private void OnClose()
     {
         _outputComponent.OnClose();
+        Configuration.SaveKeys();
     }
 }
 	

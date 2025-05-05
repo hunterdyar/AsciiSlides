@@ -53,33 +53,45 @@ public class OutputComponent : GroupBox
 		PresentCommand.Executed += (sender, args) => { _slidesManager.LaunchPresentation(this.DisplaySelection); };
 		SwapOutputsCommand.Executed += SwapOutputsCommandOnExecuted;
 		_presentButton.Command = PresentCommand;
+		PresentationState.OnIsPresentationReadyChanged += b =>
+		{
+			_presentButton.Enabled = b;
+		};
+		_presentButton.Enabled = PresentationState.IsPresentationReady;
 		_swapButton.Command = SwapOutputsCommand;
 		PopulateOptions();
-		
+
+		var layout = new DynamicLayout();
+		layout.BeginVertical();
 		//layout
-		var layout = new TableLayout()
+		var monitorLayout = new TableLayout()
 		{
 			Spacing = new Size(3, 5),
 			Rows =
 			{
 				new TableRow(
-					new Label() { Text = "Presentation" },
+					new Label() { Text = "Presentation", TextAlignment = TextAlignment.Center
+					},
 					null,
-					new Label() { Text = "Speaker View" }
+					new Label()
+					{
+						Text = "Speaker View",
+						TextAlignment = TextAlignment.Center
+					}
 				),
 				new TableRow(
 					_presentationDropdown,
 					_swapButton,
 					_speakerDropdown
 				),
-				new TableRow(
-					_presentButton
-					)
-				{
-					
-				}
 			}
 		};
+		layout.Add(monitorLayout);
+		layout.Padding = new Padding(5);
+		layout.DefaultSpacing = new Size(5, 5);
+		layout.Add(_presentButton);
+		_presentButton.Height = _presentButton.Height * 2;
+		layout.EndVertical();
 		Content = layout;
 	}
 
@@ -123,6 +135,7 @@ public class OutputComponent : GroupBox
 		if (i >= 0 && i < s)
 		{
 			DisplaySelection.SpeakerNotesScreen = _options[i];
+			DisplaySelection.SpeakerNotesOutputType = OutputType.Fullscreen;
 		}
 		else
 		{
@@ -228,8 +241,6 @@ public class OutputComponent : GroupBox
 	
 	private void PopulateOptions()
 	{
-		
-
 		DisplaySelection = new DisplaySelection();
 		_options.Clear();
 		var monitors = OSUtility.Instance.GetMonitors();
