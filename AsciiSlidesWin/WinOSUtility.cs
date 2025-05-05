@@ -1,10 +1,6 @@
 ﻿using System.Configuration;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using System.Windows.Shapes;
 using AsciiSlidesCore;
 using Eto.Forms;
-using Eto.Wpf;
 using Form = Eto.Forms.Form;
 using Rectangle = Eto.Drawing.Rectangle;
 namespace AsciiSlidesWin;
@@ -49,9 +45,9 @@ public class WinOSUtility : OSUtility
 
 	
 
-	private static System.Configuration.Configuration _configuration;
+	private System.Configuration.Configuration _configuration;
 
-	private static void LazyGetConfig()
+	private void LazyGetConfig()
 	{
 		if (_configuration == null)
 		{
@@ -83,7 +79,7 @@ public class WinOSUtility : OSUtility
 		return false;
 	}
 
-	override public void SaveSettingsKeys()
+	public override void SaveSettingsKeys()
 	{
 		LazyGetConfig();
 		if (_configuration != null)
