@@ -4,6 +4,7 @@ type: ascii
 
 ###
 type image
+background: #ccc
 src arcusC3.jpg
 ---
 argusC3.jpg

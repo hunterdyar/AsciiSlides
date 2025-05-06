@@ -50,7 +50,7 @@ public abstract class Slide
 		int w = 0;
 		
 		var screenAspect = bounds.Width / (float)bounds.Height;
-		float aspect = GetAspect(state);
+		float aspect = GetAspect(state, bounds);
 		if (aspect >= screenAspect)
 		{
 			//if aspect is equal, we can do either branch and it doesn't matter.
@@ -128,7 +128,7 @@ public abstract class Slide
 	}
 	
 
-	protected virtual float GetAspect(PresentationState state)
+	protected virtual float GetAspect(PresentationState state, Rectangle bounds)
 	{
 		//todo: rows/cols...
 		return state.Aspect;
