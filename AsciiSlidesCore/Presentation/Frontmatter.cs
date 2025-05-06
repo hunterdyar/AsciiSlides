@@ -31,7 +31,7 @@ public class Frontmatter
 	//todo: GetKey with default passed in to collec t pattern
 	public bool TryGetKey(string key, out string value)
 	{
-		if (_frontmatter.TryGetValue(key, out value))
+		if (_frontmatter.TryGetValue(key, out value!))
 		{
 			return true;
 		}
@@ -39,7 +39,7 @@ public class Frontmatter
 		//now check our parent.
 		if (_parent != null)
 		{
-			return _parent.TryGetKey(key, out value);
+			return _parent.TryGetKey(key, out value!);
 		}
 		
 		value = string.Empty;

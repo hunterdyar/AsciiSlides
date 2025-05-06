@@ -61,6 +61,7 @@ public class OutputComponent : GroupBox
 		};
 		_presentButton.Enabled = PresentationState.IsPresentationReady;
 		_swapButton.Command = SwapOutputsCommand;
+		DisplaySelection = new DisplaySelection();
 		PopulateOptions();
 
 		var layout = new DynamicLayout();
@@ -243,7 +244,6 @@ public class OutputComponent : GroupBox
 	
 	private void PopulateOptions()
 	{
-		DisplaySelection = new DisplaySelection();
 		_options.Clear();
 		var monitors = OSUtility.Instance.GetMonitors();
 		int screenCount = 0;

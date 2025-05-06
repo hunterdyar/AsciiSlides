@@ -41,7 +41,7 @@ public class SpeakerView : PresentationForm
 		Content = layout;
 	}
 
-	private void OnCurrentSlideChanged(Slide slide)
+	protected override void OnCurrentSlideChanged(Slide slide)
 	{
 		_notesView.Text = slide.SpeakerNotes;
 		_previewView.LoadHtml(SlidesManager.PresentationState.GetPreviewAsHTML(_previewView.Bounds));

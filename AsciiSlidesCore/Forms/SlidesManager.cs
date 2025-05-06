@@ -18,11 +18,9 @@ public class SlidesManager : Form
     public static PresentationState PresentationState = new PresentationState();
     public static Action<Presentation> OnPresentationLoaded = delegate { };
     public static Action<string> OnPresentationFailedToLoad = delegate { };
-    private int _selectedDisplayIndex = -1;
-    private int _selectedSpeakerViewIndex = -1;
     
     //commands
-    public Command CloseCommand { get; set; }
+    public Command CloseCommand { get; private set; }
     
     public SlidesManager()
     {
@@ -134,7 +132,7 @@ public class SlidesManager : Form
                 {
                     if (displaySelection.SpeakerNotesScreen?.Screen != null)
                     {
-                        _speakerView = new SpeakerView(displaySelection.SpeakerNotesScreen.Screen, true);
+                        _speakerView = new SpeakerView(displaySelection.SpeakerNotesScreen?.Screen, true);
                     }
                     else
                     {
@@ -143,7 +141,7 @@ public class SlidesManager : Form
                 }
                 else if (displaySelection.SpeakerNotesOutputType == OutputType.Windowed)
                 {
-                    _speakerView = new SpeakerView(displaySelection.SpeakerNotesScreen.Screen, false);
+                    _speakerView = new SpeakerView(displaySelection.SpeakerNotesScreen?.Screen, false);
                 }
             }
             
@@ -166,7 +164,7 @@ public class SlidesManager : Form
                 {
                     if (displaySelection.DisplayScreen?.Screen != null)
                     {
-                        _display = new Display(displaySelection.DisplayScreen.Screen, true);
+                        _display = new Display(displaySelection.DisplayScreen?.Screen, true);
                     }
                     else
                     {
@@ -174,7 +172,7 @@ public class SlidesManager : Form
                     }
                 }else if (displaySelection.DisplayOutputType == OutputType.Windowed)
                 {
-                    _display = new Display(displaySelection.DisplayScreen.Screen,false);
+                    _display = new Display(displaySelection.DisplayScreen?.Screen,false);
                 }
             }
 

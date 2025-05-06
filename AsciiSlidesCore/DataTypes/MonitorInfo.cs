@@ -5,11 +5,11 @@ namespace AsciiSlidesCore;
 public class MonitorInfo : IListItem
 {
 	public string DisplayName;
-	public Eto.Forms.Screen Screen;
+	public Eto.Forms.Screen? Screen;
 	public bool isFullscreen = true;
 	public bool isNone = false;
 
-	public MonitorInfo(Screen screen, string displayName)
+	public MonitorInfo(Screen? screen, string displayName)
 	{
 		DisplayName = displayName;
 		Screen = screen;

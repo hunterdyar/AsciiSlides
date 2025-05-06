@@ -15,8 +15,8 @@ public static class Configuration
 	public static Keys[] PreviousSlide = [Keys.Left, Keys.Backspace];
 
 	//Presentation Style Defaults
-	public static string BGColor;
-	public static string FontColor;
+	public static string BGColor = "#080000";
+	public static string FontColor = "#E2DDD9";
 
 	public static void LoadDefaultStyle()
 	{
@@ -36,7 +36,7 @@ public static class Configuration
 		OSUtility.Instance.SetSettingsKey(key,value);
 	}
 
-	public static string GetKey(string key)
+	public static string? GetKey(string key)
 	{
 		if (OSUtility.Instance.TryGetSettingsKey(key, out string value))
 		{

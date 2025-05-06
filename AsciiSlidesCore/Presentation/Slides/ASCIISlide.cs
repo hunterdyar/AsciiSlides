@@ -10,7 +10,6 @@ public class ASCIISlide : Slide
 	public ASCIISlide(Presentation presentation, string rawContent) : base(presentation, rawContent)
 	{
 		(RowCount, ColumnCount) = rawContent.GetRowColCount();
-		Console.WriteLine($"{RowCount}/{ColumnCount} for asciislide.");
 	}
 
 	protected override void AppendContent(StringBuilder sb)
