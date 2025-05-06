@@ -8,9 +8,10 @@ public abstract class PresentationForm : Form
 	protected Screen _screen;
 	public bool IsFullscreen => _isFullscreen;
 	protected bool _isFullscreen = false;
-	
-	public PresentationForm(Screen screen, bool inFullscreen)
+	protected SlidesManager _manager;
+	public PresentationForm(SlidesManager manager, Screen screen, bool inFullscreen)
 	{
+		_manager = manager;
 		//Topmost = inFullscreen;
 		_screen = screen;
 

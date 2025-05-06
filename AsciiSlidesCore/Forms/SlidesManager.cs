@@ -9,7 +9,9 @@ namespace AsciiSlidesCore;
 
 public class SlidesManager : Form
 {
+    public Display Display => _display;
     private Display? _display = null;
+    public SpeakerView SpeakerView => _speakerView;
     private SpeakerView? _speakerView = null;
     private OutputComponent _outputComponent;
     private FilesComponent _filesComponent;
@@ -132,7 +134,7 @@ public class SlidesManager : Form
                 {
                     if (displaySelection.SpeakerNotesScreen?.Screen != null)
                     {
-                        _speakerView = new SpeakerView(displaySelection.SpeakerNotesScreen?.Screen, true);
+                        _speakerView = new SpeakerView(this, displaySelection.SpeakerNotesScreen?.Screen, true);
                     }
                     else
                     {
@@ -141,7 +143,7 @@ public class SlidesManager : Form
                 }
                 else if (displaySelection.SpeakerNotesOutputType == OutputType.Windowed)
                 {
-                    _speakerView = new SpeakerView(displaySelection.SpeakerNotesScreen?.Screen, false);
+                    _speakerView = new SpeakerView(this, displaySelection.SpeakerNotesScreen?.Screen, false);
                 }
             }
             
@@ -164,7 +166,7 @@ public class SlidesManager : Form
                 {
                     if (displaySelection.DisplayScreen?.Screen != null)
                     {
-                        _display = new Display(displaySelection.DisplayScreen?.Screen, true);
+                        _display = new Display(this, displaySelection.DisplayScreen?.Screen, true);
                     }
                     else
                     {
@@ -172,7 +174,7 @@ public class SlidesManager : Form
                     }
                 }else if (displaySelection.DisplayOutputType == OutputType.Windowed)
                 {
-                    _display = new Display(displaySelection.DisplayScreen?.Screen,false);
+                    _display = new Display(this, displaySelection.DisplayScreen?.Screen,false);
                 }
             }
 

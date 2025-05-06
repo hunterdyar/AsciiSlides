@@ -16,9 +16,9 @@ namespace AsciiSlidesCore;
 /// </summary>
 public class Display : PresentationForm
 {
-   
+    public WebView View => _webPanel;
     private WebView _webPanel;
-    public Display(Screen screen, bool inFullscreen) : base(screen, inFullscreen)
+    public Display(SlidesManager manager, Screen screen, bool inFullscreen) : base(manager, screen, inFullscreen)
     {
         Title = "Presentation";
         Maximizable = true;
@@ -31,6 +31,7 @@ public class Display : PresentationForm
             BrowserContextMenuEnabled = false,
         };
         this.Content = _webPanel;
+        
 
         Console.WriteLine("Created Display.");
         //fullscreen

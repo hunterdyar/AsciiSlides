@@ -9,7 +9,7 @@ public class PresentationState
 	public static bool IsPresenting = false;
 	public static Action<bool> OnIsPresentingChanged = delegate {};
 	public static Action<bool> OnIsPresentationReadyChanged = delegate {};
-	private static Slide EndOfSlideSlide = new BlankSlide(null,"end of slide");
+	private static Slide EndOfSlideSlide = new BlankSlide(null,"end of presentation");
 	public static Action<Slide> OnSlideChanged = delegate { };
 	public static Action OnPresentationClosed = delegate { };
 	public Presentation Presentation => _presentation;
@@ -73,6 +73,7 @@ public class PresentationState
 	
 	public string GetCurrentAsHTML(Rectangle bounds)
 	{
+		Console.WriteLine("Getting current: " + _currentSlideIndex);
 		return _presentation.Slides[_currentSlideIndex].GetSlideAsHTML(this, bounds, false);
 	}
 
@@ -83,7 +84,8 @@ public class PresentationState
 		{
 			return EndOfSlideSlide.GetSlideAsHTML(this,bounds,false);
 		}
-		return _presentation.Slides[_currentSlideIndex].GetSlideAsHTML(this, bounds, false);
+		Console.WriteLine("Getting Preview: " + preview);
+		return _presentation.Slides[preview].GetSlideAsHTML(this, bounds, false);
 	}
 
 	public void ClosePresentation()

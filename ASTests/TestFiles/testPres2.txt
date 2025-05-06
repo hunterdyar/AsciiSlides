@@ -16,7 +16,15 @@ notes: { this should be a list. }
 - here you go
 
 ###
-notes: { I think it's important for the audience to know that this is a slide. }
+notes: { I think it's important for the audience to know that this is a slide.
+ I think it's important for the audience to know that this is a slide.
+ I think it's important for the audience to know that this is a slide.
+ I think it's important for the audience to know that this is a slide.
+ I think it's important for the audience to know that this is a slide.
+ I think it's important for the audience to know that this is a slide.I think it's important for the audience to know that this is a slide.I think it's important for the audience to know that this is a slide.
+ I think it's important for the audience to know that this is a slide.
+ 
+ }
 ---
 some normal text
 
