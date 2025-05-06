@@ -1,5 +1,8 @@
 ﻿using System.Configuration;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using AsciiSlidesCore;
+using Eto.Drawing;
 using Eto.Forms;
 using Form = Eto.Forms.Form;
 using Rectangle = Eto.Drawing.Rectangle;
@@ -28,6 +31,21 @@ public class WinOSUtility : OSUtility
 				(int)(screen.Bounds.Height / 2));
 			return false;
 		}
+	}
+
+
+	public override Bitmap ViewToBitmap(WebView view)
+	{
+		var n = view.ToNative();
+		RenderTargetBitmap rtb = new RenderTargetBitmap((int)n.ActualWidth, (int)n.ActualHeight, 96, 96,
+			PixelFormats.Pbgra32);
+		rtb.Render(n);
+		PngBitmapEncoder png = new PngBitmapEncoder();
+		png.Frames.Add(BitmapFrame.Create(rtb));
+		MemoryStream stream = new MemoryStream();
+		png.Save(stream);
+		Eto.Drawing.Bitmap bitmap = new Bitmap(stream);
+		return bitmap;
 	}
 
 	public override MonitorInfo[] GetMonitors()

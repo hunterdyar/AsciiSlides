@@ -1,6 +1,9 @@
 ﻿using AsciiSlidesCore;
+using Eto.Drawing;
 using Eto.Forms;
 using MonoMac.AppKit;
+using MonoMac.CoreGraphics;
+using RectangleF = System.Drawing.RectangleF;
 
 namespace AsciiSlidesMac;
 
@@ -15,6 +18,14 @@ public class MacOSUtility : OSUtility
 		                                NSWindowCollectionBehavior.FullScreenAllowsTiling;
 		nativeView.ToggleFullScreen(nativeView);
 		return fullscreen;
+	}
+
+	public override Bitmap ViewToBitmap(WebView view)
+	{
+		var n = view.ToNative();
+		var bm = n.BitmapImageRepForCachingDisplayInRect(new CGRect(view.Bounds.X, view.Bounds.Y, view.Bounds.Width,
+			view.Bounds.Height));
+		throw new NotImplementedException("I haven't figured out the tobitmap thing on mac.");
 	}
 
 	override public MonitorInfo[] GetMonitors()

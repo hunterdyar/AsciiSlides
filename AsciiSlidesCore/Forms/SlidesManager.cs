@@ -72,6 +72,7 @@ public class SlidesManager : Form
         
         //Now shrink the window to meet the size. The dynamic layout used the original given size, so currently it will set width to from config, and height by the layout.
         ClientSize = new Size(contentLayout.Size.Width, contentLayout.Size.Height);
+        
     }
 
     private void CreateCommands()
