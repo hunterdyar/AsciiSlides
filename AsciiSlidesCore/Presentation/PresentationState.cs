@@ -71,19 +71,19 @@ public class PresentationState
 		_presentation.Slides[_currentSlideIndex].OnRender();
 	}
 	
-	public string GetCurrentAsHTML(Rectangle bounds)
+	public string GetCurrentAsHTML(Rectangle bounds, SlideViewMode currentSpeaker = SlideViewMode.CurrentPresenting)
 	{
-		return _presentation.Slides[_currentSlideIndex].GetSlideAsHTML(this, bounds, false);
+		return _presentation.Slides[_currentSlideIndex].GetSlideAsHTML(this, bounds, currentSpeaker);
 	}
 
-	public string GetPreviewAsHTML(Rectangle bounds)
+	public string GetPreviewAsHTML(Rectangle bounds, SlideViewMode slideViewMode = SlideViewMode.Preview)
 	{
 		int preview = _currentSlideIndex + 1;
 		if (preview >= _presentation.SlideCount || preview < 0)
 		{
-			return EndOfSlideSlide.GetSlideAsHTML(this,bounds,false);
+			return EndOfSlideSlide.GetSlideAsHTML(this, bounds, slideViewMode);
 		}
-		return _presentation.Slides[preview].GetSlideAsHTML(this, bounds, false);
+		return _presentation.Slides[preview].GetSlideAsHTML(this, bounds, slideViewMode);
 	}
 
 	public void ClosePresentation()

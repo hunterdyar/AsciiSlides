@@ -70,7 +70,7 @@ public class SpeakerView : PresentationForm
 		
 		//adjust sizes after calculations. (sets inner to outer)
 		_notesView.Width = _notesScrollable.VisibleRect.Width;
-		_currentSlideView.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(_currentSlideView.Bounds));
+		_currentSlideView.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(_currentSlideView.Bounds, SlideViewMode.CurrentSpeaker));
 		_previewView.LoadHtml(SlidesManager.PresentationState.GetPreviewAsHTML(_previewView.Bounds));
 
 	}
@@ -84,7 +84,7 @@ public class SpeakerView : PresentationForm
 		_notesView.Width = _notesScrollable.VisibleRect.Width;
 		//snap back to top of scrolling
 		_notesScrollable.ScrollPosition = new Point(0, 0);
-		_currentSlideView.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(_currentSlideView.Bounds));
+		_currentSlideView.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(_currentSlideView.Bounds, SlideViewMode.CurrentSpeaker));
 		_previewView.LoadHtml(SlidesManager.PresentationState.GetPreviewAsHTML(_previewView.Bounds));
 	}
 }

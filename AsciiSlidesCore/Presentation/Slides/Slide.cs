@@ -22,8 +22,7 @@ public abstract class Slide
 		SlideNumber = 0;
 	}
 
-	/// <param name="isPreview">If not primary slide view (don't autoplay videos no matter what, etc.)</param>
-	public string GetSlideAsHTML(PresentationState state, Rectangle windowBounds, bool isPreview)
+	public string GetSlideAsHTML(PresentationState state, Rectangle windowBounds, SlideViewMode viewMode)
 	{
 		_sb.Clear();
 		_sb.AppendLine("<html>");
