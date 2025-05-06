@@ -73,7 +73,6 @@ public class PresentationState
 	
 	public string GetCurrentAsHTML(Rectangle bounds)
 	{
-		Console.WriteLine("Getting current: " + _currentSlideIndex);
 		return _presentation.Slides[_currentSlideIndex].GetSlideAsHTML(this, bounds, false);
 	}
 
@@ -84,7 +83,6 @@ public class PresentationState
 		{
 			return EndOfSlideSlide.GetSlideAsHTML(this,bounds,false);
 		}
-		Console.WriteLine("Getting Preview: " + preview);
 		return _presentation.Slides[preview].GetSlideAsHTML(this, bounds, false);
 	}
 

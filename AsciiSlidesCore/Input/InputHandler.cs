@@ -15,8 +15,6 @@ public static class InputHandler
 	
 	private static void FormOnKeyDown(object? sender, KeyEventArgs e)
 	{
-		Console.WriteLine("Keyboard OnKeyDown: " + e.Key.ToString());
-
 		if (Configuration.NextSlide.Contains(e.Key))
 		{
 			SlidesManager.PresentationState?.NavigateRelative(1);

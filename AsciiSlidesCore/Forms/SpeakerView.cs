@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using Eto.Drawing;
+﻿using Eto.Drawing;
 using Eto.Forms;
 
 namespace AsciiSlidesCore;
@@ -26,10 +25,8 @@ public class SpeakerView : PresentationForm
 			BackgroundColor = new Color(0.1f, 0.1f, 0.1f)
 		};
 		_previewView = new WebView();
-		_previewView.LoadHtml(SlidesManager.PresentationState.GetPreviewAsHTML(_previewView.Bounds));
 		_currentSlideView = new WebView();
 		_currentSlideView.Size = new Size((int)(this.Size.Width*0.6), (int)(this.Size.Height*0.6));
-		_currentSlideView.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(_currentSlideView.Bounds));
 		_timerView = new Label()
 		{
 			Text = "00:00",
@@ -71,10 +68,10 @@ public class SpeakerView : PresentationForm
 		Padding = new Padding(10);
 		Content = _lrSplitter;
 		
-	
-		
 		//adjust sizes after calculations. (sets inner to outer)
 		_notesView.Width = _notesScrollable.VisibleRect.Width;
+		_currentSlideView.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(_currentSlideView.Bounds));
+		_previewView.LoadHtml(SlidesManager.PresentationState.GetPreviewAsHTML(_previewView.Bounds));
 
 	}
 
