@@ -18,21 +18,4 @@ public class ASCIISlide : Slide
 		sb.AppendLine(RawContent);
 		sb.AppendLine("</pre>");
 	}
-
-	//todo: I don't really like this setup for thinking about when we do or don't override, and how we deal with whitespace.
-	
-	// protected override int GetColCount(PresentationState state)
-	// {
-	// 	return ColumnCount;
-	// }
-	//
-	// protected override int GetRowCount(PresentationState state)
-	// {
-	// 	return RowCount;
-	// }
-	//
-	// protected override float GetAspect(PresentationState state)
-	// {
-	// 	return (float)RowCount / (float)ColumnCount;
-	// }
 }

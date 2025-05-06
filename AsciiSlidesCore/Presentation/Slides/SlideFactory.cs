@@ -4,10 +4,7 @@ public static class SlideFactory
 {
 	public static Slide CreateSlide(Presentation presentation, Frontmatter frontmatter,string rawContent, int number, string defaultType="ascii")
 	{
-		if(!frontmatter.TryGetKey("type", out string slideType))
-		{
-			slideType = defaultType;
-		}
+		string slideType = frontmatter.GetKey("type", defaultType);
 		
 		Slide slide;
 		switch (slideType.ToLower())
@@ -53,9 +50,8 @@ public static class SlideFactory
 		}
 
 		bool hasSpeaker;
-		string speakerNotes;
 		//Set Speaker Notes
-		if (frontmatter.TryGetKey("notes", out speakerNotes))
+		if (frontmatter.TryGetKey("notes", out string speakerNotes))
 		{
 			hasSpeaker = true;
 		}

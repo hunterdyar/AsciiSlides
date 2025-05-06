@@ -7,11 +7,7 @@ public class ImageSlide : Slide
 	private string source;
 	public ImageSlide(Presentation presentation, string rawContent) : base(presentation, rawContent)
 	{
-		if (!Frontmatter.TryGetKey("src", out source))
-		{
-			source = rawContent;
-		}
-
+		source = Frontmatter.GetKey("src", rawContent);
 		source = source.Trim();
 	
 	}

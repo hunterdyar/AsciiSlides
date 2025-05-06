@@ -53,6 +53,7 @@ public class Display : PresentationForm
     {
         base.ResizePanel();
         //todo: right now we just reload everything, but once we support video embeddes, will have to do this by running some JS or such to dynamically change the style properties and not do a reload.
+        //can use _webPanel.ExecuteScript()
         _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds));
     }
     

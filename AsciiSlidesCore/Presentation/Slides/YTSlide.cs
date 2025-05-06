@@ -9,11 +9,7 @@ public class YTSlide : Slide
 
 	public YTSlide(Presentation presentation, string rawContent) : base(presentation, rawContent)
 	{
-		//you can make the url the body.
-		if (!Frontmatter.TryGetKey("url", out url))
-		{
-			url = RawContent;
-		}
+		this.url = Frontmatter.GetKey("url", rawContent);
 	}
 
 	protected override void AppendContent(StringBuilder sb)

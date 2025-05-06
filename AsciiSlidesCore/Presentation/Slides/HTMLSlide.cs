@@ -9,11 +9,7 @@ public class HTMLSlide : Slide
 
 	public HTMLSlide(Presentation presentation, string rawContent) : base(presentation, rawContent)
 	{
-		//Coding design note.... should this be in the factory?
-		if (!Frontmatter.TryGetKey("style", out style))
-		{
-			style = "";
-		}
+		style = Frontmatter.GetKey("style", "");
 	}
 
 	//todo: definable font size in screen space.

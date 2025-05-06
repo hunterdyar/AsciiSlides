@@ -66,20 +66,14 @@ public abstract class Slide
 			//set the height to full bounds height, adjust the width by aspet.
 			w = (int)(bounds.Height * aspect);
 			h = (int)(bounds.Height);
-		}
+		}	
 		int marginLeft = (bounds.Width - w) / 2;
 		int marginTop = (bounds.Height - h) / 2;
 		int fontHeight = (int)Math.Floor(h / (float)GetRowCount(state));
-		
-		if (!Frontmatter.TryGetKey("background", out var background))
-		{
-			background = Configuration.BGColor;
-		}
 
-		if (!Frontmatter.TryGetKey("textcolor", out var fontcolor))
-		{
-			background = Configuration.FontColor;
-		}
+		var background = Frontmatter.GetKey("background", Configuration.BGColor);
+		var fontcolor = Frontmatter.GetKey("textcolor", Configuration.FontColor);
+
 		sb.Append($$"""
 		             body{
 		                 background-color: {{background}};
@@ -132,23 +126,7 @@ public abstract class Slide
 		
 		return state.RowCount;
 	}
-
-	protected virtual int GetColCount(PresentationState state)
-	{
-		if (!Frontmatter.TryGetKey("cols", out var cols))
-		{
-			return state.RowCount;
-		}
-
-		if (int.TryParse(cols, out var colcount))
-		{
-			return colcount;
-		}
-
-		Console.WriteLine($"Warning: Unable to parse int ({cols})");
-
-		return state.ColumnCount;
-	}
+	
 
 	protected virtual float GetAspect(PresentationState state)
 	{

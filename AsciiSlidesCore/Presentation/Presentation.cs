@@ -15,6 +15,6 @@ public class Presentation
 	public Presentation()
 	{
 		Frontmatter = new Frontmatter();
-		Slides = Array.Empty<Slide>();
+		Slides = [];
 	}
 }
