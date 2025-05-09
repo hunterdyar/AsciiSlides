@@ -4,47 +4,43 @@ namespace AsciiSlidesCore.Parser;
 
 public enum TokenType
 {
-	StartSlide,
-	EndFrontmatter,
-	Delimiter,
-	Ident,
-	SlideBody
+	SlideSep,
+	Key,
+	Value
 }
+
 public class Token 
 {
 	public TokenType Type { get; set; }
 	public string Source { get; set; }
-	public Token(TokenType type, string source)
+	public Token(TokenType type, ReadOnlySpan<char> source)
 	{
 		Type = type;
-		Source = source;
+		Source = source.ToString();
 	}
 
 	public override string ToString()
 	{
-		string s = Regex.Escape(Source);
+		string s = Regex.Escape(Source.ToString());
 		return Type.ToString() + "("+s+")";
 	}
 }
-public class Tokenizer
+public ref struct Tokenizer
 {
-	private static readonly char[] OpeningBraceCharacters = ['[', '{', '(', '<'];
-	
 	public List<Token> Tokens => _tokens;
+
 	private readonly List<Token> _tokens = new List<Token>();
 	private int _position = 0;
 	private char _current = '\0';
-	private char PosCurrent => _source[_position];
-	
-	private readonly string _source;
+	public ReadOnlySpan<char> Source => _source;
+	private ReadOnlySpan<char> _source;
 	public Tokenizer(string source)
 	{
-		_source = source;
+		_source = source.AsSpan();	
 		if (_position < _source.Length)
 		{
 			_current = _source[_position];
-			
-			TokenizeOptionalFrontmatter();
+			TokenizeKeyValuePairs();
 			while (_position < _source.Length)
 			{
 				TokenizeSlide();
@@ -56,42 +52,15 @@ public class Tokenizer
 			return;
 		}
 	}
+	
 
 	private void TokenizeSlide()
 	{
 		TokenizeStartSlide();
-		TokenizeOptionalFrontmatter();
-		TokenizeEndFrontmatter();
-		ConsumeSlideBody();
+		TokenizeKeyValuePairs();
 	}
 
-	private void ConsumeSlideBody()
-	{
-		//if using custom delimiter, findNext
-		int l = _source.Length - _position;
-		if (l == 0)
-		{
-			//end of file, but it's okay.
-			return;
-		}
-		var end = _source.Substring(_position,l).IndexOf("###", StringComparison.Ordinal);
-		if (end <0)
-		{
-			//the slide is from here to the end of the file.
-			_tokens.Add(new Token(TokenType.SlideBody, _source.Substring(_position)));
-			_position = _source.Length;
-			_current = '\0';
-		}
-		else
-		{
-			//the body is from here to the index, then we sometimes consume the delim? if it's custom?
-			_tokens.Add(new Token(TokenType.SlideBody, _source.Substring(_position, end)));
-			_position += end;
-			_current = _source[_position];
-		}
-	}
-
-	private void TokenizeOptionalFrontmatter()
+	private void TokenizeKeyValuePairs()
 	{
 		while (_position < _source.Length)
 		{
@@ -101,11 +70,11 @@ public class Tokenizer
 			{
 				break;
 			}
-			TokenizeIdentifier();
+			TokenizeKey();
 			ConsumeWhitespace(false);
 			Consume(':');
 			ConsumeWhitespace(false);
-			TokenizeIdentifierValueDelimited();
+			TokenizeValueDelimited();
 			ConsumeWhitespace(true);
 		}
 		ConsumeWhitespace(true);
@@ -113,7 +82,7 @@ public class Tokenizer
 
 	private static readonly char[] IdentifierPermitted = ['_', '#', '@', '$', '%', '&', '+','%','.','^','(',')','{','}','[',']'];
 
-	private void TokenizeIdentifier()
+	private void TokenizeKey()
 	{
 		int p = _position;
 		while (char.IsAsciiLetterOrDigit(_current) || IdentifierPermitted.Contains(_current))
@@ -123,7 +92,7 @@ public class Tokenizer
 
 		if (_position > p)
 		{
-			_tokens.Add(new Token(TokenType.Ident, _source.Substring(p,  _position-p)));
+			_tokens.Add(new Token(TokenType.Key, _source.Slice(p,  _position-p)));
 		}
 		else
 		{
@@ -152,7 +121,7 @@ public class Tokenizer
 		}
 		if (consumeLineBreaks)
 		{
-			while (char.IsWhiteSpace(_source, _position))
+			while (char.IsWhiteSpace(_source[_position]))
 			{
 				Next();
 				if (_position >= _source.Length)
@@ -170,69 +139,83 @@ public class Tokenizer
 		}
 	}
 
-	private void TokenizeIdentifierValueDelimited()
+	private void TokenizeValueDelimited()
 	{
+		//Tokenize Value String-Style Delimited.
+		//todo: refactor into multi-quote parsing that doesn't use whitespace.
 		if (_current == '"')
 		{
+			//todo: make readonly span
 			string s = "";
 			Next();
 			bool escaping = false;
 			while (_current != '"' || escaping)
 			{
+				if (_current == '\0')
+				{
+					throw new Exception("Unexpected end of file. a \" was never closed.");
+				}
 				escaping = _current == '\\';
 				s+= _current;
 				Next();
 			}
 			Next();//eat the closing "
-			_tokens.Add(new Token(TokenType.Ident, s));
+			_tokens.Add(new Token(TokenType.Value, s));
 			return;
-		}//else
+		}else if (_current == '\'')
+		{
+			//todo: make readonly span
+			string s = "";
+			Next();
+			bool escaping = false;
+			while (_current != '\''|| escaping)
+			{
+				if (_current == '\0')
+				{
+					throw new Exception("Unexpected end of file. a ' was never closed.");
+				}
+				escaping = _current == '\\';
+				s+= _current;
+				Next();
+			}
+			Next();//eat the closing "
+			_tokens.Add(new Token(TokenType.Value, s));
+			return;
+		}
 		
 		//how to decide what the custom delim is? Non-letterNumber is first guess.
 		//we would tokenize the delim!
-		string delimiter;
-		//consume up to closing delimiter.
-		if (IsOpeningSymbol(_current))
+		//consume up to the next whitespace
+		int openStart = _position;
+		while (!char.IsWhiteSpace(_current))
 		{
-			//instead of going up to the newline we will go to the delim.
-			delimiter = _current.ToString();
 			Next();
-			while (!char.IsWhiteSpace(_current))
-			{
-				delimiter += _current;
-				Next();
-			}
-		}
-		else
-		{
-			TokenizeIdentifier();
-			return;
 		}
 
-		delimiter = ReverseOpeningSymbols(delimiter);
-		int closePos = _source.Substring(_position).IndexOf(delimiter, StringComparison.Ordinal);
-		if (closePos >= 0)
+		//is this a delimiter or is this the value?
+		
+		//Find and consume the opening.
+		var opening = _source.Slice(openStart, _position - openStart);
+		var d = new Delimiter(ref opening);
+		_position += d.Open.Length;
+		
+		//consume up to the closing.
+		var closingStartIndex = _source.Slice(_position).IndexOf(d.Close);
+		if (closingStartIndex >= 0)
 		{
-			_tokens.Add(new Token(TokenType.Ident,_source.Substring(_position, closePos)));
-			_position += closePos+delimiter.Length;
-			_current = _source[_position];//can't do Next()
+			var body = _source.Slice(_position, closingStartIndex);
+			_position += body.Length + d.Close.Length;
+			_tokens.Add(new Token(TokenType.Value, body));
 		}
 		else
 		{
-			//"asdf" will fail, "asdf" will succeed.
-			throw new Exception("Unable to find close for opening delimiter: " + delimiter);
+			throw new Exception($"No Closing Delimiter {d.Close} found for {d.Open}");
 		}
-		
 	}
 
 	private string ReverseOpeningSymbols(string delimiter)
 	{
 		return delimiter.Replace('[',']').Replace('{','}').Replace('(',')').Replace('<','>');
-	}
-
-	private bool IsOpeningSymbol(char c)
-	{
-		return OpeningBraceCharacters.Contains(c);
 	}
 
 	private void TokenizeStartSlide()
@@ -241,8 +224,7 @@ public class Tokenizer
 		Consume('#');
 		Consume('#');
 		Consume('#');
-		_tokens.Add(new Token(TokenType.StartSlide, _source.Substring(_position-3,3)));
-		TokenizeCustomDelimOptional();
+		_tokens.Add(new Token(TokenType.SlideSep, _source.Slice(_position-3,3)));
 		
 		//###--- is allowed. it's a shorthand.
 		if (_current != '-')
@@ -250,19 +232,6 @@ public class Tokenizer
 			ConsumeWhitespace(true);
 		}
 	}
-
-	private void TokenizeEndFrontmatter()
-	{
-		ConsumeWhitespace(false);
-		Consume('-');
-		Consume('-');
-		Consume('-');
-		_tokens.Add(new Token(TokenType.EndFrontmatter, _source.Substring(_position-3, 3)));
-		TokenizeCustomDelimOptional();
-		ConsumeWhitespace(false);
-		ConsumeLinebreak();
-	}
-
 	private void ConsumeLinebreak()
 	{
 		ConsumeWhitespace(false);
@@ -278,22 +247,6 @@ public class Tokenizer
 		}
 	}
 
-	private void TokenizeCustomDelimOptional()
-	{
-		if (_current != '-' && _current != '#' && !char.IsWhiteSpace(_current) && _current != '\0')
-		{
-			TokenizeIdentifier();
-			if (_tokens[^1].Type == TokenType.Ident)
-			{
-				_tokens[^1].Type = TokenType.Delimiter;
-			}
-			else
-			{
-				//huh
-			}
-		}
-	}
-
 	private void Consume(char c)
 	{
 		if (_position >= _source.Length)
@@ -305,5 +258,23 @@ public class Tokenizer
 		{
 			Next();
 		}
+	}
+
+	public void SetPosition(int newPos)
+	{
+		if (newPos > _position)
+		{
+			if (newPos < _source.Length)
+			{
+				_position = newPos;
+				return;
+			}
+			else
+			{
+				throw new Exception("Unexpected end of file");
+			}
+		}
+
+		throw new Exception("Can't rewind the tokenizer.");
 	}
 }

@@ -40,6 +40,7 @@ public class MacOSUtility : OSUtility
 		MonitorInfo[] result = new MonitorInfo[screens.Length];
 		for (var i = 0; i < screens.Length; i++)
 		{
+			var name = screens[i].DeviceDescription["NSScreenNumber"];
 			result[i] = new MonitorInfo(allEto[i], screens[i].Description);
 		}
 

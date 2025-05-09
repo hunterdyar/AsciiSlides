@@ -3,21 +3,22 @@
 public static class TestData
 {
 	public static string TestPres1 = """
-	                                 front matter
-	                                 background #000
-	                                 foreground #FFF
-	                                 
+	                                 front: "matter"
+	                                 background: "#000"
+	                                 foreground: "#FFF"
 	                                 ###
-	                                 ---
-	                                 
+	                                 ascii {
 	                                 this is a slide!
-	                                 
-	                                 ###---
-	                                 this is a slide
+	                                 }
 	                                 ###
-	                                 type youtube
-	                                 backgrond tomato
-	                                 ---
+	                                 markdown: {
+	                                 this is a slide
+	                                 }
+	                                 ###
+	                                 youtube: "someurl.com"
+	                                 background: "tomato"
+	                                 ###
+	                                 ascii {
 	                                                                            __          __  .__               
 	                                 _____________   ____   ______ ____   _____/  |______ _/  |_|__| ____   ____  
 	                                 \____ \_  __ \_/ __ \ /  ___// __ \ /    \   __\__  \\   __\  |/  _ \ /    \ 
@@ -25,15 +26,15 @@ public static class TestData
 	                                 |   __/|__|    \___  >____  >\___  >___|  /__| (____  /__| |__|\____/|___|  /
 	                                 |__|               \/     \/     \/     \/          \/                    \/ 
 	                                 
-	                                 
+	                                 }
 	                                 """;
 
 	public static string TestPres2 = """
-	                                 background #000
-	                                 foreground #FFF
+	                                 background: "#000"
+	                                 foreground: "#FFF"
 
 	                                 ###
-	                                 ---
+	                                 ascii: {
 	                                                                            __          __  .__               
 	                                 _____________   ____   ______ ____   _____/  |______ _/  |_|__| ____   ____  
 	                                 \____ \_  __ \_/ __ \ /  ___// __ \ /    \   __\__  \\   __\  |/  _ \ /    \ 
@@ -41,14 +42,13 @@ public static class TestData
 	                                 |   __/|__|    \___  >____  >\___  >___|  /__| (____  /__| |__|\____/|___|  /
 	                                 |__|               \/     \/     \/     \/          \/                    \/ 
 
+	                                 }
 	                                 ###
-	                                 ---
-	                                 this is a slide
-
+	                                 youtube: 'someurl.com'
+	                                 background: 'tomato'
 	                                 ###
-	                                 type youtube
-	                                 backgrond tomato
-	                                 ---
+	                                 ascii {
 	                                 this concludes my TED talk.
-	                                 """;
+	                                 }
+""";
 }

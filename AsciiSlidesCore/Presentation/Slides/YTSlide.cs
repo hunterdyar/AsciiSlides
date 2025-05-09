@@ -9,7 +9,7 @@ public class YTSlide : Slide
 
 	public YTSlide(Presentation presentation, string rawContent) : base(presentation, rawContent)
 	{
-		this.url = Frontmatter.GetKey("url", rawContent);
+		this.url = rawContent;
 	}
 
 	protected override void AppendContent(StringBuilder sb)

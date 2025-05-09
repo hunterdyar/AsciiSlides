@@ -2,53 +2,55 @@
 
 public static class SlideFactory
 {
-	public static Slide CreateSlide(Presentation presentation, Frontmatter frontmatter,string rawContent, int number, string defaultType="ascii")
+	public static Slide CreateSlide(Presentation presentation, Frontmatter frontmatter, int number, string defaultType="ascii")
 	{
-		string slideType = frontmatter.GetKey("type", defaultType);
-		
 		Slide slide;
-		switch (slideType.ToLower())
+		
+		if (frontmatter.TryGetKey("ascii", out var body))
 		{
-			case "youtube":
-				slide = new YTSlide(presentation, rawContent)
-				{
-					Frontmatter = frontmatter,
-					SlideNumber = number
-				};
-				break;
-			case "html":
-				slide = new HTMLSlide(presentation, rawContent)
-				{
-					Frontmatter = frontmatter,
-					SlideNumber = number
-				};
-				break;
-			case "md":
-			case "markdown":
-				slide = new MarkdownSlide(presentation, rawContent)
-				{
-					Frontmatter = frontmatter,
-					SlideNumber = number
-				};
-				break;
-			case "image":
-			case "img":
-				slide = new ImageSlide(presentation, rawContent)
-				{
-					Frontmatter = frontmatter,
-					SlideNumber = number
-				};
-				break;
-			case "ascii":
-			default:
-				slide = new ASCIISlide(presentation, rawContent)
-				{
-					Frontmatter = frontmatter,
-					SlideNumber = number
-				};
-				break;
+			slide = new ASCIISlide(presentation, body)
+			{
+				Frontmatter = frontmatter,
+				SlideNumber = number,
+			};
+		}else if (frontmatter.TryGetKey("youtube", out var url))
+		{
+			slide = new YTSlide(presentation, url)
+			{
+				Frontmatter = frontmatter,
+				SlideNumber = number
+			};
+		}else if (frontmatter.TryGetKey("markdown", out var markdown))
+		{
+			slide = new MarkdownSlide(presentation, markdown)
+			{
+				Frontmatter = frontmatter,
+				SlideNumber = number
+			};
+		}else if (frontmatter.TryGetKey("html", out var html))
+		{
+			slide = new HTMLSlide(presentation, html)
+			{
+				Frontmatter = frontmatter,
+				SlideNumber = number
+			};
+		}else if (frontmatter.TryGetKey("image", out var src))
+		{
+			slide = new ImageSlide(presentation, src)
+			{
+				Frontmatter = frontmatter,
+				SlideNumber = number
+			};
 		}
-
+		else
+		{
+			slide = new BlankSlide(presentation, "")
+			{
+				Frontmatter = frontmatter,
+				SlideNumber = number
+			};
+		}
+		
 		bool hasSpeaker;
 		//Set Speaker Notes
 		if (frontmatter.TryGetKey("notes", out string speakerNotes))
@@ -64,7 +66,7 @@ public static class SlideFactory
 		
 		slide.HasSpeakerNotes = hasSpeaker;
 		slide.SpeakerNotes = speakerNotes;
-		
+
 		
 		return slide;
 	}

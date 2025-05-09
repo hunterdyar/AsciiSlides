@@ -24,6 +24,9 @@
       <Resource Include="TestFiles\testPres2.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Resource>
+      <Resource Include="TestFiles\testPres3.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
     </ItemGroup>
 
 

@@ -7,11 +7,9 @@ public class ImageSlide : Slide
 {
 	private string source;
 	private string fullImagepath;
-	public ImageSlide(Presentation presentation, string rawContent) : base(presentation, rawContent)
+	public ImageSlide(Presentation presentation, string url) : base(presentation, url)
 	{
-		source = Frontmatter.GetKey("src", rawContent);
-		source = source.Trim();
-		
+		source = url.Trim();
 	}
 
 	protected override void AppendContent(StringBuilder sb)

@@ -17,47 +17,29 @@ public class TokenizerTest
 	{
 		var s = """
 		        ###
-		        ---
-		        hello
+		        key: value
 		        """;
 		var t = new Tokenizer(s);
-		Assert.IsTrue(t.Matches(TokenType.StartSlide, 
-			TokenType.EndFrontmatter, 
-			TokenType.SlideBody
+		Assert.IsTrue(t.Matches(TokenType.SlideSep, 
+			TokenType.Key, 
+			TokenType.Value
 			));
 	}
-
-	[Test]
-	public void TokenizeNoBreak()
-	{
-		var s = """
-		        ###---
-		        hello
-		        ###---
-		        """;
-		var t = new Tokenizer(s);
-		Assert.IsTrue(t.Matches(TokenType.StartSlide,
-			TokenType.EndFrontmatter,
-			TokenType.SlideBody,
-			TokenType.StartSlide,
-			TokenType.EndFrontmatter
-		));
-	}
+	
 	[Test]
 	public void TokenizeSimple()
 	{
 		var s = """
-		        ###---
-		        hello
-		        ###---
+		        ###
+		        ascii { hi }
+		        ###
 		        """;
 		var t = new Tokenizer(s);
 		Assert.IsTrue(t.Matches(
-			TokenType.StartSlide,
-			TokenType.EndFrontmatter,
-			TokenType.SlideBody,
-			TokenType.StartSlide,
-			TokenType.EndFrontmatter
+			TokenType.SlideSep,
+			TokenType.Key,
+			TokenType.Value,
+			TokenType.SlideSep
 		));
 	}
 
@@ -65,15 +47,15 @@ public class TokenizerTest
 	public void PresentationFrontmatter()
 	{
 		var s = """
-		        key value
-		        another_key #000
+		        key: "value"
+		        another_key: "#000"
 		        """;
 		var t = new Tokenizer(s);
 		Assert.IsTrue(t.Matches(
-			TokenType.Ident,
-			TokenType.Ident,
-			TokenType.Ident,
-			TokenType.Ident
+			TokenType.Key,
+			TokenType.Value,
+			TokenType.Key,
+			TokenType.Value
 		));
 	}
 
@@ -81,50 +63,25 @@ public class TokenizerTest
 	public void PresentationFrontmatterAndSlideFrontmatter()
 	{
 		var s = """
-		        key value
-		        another_key #000
+		        key < value >
+		        another_key -- #000 --
 		        ###
-		        key value
-		        ---
-		        body
+		        key { value }
+		        ###
+		        body: { body }
 		        """;
 		var t = new Tokenizer(s);
 		Assert.IsTrue(t.Matches(
-			TokenType.Ident,
-			TokenType.Ident,
-			TokenType.Ident,
-			TokenType.Ident,
-			TokenType.StartSlide,
-			TokenType.Ident,
-			TokenType.Ident,
-			TokenType.EndFrontmatter,
-			TokenType.SlideBody
-		));
-	}
-
-	[Test]
-	public void OneLinerSlideBreaks()
-	{
-		var s = """
-		        ###
-		        ---
-		        body
-		        ###---
-		        body
-		        ###---
-		        body
-		        """;
-		var t = new Tokenizer(s);
-		Assert.IsTrue(t.Matches(
-			TokenType.StartSlide,
-			TokenType.EndFrontmatter,
-			TokenType.SlideBody,
-			TokenType.StartSlide,
-			TokenType.EndFrontmatter,
-			TokenType.SlideBody,
-			TokenType.StartSlide,
-			TokenType.EndFrontmatter,
-			TokenType.SlideBody
+			TokenType.Key,
+			TokenType.Value,
+			TokenType.Key,
+			TokenType.Value,
+			TokenType.SlideSep,
+			TokenType.Key,
+			TokenType.Value,
+			TokenType.SlideSep,
+			TokenType.Key,
+			TokenType.Value
 		));
 	}
 
@@ -138,53 +95,20 @@ public class TokenizerTest
 		        key: "this string
 		        is on multiple
 		        lines"
-		        ---
-		        body
 		        """;
 		var t = new Tokenizer(s);
 		Assert.IsTrue(t.Matches(
-			TokenType.Ident,
-			TokenType.Ident,
-			TokenType.Ident,
-			TokenType.Ident,
-			TokenType.StartSlide,
-			TokenType.Ident,
-			TokenType.Ident,
-			TokenType.EndFrontmatter,
-			TokenType.SlideBody
+			TokenType.Key,
+			TokenType.Value,
+			TokenType.Key,
+			TokenType.Value,
+			TokenType.SlideSep,
+			TokenType.Key,
+			TokenType.Value
 		));
 	}
 
-	[Test]
-	public void CustomDelimsInFrontmatter()
-	{
-		var s = """
-		        key: { some value goes here! }
-		        another_key: [ we dodge ''s and "'s ]
-		        ###
-		        key: {banana[ this string
-		        is on multiple
-		        lines
-		        }banana]
-		        woo: {{< yes }}>
-		        ---
-		        body
-		        """;
-		var t = new Tokenizer(s);
-		Assert.IsTrue(t.Matches(
-			TokenType.Ident,
-			TokenType.Ident,
-			TokenType.Ident,
-			TokenType.Ident,
-			TokenType.StartSlide,
-			TokenType.Ident,
-			TokenType.Ident,
-			TokenType.Ident,
-			TokenType.Ident,
-			TokenType.EndFrontmatter,
-			TokenType.SlideBody
-		));
-	}
+
 
 	[Test]
 	public void SpeakerNotesTest()

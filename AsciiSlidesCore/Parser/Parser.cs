@@ -31,35 +31,25 @@ public static class PresentationParser
 		Frontmatter defaultFrontmatter)
 	{
 		var startSlide = tokens.Dequeue();
-		if (startSlide.Type != TokenType.StartSlide)
+		if (startSlide.Type != TokenType.SlideSep)
 		{
 			throw new Exception("Expected start slide.");
 		}
 		//optional delimiter? or does that even get emitted?
 		Frontmatter f = ParseFrontmatter(ref tokens, defaultFrontmatter);
-		var endFront = tokens.Dequeue();
-		if (endFront.Type != TokenType.EndFrontmatter)
-		{
-			throw new Exception("Expected end front matter.");
-		}
-		var body = tokens.Dequeue();
-		if (body.Type != TokenType.SlideBody)
-		{
-			throw new Exception("Expected slide body.");
-		}
-		return SlideFactory.CreateSlide(presentation, f, body.Source, slideNumber);
+		return SlideFactory.CreateSlide(presentation, f, slideNumber);
 	}
 
 	private static Frontmatter ParseFrontmatter(ref Queue<Token> tokens, Frontmatter? parentFrontmatter = null)
 	{
 		var frontmatter = new Frontmatter();
-		while (tokens.Peek().Type == TokenType.Ident)
+		while (tokens.Count > 0 && tokens.Peek().Type == TokenType.Key)
 		{
 			var key = tokens.Dequeue();
 			var value = tokens.Dequeue();
-			if (value.Type != TokenType.Ident)
+			if (value.Type != TokenType.Value)
 			{
-				throw new Exception("Expected ident in frontmatter.");
+				throw new Exception($"Expected Value, got {value.ToString()}");
 			}
 			frontmatter.AddKeyValuePair(key.Source,value.Source);
 		}

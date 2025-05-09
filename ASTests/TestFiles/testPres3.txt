@@ -1,0 +1,38 @@
+﻿background: #010101
+textcolor: #F0F
+###
+image: argusC3.jpg
+background: #ccc
+src: arcusC3.jpg
+###
+notes: ' this should be a list. '
+markdown: {
+- this is a list
+- from markdown
+- here you go
+}
+###
+notes: { I think it's important for the audience to know that this is a slide.
+ I think it's important for the audience to know that this is a slide.
+ I think it's important for the audience to know that this is a slide.
+ I think it's important for the audience to know that this is a slide.
+ I think it's important for the audience to know that this is a slide.
+ I think it's important for the audience to know that this is a slide.I think it's important for the audience to know that this is a slide.I think it's important for the audience to know that this is a slide.
+ I think it's important for the audience to know that this is a slide.
+ }
+ ascii <<
+ 
+hola
+
+>>
+###
+markdown [[<
+some normal text
+
+a [broken](link) linkl
+
+> this is a quote.
+
+yay.
+>]]
+
