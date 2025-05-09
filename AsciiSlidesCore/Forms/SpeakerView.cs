@@ -1,4 +1,5 @@
-﻿using Eto.Drawing;
+﻿using AsciiSlidesCore.Components;
+using Eto.Drawing;
 using Eto.Forms;
 
 namespace AsciiSlidesCore;
@@ -8,7 +9,7 @@ public class SpeakerView : PresentationForm
 	private readonly Scrollable _notesScrollable;
 	private readonly Label _notesView;
 	private readonly WebView _previewView;
-	private readonly Label _timerView;
+	private readonly TimerComponent _timerView;
 	private readonly WebView _currentSlideView;
 
 	private readonly Splitter _lrSplitter;
@@ -27,11 +28,7 @@ public class SpeakerView : PresentationForm
 		_previewView = new WebView();
 		_currentSlideView = new WebView();
 		_currentSlideView.Size = new Size((int)(this.Size.Width*0.6), (int)(this.Size.Height*0.6));
-		_timerView = new Label()
-		{
-			Text = "00:00",
-			TextColor = Colors.White
-		};
+		_timerView = new TimerComponent("Time");
 
 		
 		//layout
