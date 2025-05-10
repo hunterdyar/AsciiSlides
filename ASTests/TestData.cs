@@ -7,7 +7,7 @@ public static class TestData
 	                                 background: "#000"
 	                                 foreground: "#FFF"
 	                                 ###
-	                                 ascii {
+	                                 ascii: {
 	                                 this is a slide!
 	                                 }
 	                                 ###
@@ -18,7 +18,7 @@ public static class TestData
 	                                 youtube: "someurl.com"
 	                                 background: "tomato"
 	                                 ###
-	                                 ascii {
+	                                 ascii: {
 	                                                                            __          __  .__               
 	                                 _____________   ____   ______ ____   _____/  |______ _/  |_|__| ____   ____  
 	                                 \____ \_  __ \_/ __ \ /  ___// __ \ /    \   __\__  \\   __\  |/  _ \ /    \ 
@@ -47,7 +47,7 @@ public static class TestData
 	                                 youtube: 'someurl.com'
 	                                 background: 'tomato'
 	                                 ###
-	                                 ascii {
+	                                 ascii: {
 	                                 this concludes my TED talk.
 	                                 }
 """;

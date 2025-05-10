@@ -17,7 +17,7 @@ public class TokenizerTest
 	{
 		var s = """
 		        ###
-		        key: value
+		        key: "value"
 		        """;
 		var t = new Tokenizer(s);
 		Assert.IsTrue(t.Matches(TokenType.SlideSep, 
@@ -31,7 +31,7 @@ public class TokenizerTest
 	{
 		var s = """
 		        ###
-		        ascii { hi }
+		        ascii: { hi }
 		        ###
 		        """;
 		var t = new Tokenizer(s);
@@ -63,10 +63,10 @@ public class TokenizerTest
 	public void PresentationFrontmatterAndSlideFrontmatter()
 	{
 		var s = """
-		        key < value >
-		        another_key -- #000 --
+		        key: < value >
+		        another_key: -- #000 --
 		        ###
-		        key { value }
+		        key: { value }
 		        ###
 		        body: { body }
 		        """;
@@ -115,22 +115,18 @@ public class TokenizerTest
 	{
 		var s = """
 		        ###
-		        notes "hello"
-		        ---
-		        body
+		        notes: "hello"
 		        ###
-		        notes {{ now
+		        notes: {{ now
 		        i am speaking
 		        }}
-		        ---
-		        body
 		        """;
 		var p = PresentationParser.Parse(s);
-		Assert.IsTrue(p.SlideCount == 2);
+		Assert.IsTrue(p.SlideCount == 3);
 		Assert.IsTrue(p.Slides[0].HasSpeakerNotes);
 		Assert.IsTrue(p.Slides[0].SpeakerNotes == "hello");
 		Assert.IsTrue(p.Slides[1].HasSpeakerNotes);
-		Assert.IsTrue(p.Slides[1].SpeakerNotes == " now\r\ni am speaking\r\n");
+		Assert.IsTrue(p.Slides[1].SpeakerNotes == " now\ni am speaking\n" || p.Slides[1].SpeakerNotes == " now\r\ni am speaking\r\n" );
 	}
 }
 

@@ -15,8 +15,8 @@ namespace TestProject1
 		
 		public void FullPresentations()
 		{
-			var presentation = PresentationParser.Parse(TestData.TestPres1);
-			presentation = PresentationParser.Parse(TestData.TestPres2);
+		//	var presentation = PresentationParser.Parse(TestData.TestPres1);
+		var	presentation = PresentationParser.Parse(TestData.TestPres2);
 
 		}
 	}

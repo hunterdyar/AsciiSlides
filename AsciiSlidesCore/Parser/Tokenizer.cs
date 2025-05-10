@@ -53,7 +53,6 @@ public ref struct Tokenizer
 		}
 	}
 	
-
 	private void TokenizeSlide()
 	{
 		TokenizeStartSlide();
@@ -64,7 +63,7 @@ public ref struct Tokenizer
 	{
 		while (_position < _source.Length)
 		{
-			ConsumeWhitespace(false);
+			ConsumeWhitespace(true);
 			var next = _source[_position];
 			if (!char.IsLetter(next))
 			{
@@ -103,7 +102,7 @@ public ref struct Tokenizer
 	private void Next()
 	{
 		_position++;
-		if (_position >= _source.Length)
+		if (_position >= _source.Length || _position < 0)
 		{
 			_current = '\0';
 		}
@@ -197,7 +196,6 @@ public ref struct Tokenizer
 		//Find and consume the opening.
 		var opening = _source.Slice(openStart, _position - openStart);
 		var d = new Delimiter(ref opening);
-		_position += d.Open.Length;
 		
 		//consume up to the closing.
 		var closingStartIndex = _source.Slice(_position).IndexOf(d.Close);
@@ -257,6 +255,10 @@ public ref struct Tokenizer
 		if (_current == c)
 		{
 			Next();
+		}
+		else
+		{
+			throw new Exception($"Unexpected character ({_current}) at position {_position}. Expected {c}");
 		}
 	}
 
