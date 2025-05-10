@@ -17,6 +17,9 @@ public class PresentationState
 	
 	public Slide CurrentSlide => _presentation.Slides[_currentSlideIndex];
 	private int _currentSlideIndex = 0;
+	public SlideTimer TotalPresentationTimer => _totalPresentationTimer;
+	private readonly SlideTimer _totalPresentationTimer;
+	private readonly SlideTimer[] _slideTimers;
 	public float Aspect => RowCount / (float)ColumnCount;
 	public int RowCount = 30;
 	public int ColumnCount = 40;
@@ -25,11 +28,22 @@ public class PresentationState
 	public PresentationState()
 	{
 		_presentation = new Presentation();
+		_slideTimers = [];
+		_totalPresentationTimer = new SlideTimer();
 		_currentSlideIndex = 0;
 	}
 	public PresentationState(Presentation presentation)
 	{
 		_presentation = presentation;
+		
+		//initialize timers
+		_totalPresentationTimer = new SlideTimer();
+		_slideTimers = new SlideTimer[_presentation.SlideCount];
+		for (int i = 0; i < _presentation.SlideCount; i++)
+		{
+			_slideTimers[i] = new SlideTimer();
+		}
+		
 		_currentSlideIndex = 0;
 		if (presentation.SlideCount > 0)
 		{

@@ -12,36 +12,36 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003ATableRow_002Ecs_002Fl_003AC_0021_003FUsers_003FBlooper_003FAppData_003FRoaming_003FJetBrains_003FRider2025_002E1_003Fresharper_002Dhost_003FDecompilerCache_003Fdecompiler_003Fca68e9f84e1f487199510c67e7d14fa5ba800_003F21_003Fc5f0b4fa_003FTableRow_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AUITimerHandler_002Ecs_002Fl_003AC_0021_003FUsers_003FIMM_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FDecompilerCache_003Fdecompiler_003Fcf3ba61ccc3348b9bbc7a8ceb7d08f9dcfc00_003F77_003Fe68e6e10_003FUITimerHandler_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7c92b5f6_002Dfe84_002D459b_002D8cf5_002D6124e896e060/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Presentation" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;And&gt;
-    &lt;TestAncestor&gt;
-      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.Tests.Presentation&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.Tests.FrontmatterItem&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.Tests.Identifier&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.Tests.BadIdentifier&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.Tests.FindResourcefile_Test&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.TokenizerTest.TokenizeSimple&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.TokenizerTest.TokenizeNoCloser&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.TokenizerTest.TokenizeNoBreak&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.TokenizerTest.PresentationFrontmatterAndSlideFrontmatter&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.Tests.FullPresentations&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0::TestProject1.Tests.FullPresentations&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0::TestProject1.Tests&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0::TestProject1.TokenizerTest.TokenizeNoBreak&lt;/TestId&gt;
-      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0::TestProject1.TokenizerTest&lt;/TestId&gt;
-    &lt;/TestAncestor&gt;
-    &lt;Not&gt;
-      &lt;TestAncestor&gt;
-        &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.Tests&lt;/TestId&gt;
-        &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.TokenizerTest&lt;/TestId&gt;
-      &lt;/TestAncestor&gt;
-    &lt;/Not&gt;
-  &lt;/And&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7c92b5f6_002Dfe84_002D459b_002D8cf5_002D6124e896e060/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Presentation" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;And&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.Tests.Presentation&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.Tests.FrontmatterItem&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.Tests.Identifier&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.Tests.BadIdentifier&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.Tests.FindResourcefile_Test&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.TokenizerTest.TokenizeSimple&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.TokenizerTest.TokenizeNoCloser&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.TokenizerTest.TokenizeNoBreak&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.TokenizerTest.PresentationFrontmatterAndSlideFrontmatter&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.Tests.FullPresentations&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0::TestProject1.Tests.FullPresentations&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0::TestProject1.Tests&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0::TestProject1.TokenizerTest.TokenizeNoBreak&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0::TestProject1.TokenizerTest&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
+    &lt;Not&gt;&#xD;
+      &lt;TestAncestor&gt;&#xD;
+        &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.Tests&lt;/TestId&gt;&#xD;
+        &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.TokenizerTest&lt;/TestId&gt;&#xD;
+      &lt;/TestAncestor&gt;&#xD;
+    &lt;/Not&gt;&#xD;
+  &lt;/And&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=cf7520f8_002Da4e9_002D4936_002D8638_002Da89124051da8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="PresentationFrontmatterAndSlideFrontmatter" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;TestAncestor&gt;
-    &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0::TestProject1.TokenizerTest.PresentationFrontmatterAndSlideFrontmatter&lt;/TestId&gt;
-    &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0::TestProject1.Tests&lt;/TestId&gt;
-    &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0::TestProject1.TokenizerTest&lt;/TestId&gt;
-  &lt;/TestAncestor&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=cf7520f8_002Da4e9_002D4936_002D8638_002Da89124051da8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="PresentationFrontmatterAndSlideFrontmatter" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0::TestProject1.TokenizerTest.PresentationFrontmatterAndSlideFrontmatter&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0::TestProject1.Tests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0::TestProject1.TokenizerTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

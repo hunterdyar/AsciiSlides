@@ -35,8 +35,8 @@ public class Display : PresentationForm
 
         Console.WriteLine("Created Display.");
         //fullscreen
-        _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds));
         _webPanel.BrowserContextMenuEnabled = true;
+        SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _webPanel);
         Title = "Slide " + SlidesManager.PresentationState.CurrentSlide.SlideNumber + "/" + SlidesManager.PresentationState.Presentation.SlideCount;
         //register
         
@@ -45,7 +45,7 @@ public class Display : PresentationForm
 
     protected override void OnCurrentSlideChanged(Slide slide)
     {
-        _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds));
+        SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _webPanel);
         Title = "Slide " + slide.SlideNumber + "/" + SlidesManager.PresentationState.Presentation.SlideCount;
         
     }
@@ -55,7 +55,8 @@ public class Display : PresentationForm
         base.ResizePanel();
         //todo: right now we just reload everything, but once we support video embeddes, will have to do this by running some JS or such to dynamically change the style properties and not do a reload.
         //can use _webPanel.ExecuteScript()
-        _webPanel.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(this.Bounds));
+        SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _webPanel);
+
     }
     
 }

@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Eto.Drawing;
+using Eto.Forms;
 
 namespace AsciiSlidesCore;
 
@@ -20,6 +21,11 @@ public abstract class Slide
 		Frontmatter = new Frontmatter();
 		RawContent = rawContent;
 		SlideNumber = 0;
+	}
+
+	public virtual void RenderTo(PresentationState state, WebView view, SlideViewMode mode= SlideViewMode.CurrentPresenting)
+	{
+		view.LoadHtml(GetSlideAsHTML(state, view.Bounds, mode));
 	}
 
 	public string GetSlideAsHTML(PresentationState state, Rectangle windowBounds, SlideViewMode viewMode)

@@ -11,7 +11,7 @@ public static class PresentationParser
 
 	private static Presentation ParsePresentation(List<Token> tokens)
 	{
-		Presentation presentation = new Presentation();
+		var presentation = new Presentation();
 		var t = new Queue<Token>(tokens);
 		presentation.Frontmatter = ParseFrontmatter(ref t, null);
 		
@@ -51,10 +51,43 @@ public static class PresentationParser
 			{
 				throw new Exception($"Expected Value, got {value.ToString()}");
 			}
-			frontmatter.AddKeyValuePair(key.Source,value.Source);
+			frontmatter.AddKeyValuePair(NormalizeKey(key.Source),value.Source);
 		}
 
 		frontmatter.SetParentFrontmatter(parentFrontmatter);
 		return frontmatter;
+	}
+
+	private static string NormalizeKey(string key)
+	{
+		key = key.ToLower().Trim();
+		switch (key)
+		{
+			case "md":
+			case "mark":
+			case "markdown":
+			case "richtext":
+				return "markdown";
+			case "ascii":
+			case "text":
+			case "plaintext":
+			case "a":
+				return "ascii";
+			case "html":
+			case "htm":
+			case "source":
+				return "html";
+			case "style":
+			case "css":
+				return "style";
+			case "youtube":
+			case "yt":
+				return "youtube";
+			case "web":
+			case "link":
+				return "web";
+		}
+
+		return key;
 	}
 }

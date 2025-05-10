@@ -2,8 +2,7 @@
 textcolor: "#F0F"
 
 ###
-background: "#ccc"
-image: "arcusC3.jpg"
+web: "https://pittsburgh.craigslist.org/"
 
 ###
 

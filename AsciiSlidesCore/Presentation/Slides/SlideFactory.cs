@@ -41,6 +41,13 @@ public static class SlideFactory
 				Frontmatter = frontmatter,
 				SlideNumber = number
 			};
+		}else if (frontmatter.TryGetKey("web", out var externalURL))
+		{
+			slide = new WebSlide(presentation, externalURL)
+			{
+				Frontmatter = frontmatter,
+				SlideNumber = number
+			};
 		}
 		else
 		{

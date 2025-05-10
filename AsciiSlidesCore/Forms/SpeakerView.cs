@@ -67,21 +67,22 @@ public class SpeakerView : PresentationForm
 		
 		//adjust sizes after calculations. (sets inner to outer)
 		_notesView.Width = _notesScrollable.VisibleRect.Width;
-		_currentSlideView.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(_currentSlideView.Bounds, SlideViewMode.CurrentSpeaker));
-		_previewView.LoadHtml(SlidesManager.PresentationState.GetPreviewAsHTML(_previewView.Bounds));
+		SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _currentSlideView, SlideViewMode.CurrentSpeaker);
+		SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _previewView, SlideViewMode.Preview);
+
 
 	}
 
 	protected override void OnCurrentSlideChanged(Slide slide)
 	{
-		//update the thingns.
+		//update the things.
 		
 		_notesView.Text = slide.SpeakerNotes;
 		//we may or may not have a scrollbar anymore, so this width can grow or shrink from one slide to the next even if the horizontal bar doesn't change.
 		_notesView.Width = _notesScrollable.VisibleRect.Width;
 		//snap back to top of scrolling
 		_notesScrollable.ScrollPosition = new Point(0, 0);
-		_currentSlideView.LoadHtml(SlidesManager.PresentationState.GetCurrentAsHTML(_currentSlideView.Bounds, SlideViewMode.CurrentSpeaker));
-		_previewView.LoadHtml(SlidesManager.PresentationState.GetPreviewAsHTML(_previewView.Bounds));
+		SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _currentSlideView, SlideViewMode.CurrentSpeaker);
+		SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _previewView, SlideViewMode.Preview);
 	}
 }
