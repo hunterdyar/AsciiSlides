@@ -84,7 +84,7 @@ public ref struct Tokenizer
 	private void TokenizeKey()
 	{
 		int p = _position;
-		while (char.IsAsciiLetterOrDigit(_current) || IdentifierPermitted.Contains(_current))
+		while (char.IsAsciiLetterOrDigit(_current) || IdentifierPermitted.Contains(_current) || _current == '_'|| _current == '-')
 		{
 			Next();
 		}

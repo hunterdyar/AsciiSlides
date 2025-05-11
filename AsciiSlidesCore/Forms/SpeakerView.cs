@@ -80,13 +80,11 @@ public class SpeakerView : PresentationForm
 	protected override void OnCurrentSlideChanged(Slide slide)
 	{
 		//update the things.
-		
 		_notesView.Text = slide.SpeakerNotes;
 		//we may or may not have a scrollbar anymore, so this width can grow or shrink from one slide to the next even if the horizontal bar doesn't change.
 		_notesView.Width = _notesScrollable.VisibleRect.Width;
 		//snap back to top of scrolling
 		_notesScrollable.ScrollPosition = new Point(0, 0);
-	//X	SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _currentSlideView, SlideViewMode.CurrentSpeaker);
 		SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _previewView, SlideViewMode.Preview);
 		_imageView.BackgroundColor = Colors.DarkGray;
 	}
@@ -104,23 +102,16 @@ public class SpeakerView : PresentationForm
 			_manager.Display.OnRenderComplete -= OnDisplayRenderComplete;
 		}
 	}
-	private void OnDisplayRenderComplete(WebView renderingView)
+	private void OnDisplayRenderComplete()
 	{
-		CapturePresentation();
+		CaptureCurrentDisplayToCurrentView();
 	}
 
-	class BitmapTaskContainer
-	{
-		public Bitmap Image { get; set; }
-	}
-	
-
-	private void CapturePresentation()
+	private void CaptureCurrentDisplayToCurrentView()
 	{
 		_manager.Display.Capture((b) =>
 		{
 			_imageView.Image = b;
-
 		});
 	}
 }

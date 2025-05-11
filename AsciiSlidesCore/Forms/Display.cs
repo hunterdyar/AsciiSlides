@@ -18,7 +18,7 @@ public class Display : PresentationForm
 {
     public WebView View => _webPanel;
     private WebView _webPanel;
-    public Action<WebView> OnRenderComplete;
+    public Action OnRenderComplete;
     public Display(SlidesManager manager, Screen screen, bool inFullscreen) : base(manager, screen, inFullscreen)
     {
         Title = "Presentation";
@@ -45,7 +45,7 @@ public class Display : PresentationForm
 
         _webPanel.DocumentLoaded += (sender, args) => 
         {
-            OnRenderComplete.Invoke(_webPanel);
+            OnRenderComplete.Invoke();
         };
     }
 
@@ -53,7 +53,7 @@ public class Display : PresentationForm
     {
         SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _webPanel);
         Title = "Slide " + slide.SlideNumber + "/" + SlidesManager.PresentationState.Presentation.SlideCount;
-        OnRenderComplete?.Invoke(_webPanel);
+        OnRenderComplete?.Invoke();
     }
 
     protected override void ResizePanel()
