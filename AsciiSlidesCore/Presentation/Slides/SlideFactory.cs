@@ -4,8 +4,9 @@ public static class SlideFactory
 {
 	public static Slide CreateSlide(Presentation presentation, Frontmatter frontmatter, int number, string defaultType="ascii")
 	{
-		Slide slide;
 		
+		Slide slide;
+		//todo: create constants for key values that are not strings. use enum lookup as keys for frontmatter?
 		if (frontmatter.TryGetKey("ascii", out var body))
 		{
 			slide = new ASCIISlide(presentation, body)
@@ -48,6 +49,7 @@ public static class SlideFactory
 				Frontmatter = frontmatter,
 				SlideNumber = number
 			};
+			Console.WriteLine("Creating web view, but it's slow and buggy.");
 		}
 		else
 		{

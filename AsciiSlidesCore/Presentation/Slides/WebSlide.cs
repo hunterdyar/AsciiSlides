@@ -13,6 +13,7 @@ public class WebSlide : Slide
 
 	public override void RenderTo(PresentationState state, WebView view, SlideViewMode mode)
 	{
+		//todo: so it isn't crashing... it's freezing. At the very least we need to move this to its own thread?
 		view.Url = url;
 		//
 	}

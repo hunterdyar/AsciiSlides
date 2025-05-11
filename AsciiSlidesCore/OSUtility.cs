@@ -1,4 +1,5 @@
-﻿using Eto.Forms;
+﻿using Eto.Drawing;
+using Eto.Forms;
 
 namespace AsciiSlidesCore;
 
@@ -13,6 +14,6 @@ public abstract class OSUtility
 	public abstract bool TryGetSettingsKey(string key, out string value);
 	
 	public abstract void SaveSettingsKeys();
-	public abstract Eto.Drawing.Bitmap ViewToBitmap(WebView view);
+	public abstract Task CaptureWebViewAsync(WebView webView, Action<Bitmap> onCaptureCompleted);
 
 }

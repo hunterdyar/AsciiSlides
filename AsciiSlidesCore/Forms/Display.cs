@@ -18,6 +18,7 @@ public class Display : PresentationForm
 {
     public WebView View => _webPanel;
     private WebView _webPanel;
+    public Action<WebView> OnRenderComplete;
     public Display(SlidesManager manager, Screen screen, bool inFullscreen) : base(manager, screen, inFullscreen)
     {
         Title = "Presentation";
@@ -31,23 +32,28 @@ public class Display : PresentationForm
             BrowserContextMenuEnabled = false,
         };
         this.Content = _webPanel;
-        
 
         Console.WriteLine("Created Display.");
         //fullscreen
         _webPanel.BrowserContextMenuEnabled = true;
-        SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _webPanel);
         Title = "Slide " + SlidesManager.PresentationState.CurrentSlide.SlideNumber + "/" + SlidesManager.PresentationState.Presentation.SlideCount;
-        //register
+
+        //this is broken, the width and height of 'this' is still 0,0.
+        SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _webPanel);
         
         Focus();
+
+        _webPanel.DocumentLoaded += (sender, args) => 
+        {
+            OnRenderComplete.Invoke(_webPanel);
+        };
     }
 
     protected override void OnCurrentSlideChanged(Slide slide)
     {
         SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _webPanel);
         Title = "Slide " + slide.SlideNumber + "/" + SlidesManager.PresentationState.Presentation.SlideCount;
-        
+        OnRenderComplete?.Invoke(_webPanel);
     }
 
     protected override void ResizePanel()
@@ -58,5 +64,14 @@ public class Display : PresentationForm
         SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _webPanel);
 
     }
-    
+
+    public async Task Capture(Action<Bitmap> callback)
+    {
+        await OSUtility.Instance.CaptureWebViewAsync(_manager.Display.View, (capturedBitmap) =>
+        {
+            // Handle the captured bitmap here
+           callback?.Invoke(capturedBitmap);
+            // Add it to your form, save it, etc.
+        });
+    }
 }

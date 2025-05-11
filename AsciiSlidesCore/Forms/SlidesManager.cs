@@ -186,6 +186,9 @@ public class SlidesManager : Form
             Console.WriteLine("No Presentation or Empty presentation loaded.");
         }
 
+        _display?.Init();
+        _speakerView?.Init();
+        
         PresentationState.SetIsPresenting(true);
     }
 

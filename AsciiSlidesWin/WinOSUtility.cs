@@ -1,11 +1,26 @@
-﻿using System.Configuration;
+﻿
+using System.Configuration;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using AsciiSlidesCore;
+using Eto;
 using Eto.Drawing;
 using Eto.Forms;
+using Eto.Wpf.Forms;
+using Eto.Wpf.Forms.Controls;
+using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.Wpf;
+using Application = Eto.Forms.Application;
 using Form = Eto.Forms.Form;
+using Point = Eto.Drawing.Point;
 using Rectangle = Eto.Drawing.Rectangle;
+using Window = System.Windows.Window;
+using WindowState = Eto.Forms.WindowState;
+using WindowStyle = Eto.Forms.WindowStyle;
+
 namespace AsciiSlidesWin;
 
 public class WinOSUtility : OSUtility
@@ -33,21 +48,39 @@ public class WinOSUtility : OSUtility
 		}
 	}
 
-
-	public override Bitmap ViewToBitmap(WebView view)
+	public override async Task CaptureWebViewAsync(WebView webView, Action<Bitmap> onCaptureCompleted)
 	{
-		var n = view.ToNative();
-		RenderTargetBitmap rtb = new RenderTargetBitmap((int)n.ActualWidth, (int)n.ActualHeight, 96, 96,
-			PixelFormats.Pbgra32);
-		rtb.Render(n);
-		PngBitmapEncoder png = new PngBitmapEncoder();
-		png.Frames.Add(BitmapFrame.Create(rtb));
-		MemoryStream stream = new MemoryStream();
-		png.Save(stream);
-		Eto.Drawing.Bitmap bitmap = new Bitmap(stream);
-		return bitmap;
-	}
+		// Ensure we're on the UI thread
+		Application.Instance.EnsureUIThread();
 
+		try
+		{
+			// Get the native WebView2 control from the Eto WebView
+			var h = webView.Handler as WebView2Handler;
+			var nativeControl = h.Control as WebView2;
+
+			if (nativeControl == null)
+			{
+				throw new InvalidOperationException("The WebView's native control is not a WebView2 control.");
+			}
+
+			// Start the async capture process
+			using var memoryStream = new MemoryStream();
+			await nativeControl.CoreWebView2.CapturePreviewAsync(CoreWebView2CapturePreviewImageFormat.Png, memoryStream);
+
+			// Reset the stream position to beginning
+			memoryStream.Position = 0;
+			// Create an Eto Bitmap from the memory stream
+			var bitmap = new Bitmap(memoryStream);
+			onCaptureCompleted(bitmap);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine("Webview Capture Failed. Interupted? : "+ex);
+			//throw new Exception("WebView capture failed", ex);
+		}
+
+	}
 	public override MonitorInfo[] GetMonitors()
 	{
 		var allScreens = AsciiSlidesWin.Screen.AllScreens.ToArray();

@@ -10,12 +10,13 @@ public class SpeakerView : PresentationForm
 	private readonly Label _notesView;
 	private readonly WebView _previewView;
 	private readonly TimerComponent _timerView;
-	private readonly WebView _currentSlideView;
+	private readonly ImageView _imageView;
 
 	private readonly Splitter _lrSplitter;
 	private readonly Splitter _currentSplitter;
 	public SpeakerView(SlidesManager manager, Screen screen, bool inFullScreen) : base(manager, screen, inFullScreen)
 	{
+		_manager = manager;
 		//generally done to not cast color on presenters.
 		BackgroundColor = Colors.Black;
 		Title = "Presenter View";
@@ -26,8 +27,8 @@ public class SpeakerView : PresentationForm
 			BackgroundColor = new Color(0.1f, 0.1f, 0.1f)
 		};
 		_previewView = new WebView();
-		_currentSlideView = new WebView();
-		_currentSlideView.Size = new Size((int)(this.Size.Width*0.6), (int)(this.Size.Height*0.6));
+		_imageView = new ImageView();
+		_imageView.Size = this.Size * 2/3;
 		_timerView = new TimerComponent("Time");
 
 		
@@ -49,7 +50,7 @@ public class SpeakerView : PresentationForm
 		_currentSplitter = new Splitter()
 		{
 			Orientation = Orientation.Vertical,
-			Panel1 = _currentSlideView,
+			Panel1 = _imageView,
 			Panel2 = _notesScrollable
 		};
 		
@@ -67,10 +68,13 @@ public class SpeakerView : PresentationForm
 		
 		//adjust sizes after calculations. (sets inner to outer)
 		_notesView.Width = _notesScrollable.VisibleRect.Width;
-		SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _currentSlideView, SlideViewMode.CurrentSpeaker);
+		//SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _currentSlideView, SlideViewMode.CurrentSpeaker);
 		SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _previewView, SlideViewMode.Preview);
 
-
+		if (_manager.Display != null)
+		{
+			//_imageView.Image = OSUtility.Instance.ViewToBitmap(_manager.Display.View);
+		}
 	}
 
 	protected override void OnCurrentSlideChanged(Slide slide)
@@ -82,7 +86,41 @@ public class SpeakerView : PresentationForm
 		_notesView.Width = _notesScrollable.VisibleRect.Width;
 		//snap back to top of scrolling
 		_notesScrollable.ScrollPosition = new Point(0, 0);
-		SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _currentSlideView, SlideViewMode.CurrentSpeaker);
+	//X	SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _currentSlideView, SlideViewMode.CurrentSpeaker);
 		SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _previewView, SlideViewMode.Preview);
+		_imageView.BackgroundColor = Colors.DarkGray;
+	}
+
+	public override void Init()
+	{
+		_manager.Display.OnRenderComplete += OnDisplayRenderComplete;
+		base.Init();
+	}
+
+	protected override void OnClose()
+	{
+		if (_manager.Display != null)
+		{
+			_manager.Display.OnRenderComplete -= OnDisplayRenderComplete;
+		}
+	}
+	private void OnDisplayRenderComplete(WebView renderingView)
+	{
+		CapturePresentation();
+	}
+
+	class BitmapTaskContainer
+	{
+		public Bitmap Image { get; set; }
+	}
+	
+
+	private void CapturePresentation()
+	{
+		_manager.Display.Capture((b) =>
+		{
+			_imageView.Image = b;
+
+		});
 	}
 }

@@ -34,9 +34,14 @@ public abstract class PresentationForm : Form
 			//unhandle events
 
 			PresentationState.OnSlideChanged -= OnCurrentSlideChanged;
+			OnClose();
 		};
 		//on resizing.... registering last to prevent multiple 
 		this.LogicalPixelSizeChanged += (sender, args) => { ResizePanel(); };
+	}
+
+	protected virtual void OnClose()
+	{
 	}
 
 	protected virtual void OnCurrentSlideChanged(Slide obj)
@@ -88,4 +93,13 @@ public abstract class PresentationForm : Form
 	{
 		
 	}
+
+	/// <summary>
+	/// called when window created or recreated after both speaker view and presentation view are (perhaps) not null.
+	/// </summary>
+	public virtual void Init()
+	{
+		
+	}
+	
 }

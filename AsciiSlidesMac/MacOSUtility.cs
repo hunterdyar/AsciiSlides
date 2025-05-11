@@ -20,14 +20,6 @@ public class MacOSUtility : OSUtility
 		return fullscreen;
 	}
 
-	public override Bitmap ViewToBitmap(WebView view)
-	{
-		var n = view.ToNative();
-		var bm = n.BitmapImageRepForCachingDisplayInRect(new CGRect(view.Bounds.X, view.Bounds.Y, view.Bounds.Width,
-			view.Bounds.Height));
-		throw new NotImplementedException("I haven't figured out the tobitmap thing on mac.");
-	}
-
 	override public MonitorInfo[] GetMonitors()
 	{
 		NSScreen[] screens = NSScreen.Screens;
@@ -61,5 +53,10 @@ public class MacOSUtility : OSUtility
 	public override void SaveSettingsKeys()
 	{
 		
+	}
+
+	public override Task CaptureWebViewAsync(WebView webView, Action<Bitmap> onCaptureCompleted)
+	{
+		throw new NotImplementedException("MacOSUtility.CaptureWebViewAsync not implemented");
 	}
 }

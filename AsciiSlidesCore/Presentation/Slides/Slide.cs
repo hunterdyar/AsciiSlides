@@ -96,10 +96,10 @@ public abstract class Slide
 		                 display: block;
 		                 width: {{w}}px;
 		                 height: {{h}}px;
-		                 margin-left: {{marginLeft}};
-		                 margin-right: {{marginLeft}};
-		                 marigin-bottom: {{marginTop}};
-		                 margin-top: {{marginTop}};
+		                 margin-left: {{marginLeft}}px;
+		                 margin-right: {{marginLeft}}px;
+		                 margin-bottom: {{marginTop}}px;
+		                 margin-top: {{marginTop}}px;
 		                 background-color: {{background}};
 		             }
 		                 .slide{
