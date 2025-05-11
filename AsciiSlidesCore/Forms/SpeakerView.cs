@@ -70,11 +70,6 @@ public class SpeakerView : PresentationForm
 		_notesView.Width = _notesScrollable.VisibleRect.Width;
 		//SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _currentSlideView, SlideViewMode.CurrentSpeaker);
 		SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _previewView, SlideViewMode.Preview);
-
-		if (_manager.Display != null)
-		{
-			//_imageView.Image = OSUtility.Instance.ViewToBitmap(_manager.Display.View);
-		}
 	}
 
 	protected override void OnCurrentSlideChanged(Slide slide)
@@ -104,6 +99,7 @@ public class SpeakerView : PresentationForm
 	}
 	private void OnDisplayRenderComplete()
 	{
+		//if currentview is visible/enabled? bar not collapsed...
 		CaptureCurrentDisplayToCurrentView();
 	}
 

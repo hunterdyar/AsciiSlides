@@ -3,9 +3,9 @@
 public static class TestData
 {
 	public static string TestPres1 = """
-	                                 front: "matter"
-	                                 background: "#000"
-	                                 foreground: "#FFF"
+	                                 front: matter
+	                                 background: #000
+	                                 foreground: #FFF
 	                                 ###
 	                                 ascii: {
 	                                 this is a slide!

@@ -180,9 +180,29 @@ public ref struct Tokenizer
 			Next();//eat the closing "
 			_tokens.Add(new Token(TokenType.Value, s));
 			return;
+		}else if (char.IsLetter(_current) || _current == '#')
+		{
+			//how to decide what the custom delim is? Non-letterNumber is first guess.
+			
+			string s = "";
+			bool escaping = false;
+			while (_current != '\n' || escaping)
+			{
+				if (_current == '\0')
+				{
+					throw new Exception("Unexpected end of file");
+				}
+
+				escaping = _current == '\\';
+				s += _current;
+				Next();
+			}
+
+			Next(); //eat the newline.
+			_tokens.Add(new Token(TokenType.Value, s));
+			return;
 		}
 		
-		//how to decide what the custom delim is? Non-letterNumber is first guess.
 		//we would tokenize the delim!
 		//consume up to the next whitespace
 		int openStart = _position;
@@ -211,11 +231,6 @@ public ref struct Tokenizer
 		}
 	}
 
-	private string ReverseOpeningSymbols(string delimiter)
-	{
-		return delimiter.Replace('[',']').Replace('{','}').Replace('(',')').Replace('<','>');
-	}
-
 	private void TokenizeStartSlide()
 	{
 		ConsumeWhitespace(false);
@@ -228,20 +243,6 @@ public ref struct Tokenizer
 		if (_current != '-')
 		{
 			ConsumeWhitespace(true);
-		}
-	}
-	private void ConsumeLinebreak()
-	{
-		ConsumeWhitespace(false);
-		if (_current == '\r')
-		{
-			Next();
-		}
-		
-		//line break and end of file are the same. 
-		if (_current != '\0')
-		{
-			Consume('\n');
 		}
 	}
 
@@ -260,23 +261,5 @@ public ref struct Tokenizer
 		{
 			throw new Exception($"Unexpected character ({_current}) at position {_position}. Expected {c}");
 		}
-	}
-
-	public void SetPosition(int newPos)
-	{
-		if (newPos > _position)
-		{
-			if (newPos < _source.Length)
-			{
-				_position = newPos;
-				return;
-			}
-			else
-			{
-				throw new Exception("Unexpected end of file");
-			}
-		}
-
-		throw new Exception("Can't rewind the tokenizer.");
 	}
 }
