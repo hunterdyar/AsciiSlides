@@ -21,6 +21,7 @@ public class PresentationState
 	private readonly SlideTimer _totalPresentationTimer;
 	private readonly SlideTimer[] _slideTimers;
 	public float Aspect => RowCount / (float)ColumnCount;
+
 	public int RowCount = 30;
 	public int ColumnCount = 40;
 	private StringBuilder _builder = new StringBuilder();

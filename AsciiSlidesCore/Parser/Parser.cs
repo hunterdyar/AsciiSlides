@@ -21,7 +21,7 @@ public static class PresentationParser
 			slides.Add(ParseSlide(ref t, ref presentation, slides.Count+1,presentation.Frontmatter));
 		}
 		//end of slideshow slide.
-		slides.Add(new BlankSlide(presentation, "end of presentation"));
+		slides.Add(new BlankSlide(presentation, "end of presentation"){SlideNumber = slides.Count+1});
 		presentation.Slides = slides.ToArray();
 		
 		return presentation;

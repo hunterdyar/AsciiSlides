@@ -11,7 +11,8 @@ public class SpeakerView : PresentationForm
 	private readonly WebView _previewView;
 	private readonly TimerComponent _timerView;
 	private readonly ImageView _imageView;
-
+	private readonly SlidesControlComponent _slidesControlComponent;
+	
 	private readonly Splitter _lrSplitter;
 	private readonly Splitter _currentSplitter;
 	public SpeakerView(SlidesManager manager, Screen screen, bool inFullScreen) : base(manager, screen, inFullScreen)
@@ -26,11 +27,11 @@ public class SpeakerView : PresentationForm
 			Text = "Speaker Notes", TextColor = Colors.White, Font = new Font("Courier", 24),Wrap = WrapMode.Word,
 			BackgroundColor = new Color(0.1f, 0.1f, 0.1f)
 		};
+		_slidesControlComponent = new SlidesControlComponent();
 		_previewView = new WebView();
 		_imageView = new ImageView();
 		_imageView.Size = this.Size * 2/3;
 		_timerView = new TimerComponent("Time");
-
 		
 		//layout
 		_lrSplitter = new Splitter
@@ -60,6 +61,7 @@ public class SpeakerView : PresentationForm
 		rightbar.BeginVertical();
 		rightbar.AddCentered(_previewView, 0, new Size(0,0),false,false);
 		rightbar.AddRow(_timerView);
+		rightbar.AddRow(_slidesControlComponent);
 		rightbar.EndVertical();
 		_lrSplitter.Panel2 = rightbar;
 		
