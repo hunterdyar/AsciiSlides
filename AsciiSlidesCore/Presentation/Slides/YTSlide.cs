@@ -9,36 +9,64 @@ namespace AsciiSlidesCore;
 public class YTSlide : Slide
 {
 	private string url;
-	private string html;
 	public YTSlide(Presentation presentation, string rawContent) : base(presentation, rawContent)
 	{
 		this.url = HttpUtility.HtmlEncode(rawContent.Trim());
 	}
 
-	public override void PreProcess()
-	{
-		base.PreProcess();
-		var http = new HttpClient()
-		{
-			// BaseAddress = new Uri("https://www.youtube.com/oembed"),
-		};
-		var r = http.GetFromJsonAsync<YTOEmbedResponse>("https://www.youtube.com/oembed?url=" + this.url);
-		r.Wait();
-		if (r.IsCompletedSuccessfully)
-		{
-			this.html = r.Result.html;
-		}
-		else
-		{
-			Console.WriteLine("bad url!");
-		}
-		//https://www.youtube.com/oembed?url=<URL>&format=<FORMAT>
-	}
-
 	protected override void AppendContent(StringBuilder sb)
 	{
-		//todo: replace width/height with correct w/h.
-		sb.Append(html);
+		sb.Append("""
+		          <div class="markdown">
+		              <div id="ytcontainer">
+
+		              </div>
+		          </div>
+		          <script>
+		              function getOembed(yturl, callback)
+		              {
+		                  var xmlHttp = new XMLHttpRequest();
+		                  xmlHttp.onreadystatechange = function() {
+		                      if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+		                          callback(JSON.parse(xmlHttp.response));
+		                  }
+		                  var uri = encodeURI("https://www.youtube.com/oembed?url="+yturl);
+		                  console.log(uri)
+		                  xmlHttp.open("GET", uri, true); // true for asynchronous
+		                  xmlHttp.send(null);
+		              }
+		              getOembed("https://youtu.be/_F-6UzROZsY",(res)=>{
+		                  var yt = document.getElementById("ytcontainer");
+		                  console.log(res)
+		                  yt.innerHTML = res.html;
+		                  yt.children[0].width = "100%"
+		                  yt.children[0].height = "100%"
+
+		              })
+		          </script>
+		          """);
+	}
+
+	protected override void AppendStyle(StringBuilder sb, PresentationState state, Rectangle bounds)
+	{
+		sb.Append("""
+		          <style>
+		                  body{
+		                      background-color: #010101;
+		                      padding: 0;
+		                      margin: 0;
+		                      font-family: Consolas, monospace, ui-monospace;
+		                      font-size: 4vh;
+		                      color: #F0F;
+		                      overflow: hidden;
+		                      scrollbar-width: none;
+		                  }
+		                  #ytcontainer{
+		                      width: 100%;
+		                      height: 100%;
+		                  }
+		          </style>
+		          """);
 	}
 
 	public override void OnRender()
@@ -46,21 +74,4 @@ public class YTSlide : Slide
 		//todo: ask the webview to call some javascript?
 		base.OnRender();
 	}
-}
-
-public record YTOEmbedResponse
-{
-	public string title;
-	public string author_name;
-	public string author_url;
-	public string type;
-	public int height;
-	public int width;
-	public string version;
-	public string provider_name;
-	public string provider_url;
-	public int thumbnail_height;
-	public int thumbnail_width;
-	public string thumbnail_url;
-	public string html;
 }

@@ -2,8 +2,6 @@ using Eto.Drawing;
 using Eto.Forms;
 
 using Form = Eto.Forms.Form;
-using KeyEventArgs = Eto.Forms.KeyEventArgs;
-
 using Rectangle = Eto.Drawing.Rectangle;
 
 #if UNIX
@@ -63,6 +61,12 @@ public class Display : PresentationForm
         //can use _webPanel.ExecuteScript()
         SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _webPanel);
 
+    }
+
+    protected override void OnKeyDown(object? sender, KeyEventArgs e)
+    {
+        base.OnKeyDown(sender, e);
+        //todo: I think WebView2 is capturing keyboard input
     }
 
     public async Task Capture(Action<Bitmap> callback)
