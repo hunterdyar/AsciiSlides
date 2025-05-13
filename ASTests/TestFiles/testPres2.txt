@@ -1,6 +1,4 @@
-﻿background: "#010101"
-textcolor: "#EEE"
-
+﻿
 ###
 md: {
 # hello
@@ -15,7 +13,8 @@ markdown: [[[
 - from markdown
 - here you go
 ]]]
-
+###
+youtube: https://youtu.be/_F-6UzROZsY
 ###
 md:{
 # I am going to win.

@@ -20,7 +20,10 @@ public class SlidesManager : Form
     public static PresentationState PresentationState = new PresentationState();
     public static Action<Presentation> OnPresentationLoaded = delegate { };
     public static Action<string> OnPresentationFailedToLoad = delegate { };
-    
+    private FileSystemWatcher _watcher;
+    private bool _watching = false;
+
+    private bool hasFileChanged = false;
     //commands
     public Command CloseCommand { get; private set; }
     
@@ -46,6 +49,9 @@ public class SlidesManager : Form
         FilesComponent.OnFilePicked += OnFilePicked;
         _filesComponent = new FilesComponent(this);
         contentLayout.Add(_filesComponent);
+        _watcher = new FileSystemWatcher();
+        _watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size;
+        _watcher.Changed += WatcherOnChanged;
         
         //output
         _outputComponent = new OutputComponent(this);
@@ -75,6 +81,11 @@ public class SlidesManager : Form
         
     }
 
+    private void WatcherOnChanged(object sender, FileSystemEventArgs e)
+    {
+        hasFileChanged = true;
+    }
+
     private void CreateCommands()
     {
         CloseCommand = new Command()
@@ -91,6 +102,11 @@ public class SlidesManager : Form
     private void OnFilePicked(string path)
     {
         using var fileStream = new StreamReader(path);
+        if (_watcher != null)
+        {
+            _watcher.Path = path;
+        }
+
         LoadPresentation(path,fileStream.ReadToEnd());
     }
 
@@ -104,12 +120,14 @@ public class SlidesManager : Form
             PresentationState = new PresentationState(Presentation);
             //PresentationState.SetPresentationReady(true);//this gets called by listener. uhg.
             OnPresentationLoaded?.Invoke(Presentation);
+            hasFileChanged = false;
         }
         catch (Exception exception)
         {
             Console.WriteLine(exception);
             PresentationState.SetPresentationReady(false);
             OnPresentationFailedToLoad?.Invoke(exception.Message);
+            hasFileChanged = false;
         }
     }
 

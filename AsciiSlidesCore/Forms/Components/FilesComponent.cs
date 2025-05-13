@@ -13,10 +13,11 @@ public class FilesComponent : GroupBox
 	private string _fileName = string.Empty;
 	private SlidesManager _slidesManager;
 	private const string LastFilePathSettingsKey = "LastPresentationFile";
+	private readonly FilePicker _filePicker;
 	public FilesComponent(SlidesManager slidesManager)
 	{
 		_slidesManager = slidesManager;
-		var loadFilePicker = new FilePicker();
+		_filePicker = new FilePicker();
 		var fileLoadedLabel = new Label()
 		{
 			Text = "No Presentation File Loaded"
@@ -30,12 +31,12 @@ public class FilesComponent : GroupBox
 			fileLoadedLabel.Text = message;
 		};
 
-		loadFilePicker.Filters.Add(new FileFilter("Text Documents", ".txt", ".text"));
-		loadFilePicker.Filters.Add(new FileFilter("Markdown Documents", ".md", ".markdown"));
-		loadFilePicker.Filters.Add(new FileFilter("All", "*"));
+		_filePicker.Filters.Add(new FileFilter("Text Documents", ".txt", ".text"));
+		_filePicker.Filters.Add(new FileFilter("Markdown Documents", ".md", ".markdown"));
+		_filePicker.Filters.Add(new FileFilter("All", "*"));
 
-		loadFilePicker.FileAction = FileAction.OpenFile;
-		loadFilePicker.Title = "Open Presentation";
+		_filePicker.FileAction = FileAction.OpenFile;
+		_filePicker.Title = "Open Presentation";
 
 		//todo: when we save the file, and reload it, we don't realize we've reloaded it.
 		//hacky temp is to add a 'reload' button.
@@ -45,10 +46,9 @@ public class FilesComponent : GroupBox
 		{
 			//we check again if the file exists.
 			//this should call FilePathChanged.
-			loadFilePicker.FilePath = lastFile;
+			_filePicker.FilePath = lastFile;
 		}
-		loadFilePicker.FilePathChanged += (sender, args) => { TryPickFileFromPath(loadFilePicker.FilePath); };
-
+		_filePicker.FilePathChanged += (sender, args) => { TryPickFileFromPath(_filePicker.FilePath); };
 		Width = Configuration.ManagerWindowWidth;
 		Text = "File";
 		Content = new StackLayout()
@@ -58,19 +58,24 @@ public class FilesComponent : GroupBox
 			Spacing = 10,
 			Items =
 			{
-				loadFilePicker,
+				_filePicker,
 				fileLoadedLabel,
 			}
 		};
 
-		if (!string.IsNullOrEmpty(loadFilePicker.FilePath))
+		if (!string.IsNullOrEmpty(_filePicker.FilePath))
 		{
-			TryPickFileFromPath(loadFilePicker.FilePath);
+			TryPickFileFromPath(_filePicker.FilePath);
 		}
 	}
 
 	private void TryPickFileFromPath(string filePath)
 	{
+		if (string.IsNullOrEmpty(filePath))
+		{
+			return;
+		}
+		
 		if (File.Exists(filePath))
 		{
 			_filePath = filePath;

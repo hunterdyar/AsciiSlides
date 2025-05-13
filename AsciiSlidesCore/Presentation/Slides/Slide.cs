@@ -12,8 +12,9 @@ public abstract class Slide
 	public bool HasSpeakerNotes = false;
 	public string SpeakerNotes = String.Empty; 
 	private StringBuilder _sb = new();
-
 	public int SlideNumber;
+	public bool PreProcessed => _preProcessed;
+	protected bool _preProcessed = false;
 
 	public Slide(Presentation presentation, string rawContent)
 	{
@@ -23,6 +24,15 @@ public abstract class Slide
 		SlideNumber = 0;
 	}
 
+	
+	/// <summary>
+	/// Should be called once and only once before first time loaded.
+	/// </summary>
+	public virtual void PreProcess()
+	{
+		_preProcessed = true;
+	}
+	
 	public virtual void RenderTo(PresentationState state, WebView view, SlideViewMode mode= SlideViewMode.CurrentPresenting)
 	{
 		view.LoadHtml(GetSlideAsHTML(state, view.Bounds, mode));

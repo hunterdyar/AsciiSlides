@@ -81,10 +81,19 @@ public class PresentationState
 		{
 			_currentSlideIndex = _presentation.SlideCount + _currentSlideIndex;
 		}
+		
+		//pre-process if necessary.
+		if (!_presentation.Slides[_currentSlideIndex].PreProcessed)
+		{
+			_presentation.Slides[_currentSlideIndex].PreProcess();
+		}
+		
 		OnSlideChanged?.Invoke(_presentation.Slides[_currentSlideIndex]);
 		//now displayed, we hope, call the callback.
 		_presentation.Slides[_currentSlideIndex].OnRender();
 	}
+	
+	//todo: pre-process all in the background
 	
 	public string GetCurrentAsHTML(Rectangle bounds, SlideViewMode currentSpeaker = SlideViewMode.CurrentPresenting)
 	{

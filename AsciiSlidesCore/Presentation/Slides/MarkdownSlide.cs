@@ -25,7 +25,7 @@ public class MarkdownSlide : Slide
 	{
 		var background = Frontmatter.GetKey("background", Configuration.BGColor);
 		var fontcolor = Frontmatter.GetKey("textcolor", Configuration.FontColor);
-
+		var fontsize = Frontmatter.GetKey("fontsize", Configuration.FontSizeVMin.ToString());
 		sb.Append("<style>");
 		sb.Append($$"""
 		          body{
@@ -34,6 +34,7 @@ public class MarkdownSlide : Slide
 		              margin: 0;
 		              font-family: Consolas, monospace, ui-monospace;
 		              color: {{fontcolor}};
+		              font-size: {{fontsize}}vmin;
 		              overflow: hidden;
 		              scrollbar-width: none;
 		          }

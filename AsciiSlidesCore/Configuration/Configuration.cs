@@ -5,6 +5,7 @@ namespace AsciiSlidesCore;
 using Keys = Eto.Forms.Keys;
 public static class Configuration
 {
+
 	//UX
 	public static int ManagerWindowWidth = 300;
 	public static int ManagerWindowHeight = 600;
@@ -17,11 +18,13 @@ public static class Configuration
 	//Presentation Style Defaults
 	public static string BGColor = "#080000";
 	public static string FontColor = "#E2DDD9";
+	public static double FontSizeVMin = 4;
 
 	public static void LoadDefaultStyle()
 	{
 		BGColor = "#080000";
 		FontColor = "#E2DDD9";
+		FontSizeVMin = 4;
 	}
 
 	
