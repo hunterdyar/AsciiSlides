@@ -35,5 +35,4 @@ public class FIGletSlide : Slide
 		sb.Append(output);
 		sb.AppendLine("</pre>");
 	}
-	
 }

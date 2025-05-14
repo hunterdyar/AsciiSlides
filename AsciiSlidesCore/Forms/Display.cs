@@ -30,10 +30,8 @@ public class Display : PresentationForm
             BrowserContextMenuEnabled = false,
         };
         this.Content = _webPanel;
-
         Console.WriteLine("Created Display.");
         //fullscreen
-        _webPanel.BrowserContextMenuEnabled = true;
         Title = "Slide " + SlidesManager.PresentationState.CurrentSlide.SlideNumber + "/" + SlidesManager.PresentationState.Presentation.SlideCount;
 
         //this is broken, the width and height of 'this' is still 0,0.
@@ -47,8 +45,18 @@ public class Display : PresentationForm
         };
     }
 
+
     protected override void OnCurrentSlideChanged(Slide slide)
     {
+        if (slide is YTSlide)
+        {
+            _webPanel.BrowserContextMenuEnabled =  true;
+        }
+        else
+        {
+            _webPanel.BrowserContextMenuEnabled = false;
+        }
+        
         SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _webPanel);
         Title = "Slide " + slide.SlideNumber + "/" + SlidesManager.PresentationState.Presentation.SlideCount;
         OnRenderComplete?.Invoke();
