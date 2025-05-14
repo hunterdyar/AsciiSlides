@@ -50,6 +50,13 @@ public static class SlideFactory
 				SlideNumber = number
 			};
 			Console.WriteLine("Creating web view, but it's slow and buggy.");
+		}else if (frontmatter.TryGetKey("atext", out var texty))
+		{
+			slide = new FIGletSlide(presentation, texty)
+			{
+				Frontmatter = frontmatter,
+				SlideNumber = number
+			};
 		}
 		else
 		{

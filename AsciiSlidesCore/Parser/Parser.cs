@@ -86,6 +86,13 @@ public static class PresentationParser
 			case "web":
 			case "link":
 				return "web";
+			case "atext":
+			case "asciitext":
+			case "ascii-text":
+			case "at":
+			case "figlet":
+			case "fig":
+				return "atext";
 		}
 
 		return key;

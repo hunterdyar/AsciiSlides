@@ -101,10 +101,13 @@ public class SlidesManager : Form
 
     private void OnFilePicked(string path)
     {
+        var dir = Path.GetDirectoryName(path);
         using var fileStream = new StreamReader(path);
         if (_watcher != null)
         {
-            _watcher.Path = path;
+            _watcher.Path = dir;
+            _watcher.Filter = Path.GetFileName(path);
+            _watcher.EnableRaisingEvents = true;
         }
 
         LoadPresentation(path,fileStream.ReadToEnd());

@@ -1,11 +1,8 @@
-﻿background: "#000"
-textcolor: "#FFF"
-
+﻿###
+at: { Talking bout my preeesentation }
+notes: "this was made with figlet."
 ###
-ascii { Talking bout my preeesentation }
-notes "this was made with an ASCII art generator."
-###
-ascii {
+ascii: {
                                            __          __  .__               
 _____________   ____   ______ ____   _____/  |______ _/  |_|__| ____   ____  
 \____ \_  __ \_/ __ \ /  ___// __ \ /    \   __\__  \\   __\  |/  _ \ /    \ 
@@ -13,9 +10,8 @@ _____________   ____   ______ ____   _____/  |______ _/  |_|__| ____   ____
 |   __/|__|    \___  >____  >\___  >___|  /__| (____  /__| |__|\____/|___|  /
 |__|               \/     \/     \/     \/          \/                    \/ 
 }
-notes { I think it's important for the audience to know that this is a slide. }
+notes: { I think it's important for the audience to know that this is a slide. }
 ###
-ascii { this is a slide }
+ascii: { this is a slide }
 ###
 youtube: "youtube"
-background: "tomato"
