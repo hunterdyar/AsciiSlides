@@ -36,7 +36,7 @@ The people at [Marp](https://marp.app/) get it. (Note to self: Marp seems pretty
 ### PowerPoint isn't Free
 PowerPoint got rid of it's free presentation viewer. Now you can no longer even *view* presentations without paying for office. Or installing LibreOffice and hoping it works well. (Hey, in LibeOffice's defense, it's pretty good at managing powerpoint files).
 
-I've never used [Keynote](https://support.apple.com/keynote) but it isn't free either. [Figma slides](https://www.figma.com/slides/) is part of figma and so it isn't free either, right?
+I've never used [Keynote](https://support.apple.com/keynote) but it isn't free either. [Figma slides](https://www.figma.com/slides/) is part of figma and so it isn't free either, right? Same for [Canva Presentations](https://www.canva.com/presentations/)
 
 - [Sozi](https://sozi.baierouge.fr/) is free but I haven't tried it.
 - [LibreOffice Impress](https://www.libreoffice.org/discover/impress/) remains the strongest FOSS competitor to PowerPoint, but it also - intentionally - works the same way.
