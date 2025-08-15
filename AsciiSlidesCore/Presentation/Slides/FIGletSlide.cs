@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using FIGlet;
-using FIGlet.Drawing;
 
 namespace AsciiSlidesCore;
 
