@@ -24,6 +24,10 @@ public abstract class Slide
 		SlideNumber = 0;
 	}
 
+	public virtual void OnSlideFunction(string slideFunctionName)
+	{
+
+	}
 	
 	/// <summary>
 	/// Should be called once and only once before first time loaded.

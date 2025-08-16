@@ -14,35 +14,88 @@ public class YTSlide : Slide
 		this.url = HttpUtility.HtmlEncode(rawContent.Trim());
 	}
 
+	
 	protected override void AppendContent(StringBuilder sb)
 	{
 		sb.Append("""
 		          <div class="markdown">
-		              <div id="ytcontainer">
-
-		              </div>
+		          <div id="yt">
+		          <div id="player" width="100%" height ="100%"></div>
+		          </div>
 		          </div>
 		          <script>
-		              function getOembed(yturl, callback)
-		              {
-		                  var xmlHttp = new XMLHttpRequest();
-		                  xmlHttp.onreadystatechange = function() {
-		                      if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-		                          callback(JSON.parse(xmlHttp.response));
-		                  }
-		                  var uri = encodeURI("https://www.youtube.com/oembed?url="+yturl);
-		                  console.log(uri)
-		                  xmlHttp.open("GET", uri, true); // true for asynchronous
-		                  xmlHttp.send(null);
+		              var tag = document.createElement('script');
+		              tag.src = "https://www.youtube.com/iframe_api";
+		              var firstScriptTag = document.getElementsByTagName('script')[0];
+		              firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+		              var player;
+		          
+		              function onYouTubeIframeAPIReady() {
+		                  player = new YT.Player('player', {
+		                      height: '100%',
+		                      width: '100%',
+		                      videoId: 'M7lc1UVf-VE',
+		                      playerVars: {
+		                          'playsinline': 1,
+		                          'autoplay': true,
+		                      },
+		                      events: {
+		                          'onReady': onPlayerReady,
+		                          'onStateChange': onPlayerStateChange
+		                      }
+		                  });
 		              }
-		              getOembed("https://youtu.be/_F-6UzROZsY",(res)=>{
-		                  var yt = document.getElementById("ytcontainer");
-		                  console.log(res)
-		                  yt.innerHTML = res.html;
-		                  yt.children[0].width = "100%"
-		                  yt.children[0].height = "100%"
-
-		              })
+		          
+		              function onPlayerReady(event) {
+		                  //let's just use the autoplay tag for now? idk this needs to come from a slide property and not the yt video
+		                  // event.target.playVideo();
+		              }
+		              
+		              function onPlayerStateChange(event) {
+		                  
+		              }
+		          
+		              function stopVideo() {
+		                  player.stopVideo();
+		              }
+		              
+		              function playVideo() {
+		                  player.playVideo();
+		              }
+		          
+		              // -1(unstarted)
+		              // 0(ended)
+		              // 1(playing)
+		              // 2(paused)
+		              // 3(buffering)
+		              // 5(video cued).
+		          
+		              function playPauseVideo() {
+		                  var state = player.getPlayerState();
+		                  console.log("player state",state);
+		                  if(state == 0){
+		                      //ended! Restart it
+		                      player.clearVideo();
+		                      player.playVideo()
+		                  }else if(state == 1){
+		                      //playing, pause it
+		                      player.pauseVideo();
+		                  }else if(state == 2 || state == -1){//paused or unstarted
+		                      player.playVideo();
+		                  }else if(state == 5){
+		                      //cued!
+		                      player.playVideo();
+		                  }else if(state == 3){
+		                      //buffering.... don't know what we should do cus i don't know if it's trying to play or not?
+		                      //i'll guess that it's trying to play.
+		                      player.pauseVideo();
+		                  }
+		              }
+		          
+		              // var yt = document.getElementById("ytcontainer");
+		              // console.log()
+		              // yt.children[0].width = "100%"
+		              // yt.children[0].height = "100%"
 		          </script>
 		          """);
 	}

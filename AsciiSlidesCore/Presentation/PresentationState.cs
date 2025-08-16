@@ -7,6 +7,7 @@ public class PresentationState
 {
 	public static bool IsPresentationReady = false;
 	public static bool IsPresenting = false;
+	public static Action<string> OnSlideFunction = delegate {};
 	public static Action<bool> OnIsPresentingChanged = delegate {};
 	public static Action<bool> OnIsPresentationReadyChanged = delegate {};
 	private static Slide EndOfSlideSlide = new BlankSlide(null,"end of presentation");
@@ -120,5 +121,22 @@ public class PresentationState
 	{
 		IsPresenting = isPresenting;
 		OnIsPresentingChanged?.Invoke(isPresenting);
+	}
+
+	public void CallSlideFunction(string slideFunctionName)
+	{
+		//clean up, validate.
+		//if it's a function we manage, then do it.
+		//if it's a slide function, shout at the slide to do something about it.
+		//if it's a display-side function, then yell into the void and hope the displayer does it.
+		var sname = slideFunctionName.ToLower().Trim();
+		switch (sname)
+		{
+			case "playvideo":
+				OnSlideFunction?.Invoke("playvideo");
+				break;
+		}
+		
+		CurrentSlide?.OnSlideFunction(sname);
 	}
 }

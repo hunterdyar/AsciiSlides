@@ -41,10 +41,24 @@ public class Display : PresentationForm
 
         _webPanel.DocumentLoaded += (sender, args) => 
         {
-            OnRenderComplete.Invoke();
+            OnRenderComplete?.Invoke();
         };
     }
-
+    
+    protected override void OnSlideFunction(string slideFunctionName)
+    {
+        Console.WriteLine($"Slide Function: {slideFunctionName}");
+        switch (slideFunctionName)
+        {
+            case "playvideo":
+                _webPanel.ExecuteScript("""
+                                        console.log("play video");
+                                        playPauseVideo();
+                                        
+                                        """);
+            break;
+        }
+    }
 
     protected override void OnCurrentSlideChanged(Slide slide)
     {

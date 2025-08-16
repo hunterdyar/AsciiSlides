@@ -9,7 +9,6 @@ public class TimerComponent : GroupBox
 	private SlideTimer _timer;
 	private Label _time;
 	
-	
 	public TimerComponent(string label)
 	{
 		_timer = new SlideTimer();

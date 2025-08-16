@@ -11,6 +11,7 @@ public class SpeakerView : PresentationForm
 	private readonly WebView _previewView;
 	private readonly TimerComponent _timerView;
 	private readonly ImageView _imageView;
+	private readonly VideoControlComponent _videoControl;
 	private readonly SlidesControlComponent _slidesControlComponent;
 	
 	private readonly Splitter _lrSplitter;
@@ -28,6 +29,7 @@ public class SpeakerView : PresentationForm
 			BackgroundColor = new Color(0.1f, 0.1f, 0.1f)
 		};
 		_slidesControlComponent = new SlidesControlComponent();
+		_videoControl = new VideoControlComponent();
 		_previewView = new WebView();
 		_imageView = new ImageView();
 		_imageView.Size = this.Size * 2/3;
@@ -61,6 +63,7 @@ public class SpeakerView : PresentationForm
 		rightbar.BeginVertical();
 		rightbar.AddCentered(_previewView, 0, new Size(0,0),false,false);
 		rightbar.AddRow(_timerView);
+		rightbar.AddRow(_videoControl);
 		rightbar.AddRow(_slidesControlComponent);
 		rightbar.EndVertical();
 		_lrSplitter.Panel2 = rightbar;
