@@ -9,7 +9,7 @@ public class Cue
 
 	public Cue(int hours, int minutes, int seconds)
 	{
-		//timespan is just a lazy way to converty >60 seconds into minutes/seconds, etc.
+		//timespan is just a lazy way to convert >60 seconds into minutes/seconds, etc.
 		//but we could probably use timespan as the actual storage type?
 		TimeSpan t = new TimeSpan(hours, minutes, seconds);
 		this.Hours = t.Hours;

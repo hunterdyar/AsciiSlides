@@ -85,7 +85,7 @@ public class SpeakerView : PresentationForm
 		_notesView.Width = _notesScrollable.VisibleRect.Width;
 		//snap back to top of scrolling
 		_notesScrollable.ScrollPosition = new Point(0, 0);
-		SlidesManager.PresentationState.CurrentSlide.RenderTo(SlidesManager.PresentationState, _previewView, SlideViewMode.Preview);
+		SlidesManager.PresentationState.NextSlide.RenderTo(SlidesManager.PresentationState, _previewView, SlideViewMode.Preview);
 		_imageView.BackgroundColor = Colors.DarkGray;
 	}
 

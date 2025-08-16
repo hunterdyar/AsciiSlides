@@ -15,7 +15,8 @@ public class PresentationState
 	public static Action OnPresentationClosed = delegate { };
 	public Presentation Presentation => _presentation;
 	private Presentation _presentation = new Presentation();
-	
+
+	public Slide NextSlide => GetNextSlide();
 	public Slide CurrentSlide => _presentation.Slides[_currentSlideIndex];
 	private int _currentSlideIndex = 0;
 	public SlideTimer TotalPresentationTimer => _totalPresentationTimer;
@@ -145,5 +146,18 @@ public class PresentationState
 		}
 		
 		CurrentSlide?.OnSlideFunction(sname);
+	}
+
+	private Slide GetNextSlide()
+	{
+		var next = _currentSlideIndex + 1;
+		if (next < _presentation.SlideCount)
+		{
+			return _presentation.Slides[next];
+		}
+		else
+		{
+			return _presentation.Slides[_currentSlideIndex];
+		}
 	}
 }
