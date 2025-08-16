@@ -24,7 +24,7 @@ public abstract class Slide
 		SlideNumber = 0;
 	}
 
-	public virtual void OnSlideFunction(string slideFunctionName)
+	public virtual void OnSlideFunction(string slideFunctionName, string data)
 	{
 
 	}

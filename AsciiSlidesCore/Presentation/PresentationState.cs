@@ -7,7 +7,7 @@ public class PresentationState
 {
 	public static bool IsPresentationReady = false;
 	public static bool IsPresenting = false;
-	public static Action<string> OnSlideFunction = delegate {};
+	public static Action<string, string> OnSlideFunction = delegate {};
 	public static Action<bool> OnIsPresentingChanged = delegate {};
 	public static Action<bool> OnIsPresentationReadyChanged = delegate {};
 	private static Slide EndOfSlideSlide = new BlankSlide(null,"end of presentation");
@@ -131,7 +131,7 @@ public class PresentationState
 		OnIsPresentingChanged?.Invoke(isPresenting);
 	}
 
-	public void CallSlideFunction(string slideFunctionName)
+	public void CallSlideFunction(string slideFunctionName, string data)
 	{
 		//clean up, validate.
 		//if it's a function we manage, then do it.
@@ -141,14 +141,18 @@ public class PresentationState
 		switch (sname)
 		{
 			case "playvideo":
-				OnSlideFunction?.Invoke("playvideo");
+				OnSlideFunction?.Invoke("playvideo", data);
 				break;
 			case "mute":
-				OnSlideFunction?.Invoke("mute");
+				OnSlideFunction?.Invoke("mute", data);
 				break;
+			case "volume":
+				OnSlideFunction?.Invoke("volume", data);
+				break;
+			
 		}
 		
-		CurrentSlide?.OnSlideFunction(sname);
+		CurrentSlide?.OnSlideFunction(sname, data);
 	}
 
 	private Slide GetNextSlide()

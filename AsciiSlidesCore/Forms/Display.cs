@@ -46,7 +46,7 @@ public class Display : PresentationForm
     }
     
     
-    protected override void OnSlideFunction(string slideFunctionName)
+    protected override void OnSlideFunction(string slideFunctionName, string data)
     {
         Console.WriteLine($"Slide Function: {slideFunctionName}");
         switch (slideFunctionName)
@@ -62,6 +62,9 @@ public class Display : PresentationForm
                                         console.log("mute video");
                                         muteToggleVideo();
                                         """);
+                break;
+            case "volume":
+                var volume = _webPanel.ExecuteScript($"setVolume({data})");
                 break;
         }
     }

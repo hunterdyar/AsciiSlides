@@ -42,7 +42,7 @@ public abstract class PresentationForm : Form
 		this.LogicalPixelSizeChanged += (sender, args) => { ResizePanel(); };
 	}
 
-	protected virtual void OnSlideFunction(string slide)
+	protected virtual void OnSlideFunction(string slide, string data)
 	{
 		
 	}

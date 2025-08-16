@@ -160,6 +160,10 @@ public class YTSlide : Slide
 		                  player.mute();
 		                }
 		              }
+		          function setVolume(volume){
+		            player.setVolume(volume);
+		            return player.getVolume();
+		          }
 		          
 		              // var yt = document.getElementById("ytcontainer");
 		              // console.log()
