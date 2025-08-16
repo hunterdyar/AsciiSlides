@@ -26,15 +26,17 @@ public class SlidesControlComponent : GroupBox
 		_presentationProgressBar.Height = 20;
 		
 		BackgroundColor = Colors.Gray;
+		
+		//the slideNumber-1 is just to make it like Floor; and the count-1 is for the 'end of presentation' slide to be ignored.
 		PresentationState.OnIsPresentingChanged += b =>
 		{
 			_presentationProgressBar.MinValue = 0;
-			_presentationProgressBar.MaxValue = SlidesManager.PresentationState.Presentation.SlideCount;
-			_presentationProgressBar.Value = b ? SlidesManager.PresentationState.CurrentSlide.SlideNumber : 0;
+			_presentationProgressBar.MaxValue = SlidesManager.PresentationState.Presentation.SlideCount-1;
+			_presentationProgressBar.Value = b ? SlidesManager.PresentationState.CurrentSlide.SlideNumber-1 : 0;
 		};
 		PresentationState.OnSlideChanged += slide =>
 		{
-			_presentationProgressBar.Value = SlidesManager.PresentationState.CurrentSlide.SlideNumber;
+			_presentationProgressBar.Value = SlidesManager.PresentationState.CurrentSlide.SlideNumber-1;
 		};
 
 		//todo: I don't know what i want this to look like... but i now haave a good idea what i don't want this to look like.
@@ -50,7 +52,6 @@ public class SlidesControlComponent : GroupBox
 		table.Rows[0].Cells[1].ScaleWidth = true;
 		table.Rows[0].Cells[2].ScaleWidth = false;
 
-		Height = 5;
 		Content = buttonRow;
 	}
 }

@@ -62,9 +62,12 @@ public class SpeakerView : PresentationForm
 		//right col
 		rightbar.BeginVertical();
 		rightbar.AddCentered(_previewView, 0, new Size(0,0),false,false);
+		rightbar.AddSpace();
 		rightbar.AddRow(_timerView);
 		rightbar.AddRow(_videoControl);
 		rightbar.AddRow(_slidesControlComponent);
+		rightbar.AddSpace();
+
 		rightbar.EndVertical();
 		_lrSplitter.Panel2 = rightbar;
 		
