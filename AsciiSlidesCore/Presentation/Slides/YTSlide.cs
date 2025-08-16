@@ -9,12 +9,50 @@ namespace AsciiSlidesCore;
 public class YTSlide : Slide
 {
 	private string url;
+	private Cue[] cues = [];
+	private Cue startTime = Cue.StartCue;
 	public YTSlide(Presentation presentation, string rawContent) : base(presentation, rawContent)
 	{
 		this.url = HttpUtility.HtmlEncode(rawContent.Trim());
 	}
 
-	
+	public override void PreProcess()
+	{
+		base.PreProcess();
+		if (Frontmatter.TryGetKey("cue", out var cue))
+		{
+			List<Cue> cuesList = new List<Cue>();
+			var cues = cue.Split("\n");
+			foreach (var item in cues)
+			{
+				//skip empty lines
+				if (cues.Length == 0)
+				{
+					continue;
+				}
+
+				if (Cue.TryCreateCue(item, out var c))
+				{
+					cuesList.Add(c);
+				}
+				else
+				{
+					//todo: print parser warning
+				}
+			}
+			this.cues = cuesList.ToArray();
+		}
+
+		//todo: remove magic strings.
+		if (Frontmatter.TryGetKey("starttime", out var starttime))
+		{
+			if (Cue.TryCreateCue(starttime, out var start))
+			{
+				this.startTime = start;
+			}	
+		}
+	}
+
 	protected override void AppendContent(StringBuilder sb)
 	{
 		sb.Append("""

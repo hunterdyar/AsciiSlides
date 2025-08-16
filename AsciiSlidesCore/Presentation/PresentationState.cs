@@ -66,23 +66,29 @@ public class PresentationState
 			OnIsPresentationReadyChanged?.Invoke(ready);
 		}
 	}
-	
+
 	public void NavigateRelative(int delta)
 	{
 		if (delta == 0)
 		{
 			return;
 		}
+
 		_currentSlideIndex += delta;
 		if (_currentSlideIndex >= _presentation.SlideCount)
 		{
 			//asdflkj
 			_currentSlideIndex = (_presentation.SlideCount - _currentSlideIndex);
-		}else if (_currentSlideIndex < 0)
+		}
+		else if (_currentSlideIndex < 0)
 		{
 			_currentSlideIndex = _presentation.SlideCount + _currentSlideIndex;
 		}
-		
+		Navigate(_currentSlideIndex);
+	}
+	private void Navigate(int slide)
+	{
+		_currentSlideIndex = slide;	
 		//pre-process if necessary.
 		if (!_presentation.Slides[_currentSlideIndex].PreProcessed)
 		{
@@ -95,7 +101,8 @@ public class PresentationState
 	}
 	
 	//todo: pre-process all in the background
-	
+		//cache things like the youtube video? would it be like keeping a separate webView when we leave and return?
+		//a slide could provide a view instead of HTML, and then save it in the Slide data, and use a static one as the fallback.
 	public string GetCurrentAsHTML(Rectangle bounds, SlideViewMode currentSpeaker = SlideViewMode.CurrentPresenting)
 	{
 		return _presentation.Slides[_currentSlideIndex].GetSlideAsHTML(this, bounds, currentSpeaker);
