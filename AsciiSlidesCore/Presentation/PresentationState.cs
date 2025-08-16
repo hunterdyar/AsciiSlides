@@ -143,6 +143,9 @@ public class PresentationState
 			case "playvideo":
 				OnSlideFunction?.Invoke("playvideo");
 				break;
+			case "mute":
+				OnSlideFunction?.Invoke("mute");
+				break;
 		}
 		
 		CurrentSlide?.OnSlideFunction(sname);

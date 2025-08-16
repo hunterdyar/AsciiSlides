@@ -106,7 +106,11 @@ public abstract class PresentationForm : Form
 	/// </summary>
 	public virtual void Init()
 	{
-		
+		var s = SlidesManager.PresentationState?.CurrentSlide;
+		if (s != null)
+		{
+			OnCurrentSlideChanged(s);
+		}
 	}
 	
 }

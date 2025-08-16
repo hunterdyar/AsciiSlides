@@ -22,6 +22,7 @@ public class TimerComponent : GroupBox
 		
 		
 		Text = label;
+		TextColor = Colors.White;
 		Content = _time;
 		_timer.Start();
 

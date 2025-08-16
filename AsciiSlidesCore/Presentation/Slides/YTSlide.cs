@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using Eto.Drawing;
 
@@ -8,6 +9,11 @@ namespace AsciiSlidesCore;
 
 public class YTSlide : Slide
 {
+	private Regex _ytIdMatcher =
+		new Regex(
+			@"^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/|shorts\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*",
+			RegexOptions.Compiled);
+	private string ytid;
 	private string url;
 	private Cue[] cues = [];
 	private Cue startTime = Cue.StartCue;
@@ -19,6 +25,24 @@ public class YTSlide : Slide
 	public override void PreProcess()
 	{
 		base.PreProcess();
+
+		if (url.Contains(".com") || url.Contains("youtu.be") || url.Contains("://"))
+		{
+			var match = _ytIdMatcher.Match(url);
+			if (match.Success)
+			{
+				ytid = match.Groups[1].Value;
+				Console.WriteLine($"url to id: {ytid}");
+			}
+		}
+		//if we didn't match...
+		if (string.IsNullOrEmpty(ytid))
+		{
+			//maybe direct value.
+			ytid = url;
+			Console.WriteLine($"url direct to id: {ytid}");
+		}
+		
 		if (Frontmatter.TryGetKey("cue", out var cue))
 		{
 			List<Cue> cuesList = new List<Cue>();
@@ -55,7 +79,7 @@ public class YTSlide : Slide
 
 	protected override void AppendContent(StringBuilder sb)
 	{
-		sb.Append("""
+		sb.Append($$"""
 		          <div class="markdown">
 		          <div id="yt">
 		          <div id="player" width="100%" height ="100%"></div>
@@ -72,7 +96,7 @@ public class YTSlide : Slide
 		                  player = new YT.Player('player', {
 		                      height: '100%',
 		                      width: '100%',
-		                      videoId: 'M7lc1UVf-VE',
+		                      videoId: '{{ytid}}',
 		                      playerVars: {
 		                          'playsinline': 1,
 		                          'autoplay': true,
@@ -128,6 +152,13 @@ public class YTSlide : Slide
 		                      //i'll guess that it's trying to play.
 		                      player.pauseVideo();
 		                  }
+		              }
+		              function muteToggleVideo(){
+		                if(player.isMuted()){
+		                  player.unMute();
+		                }else{
+		                  player.mute();
+		                }
 		              }
 		          
 		              // var yt = document.getElementById("ytcontainer");

@@ -45,6 +45,7 @@ public class Display : PresentationForm
         };
     }
     
+    
     protected override void OnSlideFunction(string slideFunctionName)
     {
         Console.WriteLine($"Slide Function: {slideFunctionName}");
@@ -52,11 +53,16 @@ public class Display : PresentationForm
         {
             case "playvideo":
                 _webPanel.ExecuteScript("""
-                                        console.log("play video");
+                                        console.log("play/pause video");
                                         playPauseVideo();
-                                        
                                         """);
-            break;
+                break;
+            case "mute":
+                _webPanel.ExecuteScript("""
+                                        console.log("mute video");
+                                        muteToggleVideo();
+                                        """);
+                break;
         }
     }
 

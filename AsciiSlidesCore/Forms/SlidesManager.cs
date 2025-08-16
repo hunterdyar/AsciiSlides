@@ -167,6 +167,7 @@ public class SlidesManager : Form
                 {
                     _speakerView = new SpeakerView(this, displaySelection.SpeakerNotesScreen?.Screen, false);
                 }
+                
             }
             
             

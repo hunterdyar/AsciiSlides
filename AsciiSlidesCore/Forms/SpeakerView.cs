@@ -9,7 +9,7 @@ public class SpeakerView : PresentationForm
 	private readonly Scrollable _notesScrollable;
 	private readonly Label _notesView;
 	private readonly WebView _previewView;
-	private readonly TimerComponent _timerView;
+	private readonly TimerComponent _totalTimerView;
 	private readonly ImageView _imageView;
 	private readonly VideoControlComponent _videoControl;
 	private readonly SlidesControlComponent _slidesControlComponent;
@@ -30,10 +30,11 @@ public class SpeakerView : PresentationForm
 		};
 		_slidesControlComponent = new SlidesControlComponent();
 		_videoControl = new VideoControlComponent();
+		//_videoControl.SetVisible(SlidesManager.PresentationState.CurrentSlide != null && SlidesManager.PresentationState.CurrentSlide is YTSlide);
 		_previewView = new WebView();
 		_imageView = new ImageView();
 		_imageView.Size = this.Size * 2/3;
-		_timerView = new TimerComponent("Time");
+		_totalTimerView = new TimerComponent("Total Time");
 		
 		//layout
 		_lrSplitter = new Splitter
@@ -63,14 +64,14 @@ public class SpeakerView : PresentationForm
 		rightbar.BeginVertical();
 		rightbar.AddCentered(_previewView, 0, new Size(0,0),false,false);
 		rightbar.AddSpace();
-		rightbar.AddRow(_timerView);
+		rightbar.AddRow(_totalTimerView);
 		rightbar.AddRow(_videoControl);
 		rightbar.AddRow(_slidesControlComponent);
 		rightbar.AddSpace();
 
 		rightbar.EndVertical();
 		_lrSplitter.Panel2 = rightbar;
-		
+		_lrSplitter.Panel2MinimumSize = 150;
 		Padding = new Padding(10);
 		Content = _lrSplitter;
 		
@@ -90,6 +91,7 @@ public class SpeakerView : PresentationForm
 		_notesScrollable.ScrollPosition = new Point(0, 0);
 		SlidesManager.PresentationState.NextSlide.RenderTo(SlidesManager.PresentationState, _previewView, SlideViewMode.Preview);
 		_imageView.BackgroundColor = Colors.DarkGray;
+		_videoControl.SetVisible(slide is YTSlide);
 	}
 
 	public override void Init()
