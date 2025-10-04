@@ -8,6 +8,9 @@ public class VideoControlComponent : GroupBox
 	private Button _playPause;
 	private Button _mute;
 	private Slider _slider;
+	private TableLayout _table;
+	private TableRow _buttonRow;
+	private readonly List<VideoCueControlComponent> _cues = new List<VideoCueControlComponent>();
 	public VideoControlComponent()
 	{
 		_playPause = new Button { Text = "Play/Pause" };
@@ -24,15 +27,13 @@ public class VideoControlComponent : GroupBox
 		// _slider
 		//
 		
-		var table = new TableLayout();
-		var buttonRow = new TableRow();
-		buttonRow.Cells.Add(_playPause);
-		buttonRow.Cells.Add(_mute);
-		table.Rows.Add(buttonRow);
-		table.Rows[0].Cells[0].ScaleWidth = true;
-		table.Rows[0].Cells[1].ScaleWidth = false;
+		_table = new TableLayout();
+		_buttonRow = CreateButtonControlRow();
+		_table.Rows.Add(_buttonRow);
+		_table.Rows[0].Cells[0].ScaleWidth = true;
+		_table.Rows[0].Cells[1].ScaleWidth = false;
 		
-		Content = table;
+		Content = _table;
 		this.Text = "Video Controls";
 		this.TextColor = Colors.White;
 	}
@@ -47,6 +48,11 @@ public class VideoControlComponent : GroupBox
 		SlidesManager.PresentationState?.CallSlideFunction("playvideo", "");
 	}
 
+	public void SeekTo(string seconds)
+	{
+		SlidesManager.PresentationState?.CallSlideFunction("seek", seconds);
+	}
+
 	// private void SetVolume(object? sender, EventArgs e)
 	// {
 	// 	// SlidesManager.PresentationState?.CallSlideFunction("volume", "");
@@ -57,5 +63,44 @@ public class VideoControlComponent : GroupBox
 		this.Visible = visible;
 		_mute.Enabled = visible;
 		_playPause.Enabled = visible;
+	}
+
+	private TableRow CreateButtonControlRow()
+	{
+		var buttonRow = new TableRow();
+		buttonRow.Cells.Add(_playPause);
+		buttonRow.Cells.Add(_mute);
+		return buttonRow;
+	}
+
+	public void OnYTSlide(YTSlide ytslide)
+	{
+		foreach (var cueControl in _cues)
+		{
+			//_table.Rows.RemoveAt(_table.Rows.Count-1);
+			cueControl.Detach();
+		}
+		
+		_table = new TableLayout();
+		_buttonRow = CreateButtonControlRow();
+		_table.Rows.Add(_buttonRow);
+		
+		_table.Rows[0].Cells[0].ScaleWidth = true;
+		_table.Rows[0].Cells[1].ScaleWidth = false;
+
+		
+		_cues.Clear();
+		//foreach...
+		foreach (var cueData in ytslide.Cues)
+		{
+			var cueRow = new TableRow();
+			var cue = new VideoCueControlComponent(cueData, this);
+			_cues.Add(cue);
+			cueRow.Cells.Add(cue);
+			// cueRow.Cells[^1].ScaleWidth = true;
+			_table.Rows.Add(cueRow);
+		}
+
+		Content = _table;
 	}
 }

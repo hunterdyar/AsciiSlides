@@ -63,6 +63,12 @@ public class Display : PresentationForm
                                         muteToggleVideo();
                                         """);
                 break;
+            case "seek":
+                _webPanel.ExecuteScript($"""
+                                        console.log("seek video");
+                                        seek({data});
+                                        """);
+                break;
             case "volume":
                 var volume = _webPanel.ExecuteScript($"setVolume({data})");
                 break;

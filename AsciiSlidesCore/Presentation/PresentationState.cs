@@ -149,6 +149,9 @@ public class PresentationState
 			case "volume":
 				OnSlideFunction?.Invoke("volume", data);
 				break;
+			case "seek":
+				OnSlideFunction?.Invoke("seek", data);
+				break;
 			
 		}
 		

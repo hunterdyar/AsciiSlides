@@ -91,7 +91,15 @@ public class SpeakerView : PresentationForm
 		_notesScrollable.ScrollPosition = new Point(0, 0);
 		SlidesManager.PresentationState.NextSlide.RenderTo(SlidesManager.PresentationState, _previewView, SlideViewMode.Preview);
 		_imageView.BackgroundColor = Colors.DarkGray;
-		_videoControl.SetVisible(slide is YTSlide);
+		if (slide is YTSlide ytslide)
+		{
+			_videoControl.OnYTSlide(ytslide);
+			_videoControl.SetVisible(true);
+		}
+		else
+		{
+			_videoControl.SetVisible(false);
+		}
 	}
 
 	public override void Init()

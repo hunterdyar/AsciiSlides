@@ -128,4 +128,19 @@ public class Cue
 	{
 		raw = ""
 	};
+
+	public string PrettyText()
+	{
+		if (Hours > 0)
+		{
+			return $"{Hours:D2}:{Minutes:D2}:{Seconds:D2}";
+		}
+
+		return $"{Minutes:D2}:{Seconds:D2}";
+	}
+
+	public int TotalSeconds()
+	{
+		return Hours * 60 * 60 + Minutes * 60 + Seconds;
+	}
 }

@@ -15,6 +15,7 @@ public class YTSlide : Slide
 			RegexOptions.Compiled);
 	private string ytid;
 	private string url;
+	public Cue[] Cues => cues;
 	private Cue[] cues = [];
 	private Cue startTime = Cue.StartCue;
 	public YTSlide(Presentation presentation, string rawContent) : base(presentation, rawContent)
@@ -123,6 +124,10 @@ public class YTSlide : Slide
 		              
 		              function playVideo() {
 		                  player.playVideo();
+		              }
+		              
+		              function seek(seconds){
+		                player.seekTo(seconds, true);
 		              }
 		          
 		              // -1(unstarted)
