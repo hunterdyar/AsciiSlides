@@ -24,7 +24,7 @@ public abstract class PresentationForm : Form
 		this.KeyUp += OnKeyUp;
 		//handle events we care about
 		PresentationState.OnSlideChanged += OnCurrentSlideChanged;
-
+		PresentationState.OnSlideFunction += OnSlideFunction;
 		//unregsister
 		this.Closed += (sender, args) =>
 		{
@@ -34,10 +34,17 @@ public abstract class PresentationForm : Form
 			//unhandle events
 
 			PresentationState.OnSlideChanged -= OnCurrentSlideChanged;
+			PresentationState.OnSlideFunction -= OnSlideFunction;
+
 			OnClose();
 		};
 		//on resizing.... registering last to prevent multiple 
 		this.LogicalPixelSizeChanged += (sender, args) => { ResizePanel(); };
+	}
+
+	protected virtual void OnSlideFunction(string slide, string data)
+	{
+		
 	}
 
 	protected virtual void OnClose()
@@ -99,7 +106,11 @@ public abstract class PresentationForm : Form
 	/// </summary>
 	public virtual void Init()
 	{
-		
+		var s = SlidesManager.PresentationState?.CurrentSlide;
+		if (s != null)
+		{
+			OnCurrentSlideChanged(s);
+		}
 	}
 	
 }

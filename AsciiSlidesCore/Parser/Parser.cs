@@ -72,6 +72,7 @@ public static class PresentationParser
 			case "text":
 			case "plaintext":
 			case "a":
+			case "plain":
 				return "ascii";
 			case "html":
 			case "htm":

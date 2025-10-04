@@ -41,10 +41,33 @@ public class Display : PresentationForm
 
         _webPanel.DocumentLoaded += (sender, args) => 
         {
-            OnRenderComplete.Invoke();
+            OnRenderComplete?.Invoke();
         };
     }
-
+    
+    
+    protected override void OnSlideFunction(string slideFunctionName, string data)
+    {
+        Console.WriteLine($"Slide Function: {slideFunctionName}");
+        switch (slideFunctionName)
+        {
+            case "playvideo":
+                _webPanel.ExecuteScript("""
+                                        console.log("play/pause video");
+                                        playPauseVideo();
+                                        """);
+                break;
+            case "mute":
+                _webPanel.ExecuteScript("""
+                                        console.log("mute video");
+                                        muteToggleVideo();
+                                        """);
+                break;
+            case "volume":
+                var volume = _webPanel.ExecuteScript($"setVolume({data})");
+                break;
+        }
+    }
 
     protected override void OnCurrentSlideChanged(Slide slide)
     {

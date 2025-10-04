@@ -20,13 +20,22 @@ public class Frontmatter
 	{
 		if (_frontmatter.ContainsKey(key))
 		{
-			_frontmatter[key] = value;
+			if (CanHaveMultipleSingleline(key))
+			{
+				_frontmatter[key] = _frontmatter[key] + "\n" + value.TrimEnd();	
+			}
+			else
+			{
+				_frontmatter[key] = value;
+			}
 		}
 		else
 		{
 			_frontmatter.Add(key.ToLower(), value);
 		}
 	}
+
+	
 
 	public string GetKey(string key, string defaultValue)
 	{
@@ -57,5 +66,10 @@ public class Frontmatter
 	public void SetParentFrontmatter(Frontmatter? parentFrontmatter)
 	{
 		_parent = parentFrontmatter;
+	}
+
+	public static bool CanHaveMultipleSingleline(string key)
+	{
+		return key == "cue";
 	}
 }
