@@ -109,4 +109,10 @@ public class Display : PresentationForm
             // Add it to your form, save it, etc.
         });
     }
+
+    protected override void OnClosed(EventArgs e)
+    {
+        SlidesManager.PresentationState?.ClosePresentation();
+        base.OnClosed(e);
+    }
 }

@@ -120,4 +120,11 @@ public class SpeakerView : PresentationForm
 			_imageView.Image = b;
 		});
 	}
+
+	protected override void OnClosed(EventArgs e)
+	{
+		SlidesManager.PresentationState?.ClosePresentation();
+		base.OnClosed(e);
+	}
+	
 }
