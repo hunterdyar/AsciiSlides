@@ -1,7 +1,7 @@
 # Ascii Slides
 In progress, incomplete.
 
-AsciiSlides is (will be?) a desktop presentation tool. It parses plaintext files and let's you present them. In addition to supporting html, markdown, youtube links, and images; it also supports 'ASCII Art' and figlet style text headers. 
+AsciiSlides is (will be?) a desktop tool for giving presentations. It parses plaintext files and let's you present them. In addition to supporting html, markdown, youtube links, and images; it also supports 'ASCII Art' and figlet style text headers. 
 
 ## Why?
 1. Because ASCII art slides are pretty fun. It feels great to have presentations that look like 2000's era game guide text files
@@ -27,7 +27,6 @@ I want these:
 Most alternatives use HTML and web technology. Which makes sense! But websites are bad at OS level things, and display output management is just an OS level thing.
 I use a WebView (html+css!) to *render* the slides. But the software can also, say, call native functions! I know about all the connected displays, for example.
 
-
 ## Why Not?
 Separating content and styling is not a novel concept. It's the foundational principle behind HTML+CSS!
 
@@ -45,7 +44,7 @@ I've never used [Keynote](https://support.apple.com/keynote) but it isn't free e
 Is the website fullscreen or is the embedded video fullscreen? will hitting escape un-fullscreen a video or close the editor and bring me back to Google slides? It's clumsy and awkward. 
 Speaker notes and clear monitor selections is also critical for presentation. PowerPoint users click one button and the software basically works every time. But when you watch a speaker fumbling... it's probably google slides. dragging a window around, it's mess.
 
-*At lesat PowerPoint isn't a [website](https://powerpoint.cloud.microsoft/en-us/). Wait, oh no!*
+*At least PowerPoint isn't a [website](https://powerpoint.cloud.microsoft/en-us/). Wait, oh no!*
 
 The same issues persist with Canva presentations, prezi, and reveal js.
 
@@ -64,5 +63,3 @@ I started this project aiming to target the terminal. But opening multiple termi
 - [TUI-Slides](https://github.com/Chleba/tui-slides) is cool!
 - [Presenterm](https://github.com/mfontanini/presenterm) is also cool!
 - [Patat](https://github.com/jaspervdj/patat) guess what? also cool.
-
-- 
