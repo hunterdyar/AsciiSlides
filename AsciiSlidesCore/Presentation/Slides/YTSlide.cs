@@ -205,4 +205,10 @@ public class YTSlide : Slide
 		//todo: ask the webview to call some javascript?
 		base.OnRender();
 	}
+
+	public override void ExitFromView()
+	{
+		SlidesManager.PresentationState?.CallSlideFunction("stopvideo", "");
+		base.ExitFromView();
+	}
 }

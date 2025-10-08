@@ -157,4 +157,10 @@ public abstract class Slide
 	{
 		//do nothing
 	}
+
+	//called as we leave the slide view. Clean things up here.
+	public virtual void ExitFromView()
+	{
+		
+	}
 }

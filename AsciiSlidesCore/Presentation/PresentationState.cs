@@ -89,7 +89,15 @@ public class PresentationState
 	}
 	private void Navigate(int slide)
 	{
+		//exit from previous
+		if (_currentSlideIndex != slide)
+		{
+			_presentation.Slides[_currentSlideIndex]?.ExitFromView();
+		}
+		
 		_currentSlideIndex = slide;	
+		
+		
 		//pre-process if necessary.
 		if (!_presentation.Slides[_currentSlideIndex].PreProcessed)
 		{
@@ -142,6 +150,9 @@ public class PresentationState
 		{
 			case "playvideo":
 				OnSlideFunction?.Invoke("playvideo", data);
+				break;
+			case "stopvideo":
+				OnSlideFunction?.Invoke("stopvideo", data);
 				break;
 			case "mute":
 				OnSlideFunction?.Invoke("mute", data);

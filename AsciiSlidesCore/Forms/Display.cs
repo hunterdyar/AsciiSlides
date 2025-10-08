@@ -57,6 +57,11 @@ public class Display : PresentationForm
                                         playPauseVideo();
                                         """);
                 break;
+            case "stopvideo":
+                _webPanel.ExecuteScript("""
+                                        stopVideo();
+                                        """);
+                break;
             case "mute":
                 _webPanel.ExecuteScript("""
                                         console.log("mute video");
@@ -118,6 +123,9 @@ public class Display : PresentationForm
 
     protected override void OnClosed(EventArgs e)
     {
+        //force-stop video playback, if it exists.
+        OnSlideFunction("stopvideo","");
+        
         SlidesManager.PresentationState?.ClosePresentation();
         base.OnClosed(e);
     }
