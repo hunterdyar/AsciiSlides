@@ -186,13 +186,8 @@ public ref struct Tokenizer
 			
 			string s = "";
 			bool escaping = false;
-			while (_current != '\n' || escaping)
+			while ((_current != '\n' && _current != '\0')|| escaping)
 			{
-				if (_current == '\0')
-				{
-					throw new Exception("Unexpected end of file");
-				}
-
 				escaping = _current == '\\';
 				s += _current;
 				Next();

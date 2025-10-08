@@ -141,16 +141,19 @@ public class TokenizerTest
 		        cue: "2:22"
 		        cue: 1:23
 		        cue: "10m24s"
+		        cue: 1h24m
 		        """;
 		var p = PresentationParser.Parse(s);
 		Assert.IsTrue(p.SlideCount == 2);
 		Assert.IsTrue(p.Slides[0] is YTSlide);
 		var slide = p.Slides[0] as YTSlide;
 		slide.PreProcess();
-		Assert.That(slide.Cues.Length, Is.EqualTo(3));
+		Assert.That(slide.Cues.Length, Is.EqualTo(4));
 		Assert.That(slide.Cues[0].PrettyText(),Is.EqualTo( "2:22"));
 		Assert.That(slide.Cues[1].PrettyText(), Is.EqualTo( "1:23"));
 		Assert.That(slide.Cues[2].PrettyText(), Is.EqualTo( "10:24"));
+		Assert.That(slide.Cues[3].PrettyText(), Is.EqualTo( "1:24:00"));
+
 	}
 }
 
