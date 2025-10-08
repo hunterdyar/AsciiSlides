@@ -180,7 +180,7 @@ public ref struct Tokenizer
 			Next();//eat the closing "
 			_tokens.Add(new Token(TokenType.Value, s));
 			return;
-		}else if (char.IsLetter(_current) || _current == '#')
+		}else if (char.IsLetterOrDigit(_current) || _current == '#')
 		{
 			//how to decide what the custom delim is? Non-letterNumber is first guess.
 			

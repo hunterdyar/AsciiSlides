@@ -109,6 +109,8 @@ public class Cue
 			}
 		}
 
+		digits = digits.Reverse();
+
 		if (digits.Length > 0)
 		{ 
 			if(int.TryParse(digits, out int result))
@@ -133,10 +135,10 @@ public class Cue
 	{
 		if (Hours > 0)
 		{
-			return $"{Hours:D2}:{Minutes:D2}:{Seconds:D2}";
+			return $"{Hours:D}:{Minutes:D}:{Seconds:D2}";
 		}
 
-		return $"{Minutes:D2}:{Seconds:D2}";
+		return $"{Minutes:D}:{Seconds:D2}";
 	}
 
 	public int TotalSeconds()
