@@ -41,7 +41,7 @@ public class FilesComponent : GroupBox
 		//todo: when we save the file, and reload it, we don't realize we've reloaded it.
 		//hacky temp is to add a 'reload' button.
 		//data watch feature feels correct to me, however. Like, we're not loading the presentation, the user should feel like we're just pointing to a file.
-		string lastFile = Configuration.GetKey(LastFilePathSettingsKey);
+		string? lastFile = Configuration.GetKey(LastFilePathSettingsKey);
 		if (!string.IsNullOrEmpty(lastFile))
 		{
 			//we check again if the file exists.
@@ -49,6 +49,7 @@ public class FilesComponent : GroupBox
 			_filePicker.FilePath = lastFile;
 		}
 		_filePicker.FilePathChanged += (sender, args) => { TryPickFileFromPath(_filePicker.FilePath); };
+		// ReSharper disable once VirtualMemberCallInConstructor
 		Width = Configuration.ManagerWindowWidth;
 		Text = "File";
 		Content = new StackLayout()

@@ -9,9 +9,9 @@ namespace AsciiSlidesCore;
 
 public class SlidesManager : Form
 {
-    public Display Display => _display;
+    public Display? Display => _display;
     private Display? _display = null;
-    public SpeakerView SpeakerView => _speakerView;
+    public SpeakerView? SpeakerView => _speakerView;
     private SpeakerView? _speakerView = null;
     private OutputComponent _outputComponent;
     private FilesComponent _filesComponent;
@@ -20,7 +20,7 @@ public class SlidesManager : Form
     public static PresentationState PresentationState = new PresentationState();
     public static Action<Presentation> OnPresentationLoaded = delegate { };
     public static Action<string> OnPresentationFailedToLoad = delegate { };
-    private FileSystemWatcher _watcher;
+    private readonly FileSystemWatcher _watcher;
     private bool _watching = false;
 
     private bool hasFileChanged = false;
@@ -103,13 +103,11 @@ public class SlidesManager : Form
     {
         var dir = Path.GetDirectoryName(path);
         using var fileStream = new StreamReader(path);
-        if (_watcher != null)
-        {
-            _watcher.Path = dir;
-            _watcher.Filter = Path.GetFileName(path);
-            _watcher.EnableRaisingEvents = true;
-        }
 
+        _watcher.Path = dir ?? "";
+        _watcher.Filter = Path.GetFileName(path);
+        _watcher.EnableRaisingEvents = true;
+        
         LoadPresentation(path,fileStream.ReadToEnd());
     }
 
@@ -134,8 +132,12 @@ public class SlidesManager : Form
         }
     }
 
-    public void LaunchPresentation(DisplaySelection displaySelection)
+    public void LaunchPresentation(DisplaySelection? displaySelection)
     {
+        if (displaySelection == null)
+        {
+            throw new  ArgumentNullException(nameof(displaySelection));
+        }
         Console.WriteLine($"Launching Presentation with {displaySelection}");
         if (PresentationState.IsPresentationReady)
         {

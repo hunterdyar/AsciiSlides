@@ -1,5 +1,6 @@
 ﻿using Eto.Drawing;
 using Eto.Forms;
+#pragma warning disable CS8601 // Possible null reference assignment.
 
 namespace AsciiSlidesCore;
 

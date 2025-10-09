@@ -123,7 +123,7 @@ public class SpeakerView : PresentationForm
 
 	private void CaptureCurrentDisplayToCurrentView()
 	{
-		_manager.Display.Capture((b) =>
+		_ = _manager.Display.Capture((b) =>
 		{
 			_imageView.Image = b;
 		});

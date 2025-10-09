@@ -26,7 +26,7 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AWebView2_002Ecs_002Fl_003AC_0021_003FUsers_003FBlooper_003FAppData_003FRoaming_003FJetBrains_003FRider2025_002E1_003Fresharper_002Dhost_003FDecompilerCache_003Fdecompiler_003F8aca2f2c90e1454c825fc8b69c53a97e14268_003F06_003F22dc0e77_003FWebView2_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AWindow_002Ecs_002Fl_003AC_0021_003FUsers_003FIMM_003FAppData_003FRoaming_003FJetBrains_003FRider2025_002E1_003Fresharper_002Dhost_003FDecompilerCache_003Fdecompiler_003Fca68e9f84e1f487199510c67e7d14fa5ba800_003F2d_003F1045ff43_003FWindow_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7c92b5f6_002Dfe84_002D459b_002D8cf5_002D6124e896e060/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Presentation" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7c92b5f6_002Dfe84_002D459b_002D8cf5_002D6124e896e060/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Presentation" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;And&gt;
     &lt;TestAncestor&gt;
       &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0-windows::TestProject1.Tests.Presentation&lt;/TestId&gt;
@@ -52,7 +52,7 @@
     &lt;/Not&gt;
   &lt;/And&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=cf7520f8_002Da4e9_002D4936_002D8638_002Da89124051da8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="PresentationFrontmatterAndSlideFrontmatter" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=cf7520f8_002Da4e9_002D4936_002D8638_002Da89124051da8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="PresentationFrontmatterAndSlideFrontmatter" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0::TestProject1.TokenizerTest.PresentationFrontmatterAndSlideFrontmatter&lt;/TestId&gt;
     &lt;TestId&gt;NUnit3x::800B1F6B-4383-4C7A-8EB8-B76D63F4A4C1::net9.0::TestProject1.Tests&lt;/TestId&gt;

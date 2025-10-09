@@ -7,7 +7,7 @@ public class VideoControlComponent : GroupBox
 {
 	private Button _playPause;
 	private Button _mute;
-	private Slider _slider;
+	// private Slider _slider;
 	private TableLayout _table;
 	private TableRow _buttonRow;
 	private readonly List<VideoCueControlComponent> _cues = new List<VideoCueControlComponent>();

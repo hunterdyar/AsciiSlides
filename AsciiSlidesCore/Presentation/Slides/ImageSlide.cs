@@ -10,6 +10,7 @@ public class ImageSlide : Slide
 	public ImageSlide(Presentation presentation, string url) : base(presentation, url)
 	{
 		source = url.Trim();
+		fullImagepath = source;
 	}
 
 	protected override void AppendContent(StringBuilder sb)
